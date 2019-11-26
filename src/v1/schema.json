@@ -26,7 +26,7 @@
 	"type": "object",
 	"title": "The Root Schema",
 	"required": ["id"],
-	"oneOf": [
+	"anyOf": [
 		{
 			"required": ["packId", "packCredits"]
 		},
