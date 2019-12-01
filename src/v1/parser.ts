@@ -33,7 +33,7 @@ export function normalizeCharacter(
 		nsfw: !!character.nsfw,
 		chibi: character.chibi
 			? joinNormalize(charFolder, character.chibi, paths)
-			: undefined,
+			: `assets/chibis/${character.internalId}`,
 		eyes: normalizeParts(character.eyes, charFolder, paths),
 		hairs: normalizeParts(character.hairs, charFolder, paths),
 		styles: normalizeStyles(character.styles),
