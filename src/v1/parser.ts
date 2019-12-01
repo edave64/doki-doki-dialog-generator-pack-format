@@ -24,6 +24,12 @@ export function normalizeCharacter(
 	paths: Paths
 ): Character<HeadCollections> {
 	const charFolder = joinNormalize('', character.folder || '/', paths);
+	let chibi: string | undefined = undefined;
+	if (character.chibi)
+		chibi = joinNormalize(charFolder, character.chibi, paths);
+	if (chibi === undefined && character.internalId) {
+		chibi = `assets/chibis/${character.internalId}`;
+	}
 
 	return {
 		id: character.id,
@@ -31,9 +37,7 @@ export function normalizeCharacter(
 		packCredits: character.packCredits,
 		name: character.name,
 		nsfw: !!character.nsfw,
-		chibi: character.chibi
-			? joinNormalize(charFolder, character.chibi, paths)
-			: `assets/chibis/${character.internalId}`,
+		chibi,
 		eyes: normalizeParts(character.eyes, charFolder, paths),
 		hairs: normalizeParts(character.hairs, charFolder, paths),
 		styles: normalizeStyles(character.styles),
