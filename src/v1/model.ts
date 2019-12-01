@@ -54,6 +54,8 @@ export interface StyleClasses {
 
 export interface Character<H extends HeadCollections> {
 	id: string;
+	packId?: string;
+	packCredits?: string;
 	name: string;
 	nsfw: boolean;
 	eyes: StyleClasses;

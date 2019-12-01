@@ -27,7 +27,8 @@ export function normalizeCharacter(
 
 	return {
 		id: character.id,
-		internalId: character.internalId,
+		packId: character.packId,
+		packCredits: character.packCredits,
 		name: character.name,
 		nsfw: !!character.nsfw,
 		chibi: character.chibi
