@@ -1,0 +1,277 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://raw.githubusercontent.com/edave64/doki-doki-dialog-generator-pack-format/master/src/v1/schema.json",
+	"definitions": {
+		"nsfwAbleImg": {
+			"oneOf": [
+				{
+					"type": "string"
+				},
+				{
+					"type": "object",
+					"required": ["img", "nsfw"],
+					"properties": {
+						"img": {
+							"type": "string"
+						},
+						"nsfw": {
+							"type": "boolean"
+						}
+					},
+					"additionalProperties": false
+				}
+			]
+		}
+	},
+	"type": "object",
+	"title": "The Root Schema",
+	"required": ["id"],
+	"anyOf": [
+		{
+			"required": ["packId", "packCredits"]
+		},
+		{
+			"required": ["name", "internalId"]
+		}
+	],
+	"properties": {
+		"id": {
+			"$id": "#/properties/id",
+			"type": "string",
+			"title": "The character id",
+			"pattern": "^(.*)$"
+		},
+		"packId": {
+			"$id": "#/properties/packId",
+			"type": "string",
+			"title": "The content pack id",
+			"pattern": "^(.*)$"
+		},
+		"packCredits": {
+			"$id": "#/properties/packCredits",
+			"type": "string",
+			"title": "The credits of the content pack",
+			"default": "",
+			"examples": [
+				"<a href='https://www.reddit.com/dq74jr' target='_blank' rel='noopener noreferrer'>Created by</a> anita6artania"
+			],
+			"pattern": "^(.*)$"
+		},
+		"name": {
+			"$id": "#/properties/name",
+			"type": "string",
+			"title": "The name of the character",
+			"examples": [],
+			"pattern": "^(.*)$"
+		},
+		"internalId": {
+			"$id": "#/properties/internalId",
+			"type": "string",
+			"title": "Used to find the character chibi (Deprecated use `chibi` instead)",
+			"pattern": "^(.*)$"
+		},
+		"chibi": {
+			"$id": "#/properties/chibi",
+			"type": "string",
+			"title": "The path to the chibi file",
+			"pattern": "^(.*)$"
+		},
+		"folder": {
+			"$id": "#/properties/folder",
+			"type": "string",
+			"title": "The folder, in which all other paths in this file will be searched",
+			"default": "/",
+			"examples": ["./"],
+			"pattern": "^(.*)$"
+		},
+		"eyes": {
+			"$id": "#/properties/eyes",
+			"type": "object",
+			"title": "The eye-types of the character, assigned to a preview image for that type",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"hairs": {
+			"$id": "#/properties/hairs",
+			"type": "object",
+			"title": "The hair-types of the character, assigned to a preview image for that type",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"styles": {
+			"$id": "#/properties/styles",
+			"type": "array",
+			"title": "A list of styles",
+			"items": {
+				"$id": "#/properties/styles/items",
+				"type": "object",
+				"title": "A style",
+				"required": ["name", "label"],
+				"properties": {
+					"name": {
+						"$id": "#/properties/styles/items/properties/name",
+						"type": "string",
+						"title": "The name of the style. Of an eye type and/or hair type is included, separated by a minus",
+						"default": "",
+						"examples": [],
+						"pattern": "^(.*)$"
+					},
+					"label": {
+						"$id": "#/properties/styles/items/properties/label",
+						"type": "string",
+						"title": "The display name of the style",
+						"default": "",
+						"examples": [],
+						"pattern": "^(.*)$"
+					},
+					"nsfw": {
+						"type": "boolean",
+						"default": false
+					}
+				}
+			}
+		},
+		"heads": {
+			"$id": "#/properties/heads",
+			"type": "object",
+			"title": "The head groups",
+			"patternProperties": {
+				".*": {
+					"title": "Headgroup",
+					"oneOf": [
+						{
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						{
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["all"],
+							"properties": {
+								"all": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/nsfwAbleImg"
+									}
+								},
+								"folder": {
+									"type": "string"
+								},
+								"nsfw": {
+									"type": "boolean",
+									"default": false
+								}
+							}
+						}
+					]
+				}
+			},
+			"additionalProperties": false
+		},
+		"poses": {
+			"$id": "#/properties/poses",
+			"type": "array",
+			"title": "Poses",
+			"items": {
+				"$id": "#/properties/poses/items",
+				"type": "object",
+				"title": "A pose",
+				"required": ["name", "style", "compatibleHeads"],
+				"properties": {
+					"name": {
+						"$id": "#/properties/poses/items/properties/name",
+						"type": "string",
+						"title": "The name of a pose. If a content pack includes a pose with the same name as an existing one, the get merged together",
+						"default": "",
+						"pattern": "^(.*)$"
+					},
+					"style": {
+						"$id": "#/properties/poses/items/properties/style",
+						"type": "string",
+						"title": "The name of a style",
+						"default": "",
+						"pattern": "^(.*)$"
+					},
+					"compatibleHeads": {
+						"$id": "#/properties/poses/items/properties/compatibleHeads",
+						"type": "array",
+						"title": "A list of compatible head groups",
+						"items": {
+							"$id": "#/properties/poses/items/properties/compatibleHeads/items",
+							"type": "string",
+							"title": "A head group",
+							"default": "",
+							"pattern": "^(.*)$"
+						}
+					},
+					"nsfw": {
+						"type": "boolean",
+						"default": false
+					}
+				},
+				"oneOf": [
+					{
+						"required": ["left", "right"],
+						"properties": {
+							"left": {
+								"$id": "#/properties/poses/items/properties/left",
+								"type": "array",
+								"title": "The images for the left side of the pose",
+								"items": {
+									"$id": "#/properties/poses/items/properties/left/items",
+									"$ref": "#/definitions/nsfwAbleImg",
+									"default": "",
+									"examples": ["1l.png"],
+									"pattern": "^(.*)$"
+								}
+							},
+							"right": {
+								"$id": "#/properties/poses/items/properties/right",
+								"type": "array",
+								"title": "The images for the right side of the pose",
+								"items": {
+									"$id": "#/properties/poses/items/properties/right/items",
+									"$ref": "#/definitions/nsfwAbleImg",
+									"default": "",
+									"examples": ["1r.png"],
+									"pattern": "^(.*)$"
+								}
+							}
+						}
+					},
+					{
+						"required": ["variant"],
+						"properties": {
+							"variant": {
+								"$id": "#/properties/poses/items/properties/left",
+								"type": "array",
+								"title": "The images for the pose",
+								"items": {
+									"$id": "#/properties/poses/items/properties/left/items",
+									"$ref": "#/definitions/nsfwAbleImg",
+									"default": "",
+									"examples": ["3.png"],
+									"pattern": "^(.*)$"
+								}
+							}
+						}
+					},
+					{
+						"required": ["static"],
+						"properties": {
+							"static": {
+								"title": "The image of the pose",
+								"type": "string"
+							}
+						}
+					}
+				]
+			},
+			"additionalProperties": false
+		}
+	}
+}
