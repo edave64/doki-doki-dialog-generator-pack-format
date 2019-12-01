@@ -17,9 +17,10 @@ describe('Test converter base functionality', () => {
 		  "hairs": Object {},
 		  "heads": Object {},
 		  "id": "toast",
-		  "internalId": undefined,
 		  "name": undefined,
 		  "nsfw": false,
+		  "packCredits": undefined,
+		  "packId": undefined,
 		  "poses": Array [],
 		  "styles": Array [],
 		}
