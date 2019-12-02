@@ -1,58 +1,58 @@
-export interface ContentPack {
+export interface ContentPack<T = string> {
 	packId?: string;
 	packCredits?: string;
-	characters: Character[];
-	fonts: Font[];
-	backgrounds: Background[];
-	sprites: Sprite[];
-	poemStyles: PoemStyle[];
+	characters: Array<Character<T>>;
+	fonts: Array<Font<T>>;
+	backgrounds: Array<Background<T>>;
+	sprites: Array<Sprite<T>>;
+	poemStyles: Array<PoemStyle<T>>;
 }
 
-export interface Font {
+export interface Font<T> {
 	label: string;
 	id: string;
-	files: string[];
+	files: T[];
 }
 
-export interface Background {
+export interface Background<T> {
 	label: string;
-	variants: SpriteColllection[];
+	variants: Array<SpriteColllection<T>>;
 }
 
-export interface Sprite {
+export interface Sprite<T> {
 	label: string;
-	variants: SpriteColllection[];
+	variants: Array<SpriteColllection<T>>;
 }
 
-export interface PoemStyle {
+export interface PoemStyle<T> {
 	label: string;
 	size: Coordinates;
 	defaultFont: string;
-	variants: SpriteColllection[];
+	variants: Array<SpriteColllection<T>>;
 }
 
-export interface Character {
+export interface Character<T> {
 	id: string;
 	label: string;
-	styleComponents: StyleComponent[];
-	chibi: string;
+	styleComponents: Array<StyleComponent<T>>;
+	chibi: T;
 	styles: Style[];
-	heads: HeadCollections;
-	poses: Pose[];
+	heads: HeadCollections<T>;
+	poses: Array<Pose<T>>;
 	size: Coordinates;
 }
 
-export interface HeadCollection {
-	variants: SpriteColllection[];
+export interface HeadCollection<T> {
+	variants: Array<SpriteColllection<T>>;
 	size: Coordinates;
 	offset: Coordinates;
 }
 
-export interface HeadCollections {
-	[id: string]: HeadCollection;
+export interface HeadCollections<T> {
+	[id: string]: HeadCollection<T>;
 }
 
-export interface Pose {
+export interface Pose<T> {
 	name: string;
 	renderOrder: string;
 	compatibleHeads: string[];
@@ -60,13 +60,13 @@ export interface Pose {
 	headAnchor: Coordinates;
 	size: Coordinates;
 	offset: Coordinates;
-	static: SpriteColllection;
-	variant: SpriteColllection[];
-	left: SpriteColllection[];
-	right: SpriteColllection[];
+	static: SpriteColllection<T>;
+	variant: Array<SpriteColllection<T>>;
+	left: Array<SpriteColllection<T>>;
+	right: Array<SpriteColllection<T>>;
 }
 
-type SpriteColllection = string[];
+type SpriteColllection<T> = T[];
 
 type Coordinates = [number, number];
 
@@ -76,12 +76,12 @@ export interface Style {
 	components: { [s: string]: string };
 }
 
-export interface StyleComponent {
+export interface StyleComponent<T> {
 	label: string;
 	name: string;
-	variants: StyleClasses;
+	variants: StyleClasses<T>;
 }
 
-export interface StyleClasses {
-	[name: string]: string;
+export interface StyleClasses<T> {
+	[name: string]: T;
 }

@@ -78,7 +78,7 @@ export function normalizeSprite(
 	sprite: JSONSprite,
 	baseFolder: string,
 	paths: Paths
-): Sprite {
+): Sprite<string> {
 	const spriteFolder = joinNormalize(baseFolder, sprite.folder, paths);
 	return {
 		label: sprite.label || sprite.variants[0][0],
@@ -92,7 +92,7 @@ export function normalizePoemStyles(
 	poem: JSONPoemStyle,
 	baseFolder: string,
 	paths: Paths
-): PoemStyle {
+): PoemStyle<string> {
 	const poemFolder = joinNormalize(baseFolder, poem.folder, paths);
 	return {
 		defaultFont: poem.defaultFont || 'Aller',
@@ -108,7 +108,7 @@ export function normalizeFont(
 	font: JSONFont,
 	baseFolder: string,
 	paths: Paths
-): Font {
+): Font<string> {
 	const fontsFolder = joinNormalize(baseFolder, font.folder, paths);
 	return {
 		id: font.id ? font.id : font.label ? font.label : font.files[0],
@@ -121,7 +121,7 @@ export function normalizeBackground(
 	background: JSONBackground,
 	baseFolder: string,
 	paths: Paths
-): Background {
+): Background<string> {
 	const backgroundFolder = joinNormalize(baseFolder, background.folder, paths);
 	return {
 		label: background.label ? background.label : background.variants[0][0],
@@ -143,7 +143,7 @@ function normalizeCharacter(
 	character: JSONCharacter,
 	baseFolder: string,
 	paths: Paths
-): Character {
+): Character<string> {
 	const charFolder = joinNormalize(baseFolder, character.folder, paths);
 	return {
 		id: character.id,
@@ -174,7 +174,7 @@ function normalizeStyleComponent(
 	styleComponent: JSONStyleComponent,
 	baseFolder: string,
 	paths: Paths
-): StyleComponent {
+): StyleComponent<string> {
 	return {
 		name: styleComponent.name,
 		label: styleComponent.label,
@@ -186,9 +186,9 @@ function normalizeParts(
 	styleClasses: JSONStyleClasses,
 	baseFolder: string,
 	paths: Paths
-): StyleClasses {
+): StyleClasses<string> {
 	if (!styleClasses) return {};
-	const ret: StyleClasses = {};
+	const ret: StyleClasses<string> = {};
 	for (const styleKey in styleClasses) {
 		/* istanbul ignore next */
 		if (!styleClasses.hasOwnProperty(styleKey)) continue;
@@ -201,15 +201,15 @@ function normalizeHeads(
 	heads: JSONHeadCollections | undefined,
 	baseFolder: string,
 	paths: Paths
-): HeadCollections {
-	const ret: HeadCollections = {};
+): HeadCollections<string> {
+	const ret: HeadCollections<string> = {};
 	if (!heads) return ret;
 
 	for (const headGroupKey in heads) {
 		/* istanbul ignore next */
 		if (!heads.hasOwnProperty(headGroupKey)) continue;
 		const headGroup = heads[headGroupKey];
-		let newHeadGroup: HeadCollection;
+		let newHeadGroup: HeadCollection<string>;
 		if (headGroup instanceof Array) {
 			newHeadGroup = {
 				variants: headGroup,
@@ -234,7 +234,7 @@ function normalizePoses(
 	poses: JSONPose[],
 	baseFolder: string,
 	paths: Paths
-): Pose[] {
+): Array<Pose<string>> {
 	if (!poses) return [];
 
 	return poses.map(pose => {
@@ -256,7 +256,7 @@ function normalizePoses(
 			variant: pose.variant
 				? normalizeVariants(pose.variant, poseFolder, paths)
 				: [],
-		} as Pose;
+		} as Pose<string>;
 
 		return ret;
 	});

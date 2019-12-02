@@ -22,7 +22,7 @@ export function convert(
 function convertCharacter(
 	characterV1: V1.Character<V1.HeadCollections>,
 	nsfw: boolean
-): V2.Character {
+): V2.Character<string> {
 	const styleComponents = convertStyleComponents(characterV1);
 
 	return {
@@ -39,7 +39,7 @@ function convertCharacter(
 
 function convertStyles(
 	stylesV1: V1.Style[],
-	styleComponents: V2.StyleComponent[],
+	styleComponents: Array<V2.StyleComponent<string>>,
 	nsfw: boolean
 ): V2.Style[] {
 	return stylesV1
@@ -71,9 +71,9 @@ function convertStyles(
 function convertPoses(
 	posesV1: Array<V1.PoseMeta<V1.HeadCollections>>,
 	nsfw: boolean
-): V2.Pose[] {
+): Array<V2.Pose<string>> {
 	return posesV1.map(
-		(poseV1): V2.Pose => {
+		(poseV1): V2.Pose<string> => {
 			return {
 				compatibleHeads: poseV1.compatibleHeads.map(x => x.toString()),
 				headAnchor: poseV1.headAnchor,
@@ -102,8 +102,8 @@ function convertNsfwAbles(
 function convertHeads(
 	headCollectionsV1: V1.HeadCollections,
 	nsfw: boolean
-): V2.HeadCollections {
-	const headCollectionsV2: { [s: string]: V2.HeadCollection } = {};
+): V2.HeadCollections<string> {
+	const headCollectionsV2: { [s: string]: V2.HeadCollection<string> } = {};
 
 	for (const key of Object.keys(headCollectionsV1)) {
 		const headCollectionV1 = headCollectionsV1[key];
@@ -122,8 +122,8 @@ function convertHeads(
 
 function convertStyleComponents(
 	characterV1: V1.Character<V1.HeadCollections>
-): V2.StyleComponent[] {
-	const ret: V2.StyleComponent[] = [];
+): Array<V2.StyleComponent<string>> {
+	const ret: Array<V2.StyleComponent<string>> = [];
 
 	if (Object.keys(characterV1.eyes).length > 0) {
 		ret.push({
