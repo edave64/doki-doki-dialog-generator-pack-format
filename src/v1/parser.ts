@@ -1,18 +1,18 @@
 import {
 	JSONCharacter,
 	JSONHeadCollections,
-	JSONStyleClasses,
 	JSONPoseMeta,
 	JSONStyle,
+	JSONStyleClasses,
 } from './jsonFormat';
 import {
 	Character,
 	HeadCollections,
-	StyleClasses,
 	Heads,
-	PoseMeta,
 	NsfwAbleImg,
+	PoseMeta,
 	Style,
+	StyleClasses,
 } from './model';
 
 export interface Paths {

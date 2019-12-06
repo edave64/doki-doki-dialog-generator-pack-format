@@ -1,6 +1,5 @@
 import * as V1 from '../v1/model';
 import * as V2 from './model';
-import { Paths } from './parser';
 
 export function convert(
 	characterV1: V1.Character<V1.HeadCollections>,
