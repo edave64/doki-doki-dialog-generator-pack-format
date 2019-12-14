@@ -27,6 +27,44 @@ describe('Test converter base functionality', () => {
 	`);
 	});
 
+	it('Internal id chibi', () => {
+		const character = normalizeCharacter(
+			{
+				id: 'toast',
+				internalId: 'monika',
+			},
+			{
+				'/': 'cats/',
+			}
+		);
+		expect(character.chibi).toBe('cats/assets/chibis/monika');
+	});
+
+	it('Internal id chibi path fallback', () => {
+		const character = normalizeCharacter(
+			{
+				id: 'toast',
+				internalId: 'monika',
+			},
+			{}
+		);
+		expect(character.chibi).toBe('assets/chibis/monika');
+	});
+
+	it('Internal id chibi override', () => {
+		const character = normalizeCharacter(
+			{
+				id: 'toast',
+				internalId: 'monika',
+				chibi: 'override.png',
+			},
+			{
+				'/': 'cats/',
+			}
+		);
+		expect(character.chibi).toBe('cats/override.png');
+	});
+
 	it('Path resolution', () => {
 		const character = normalizeCharacter(
 			{
