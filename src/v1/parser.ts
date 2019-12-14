@@ -25,10 +25,11 @@ export function normalizeCharacter(
 ): Character<HeadCollections> {
 	const charFolder = joinNormalize('', character.folder || '/', paths);
 	let chibi: string | undefined = undefined;
-	if (character.chibi)
+	if (character.chibi) {
 		chibi = joinNormalize(charFolder, character.chibi, paths);
+	}
 	if (chibi === undefined && character.internalId) {
-		chibi = `assets/chibis/${character.internalId}`;
+		chibi = `${paths['/'] || ''}assets/chibis/${character.internalId}`;
 	}
 
 	return {
