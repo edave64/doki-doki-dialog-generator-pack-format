@@ -6,6 +6,7 @@
 		"sourceMap": false,
 		"declaration": true,
 		"allowSyntheticDefaultImports": true,
+		"downlevelIteration": true,
 		"baseUrl": ".",
 		"paths": {
 			"*": ["node_modules/"],
