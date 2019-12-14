@@ -117,17 +117,14 @@ function normalizePoses(
 		} as PoseMeta<HeadCollections>;
 
 		if ('static' in pose) {
-			console.log('s');
 			(ret as any).static = joinNormalize(poseFolder, pose.static, paths);
 		} else if ('variant' in pose) {
-			console.log('v');
 			(ret as any).variant = normalizeNsfwAbleCollection(
 				pose.variant,
 				poseFolder,
 				paths
 			);
 		} else if ('left' in pose) {
-			console.log('lr');
 			(ret as any).left = normalizeNsfwAbleCollection(
 				pose.left,
 				poseFolder,
