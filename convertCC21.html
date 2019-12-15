@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Convert old CC2.1 format to the CC2.2 format</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <script>
+      /**
+       * @param {InputEvent} event
+       */
+      function uploadCC(event) {
+        /** @type {HTMLInputElement} */
+        const uploadInput = event.target;
+        if (!uploadInput.files) return;
+        for (const file of uploadInput.files) {
+          const read = new FileReader();
+          read.readAsText(file);
+          read.onloadend = () => {
+            const newFile = convertCC21File(read.result);
+            var blob = new Blob([newFile], {
+              type: "text/plain;charset=utf-8"
+            });
+            if (window.navigator.msSaveOrOpenBlob !== undefined) {
+              window.navigator.msSaveOrOpenBlob(blob, file.name);
+            } else {
+              const a = document.createElement("a");
+              a.setAttribute("download", file.name);
+              const url = URL.createObjectURL(blob);
+              a.setAttribute("href", url);
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }
+          };
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <input type="file" onchange="uploadCC(event)" />
+  </body>
+</html>
