@@ -59,6 +59,7 @@ function convertCC21File(oldStr) {
     ) {
       do {
         parsed.splice(i, 1);
+        --i;
       } while (parsed[i][0] === "literal" && parsed[i][1].startsWith("#"));
     }
   }
