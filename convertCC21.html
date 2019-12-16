@@ -16,30 +16,49 @@
         const uploadInput = event.target;
         if (!uploadInput.files) return;
         for (const file of uploadInput.files) {
-          const read = new FileReader();
-          read.readAsText(file);
-          read.onloadend = () => {
-            const newFile = convertCC21File(read.result);
-            var blob = new Blob([newFile], {
-              type: "text/plain;charset=utf-8"
-            });
-            if (window.navigator.msSaveOrOpenBlob !== undefined) {
-              window.navigator.msSaveOrOpenBlob(blob, file.name);
-            } else {
-              const a = document.createElement("a");
-              a.setAttribute("download", file.name);
-              const url = URL.createObjectURL(blob);
-              a.setAttribute("href", url);
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-            }
-          };
+          convertFile(file);
         }
       }
+
+      function drop(event) {
+        event.preventDefault();
+        for (const item of event.dataTransfer.items) {
+          if (item.kind === "file") {
+            convertFile(item.getAsFile());
+          }
+        }
+      }
+
+      function convertFile(file) {
+        const read = new FileReader();
+        read.readAsText(file);
+        read.onloadend = () => {
+          const newFile = convertCC21File(read.result);
+          var blob = new Blob([newFile], {
+            type: "text/plain;charset=utf-8"
+          });
+          if (window.navigator.msSaveOrOpenBlob !== undefined) {
+            window.navigator.msSaveOrOpenBlob(blob, file.name);
+          } else {
+            const a = document.createElement("a");
+            a.setAttribute("download", file.name);
+            const url = URL.createObjectURL(blob);
+            a.setAttribute("href", url);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }
+        };
+      }
     </script>
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
   </head>
-  <body>
+  <body ondragover="return false" ondrop="drop(event)">
     <input type="file" onchange="uploadCC(event)" />
   </body>
 </html>

@@ -74,7 +74,7 @@ function convertCC21File(oldStr) {
     }
   }
 
-  return outfile;
+  return outfile.replace(/\n{2,}/g, "\n");
 }
 
 function newPose(onTop, pose, poseStyle) {
