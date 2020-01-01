@@ -8,6 +8,7 @@
 		"allowSyntheticDefaultImports": true,
 		"downlevelIteration": true,
 		"baseUrl": ".",
+		"lib": ["ES2015"],
 		"paths": {
 			"*": ["node_modules/"],
 			"typings/*": ["src/typings/*"]
