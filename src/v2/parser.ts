@@ -178,7 +178,8 @@ function normalizeStyles(json: JSONStyle[]): Style[] {
 	return json.map(
 		(jsonStyle): Style => ({
 			...jsonStyle,
-			styleGroup: jsonStyle.styleGroup || 'default',
+			components: jsonStyle.components || {},
+			styleGroup: jsonStyle.styleGroup || jsonStyle.name,
 		})
 	);
 }

@@ -84,7 +84,7 @@ export interface JSONStyle {
 	name: string;
 	label: string;
 	styleGroup?: string;
-	components: { [s: string]: string };
+	components?: { [s: string]: string };
 }
 
 export interface JSONStyleComponent {
