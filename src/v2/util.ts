@@ -52,10 +52,10 @@ export function normalizePath(
 	return str;
 }
 
-export async function assetWalker<A, B>(
+export function assetWalker<A, B>(
 	standartContentPack: ContentPack<A>,
 	callback: (old: A, type: 'image' | 'font') => B
-): Promise<ContentPack<B>> {
+): ContentPack<B> {
 	return {
 		packId: standartContentPack.packId,
 		packCredits: standartContentPack.packCredits,
