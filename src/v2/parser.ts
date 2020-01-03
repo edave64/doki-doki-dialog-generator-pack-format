@@ -9,6 +9,7 @@ import {
 	JSONSprite,
 	JSONStyleClasses,
 	JSONStyleComponent,
+	JSONStyle,
 } from './jsonFormat';
 import {
 	Background,
@@ -22,6 +23,7 @@ import {
 	Sprite,
 	StyleClasses,
 	StyleComponent,
+	Style,
 } from './model';
 
 export interface Paths {
@@ -145,6 +147,12 @@ function normalizeCharacter(
 	paths: Paths
 ): Character<string> {
 	const charFolder = joinNormalize(baseFolder, character.folder, paths);
+	const defaultStyle = {
+		components: {},
+		styleGroup: 'default',
+		label: 'Default',
+		name: 'default',
+	};
 	return {
 		id: character.id,
 		label: character.label,
@@ -157,17 +165,22 @@ function normalizeCharacter(
 			charFolder,
 			paths
 		),
-		styles: character.styles || [
-			{
-				components: {},
-				label: 'Default',
-				name: 'default',
-			},
-		],
+		styles: character.styles
+			? normalizeStyles(character.styles)
+			: [defaultStyle],
 		heads: normalizeHeads(character.heads, charFolder, paths),
 		poses: normalizePoses(character.poses, charFolder, paths),
 		size: character.size || [960, 960],
 	};
+}
+
+function normalizeStyles(json: JSONStyle[]): Style[] {
+	return json.map(
+		(jsonStyle): Style => ({
+			...jsonStyle,
+			styleGroup: jsonStyle.styleGroup || 'default',
+		})
+	);
 }
 
 function normalizeStyleComponent(

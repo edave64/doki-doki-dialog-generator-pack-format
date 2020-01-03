@@ -73,6 +73,7 @@ type Coordinates = [number, number];
 export interface Style {
 	name: string;
 	label: string;
+	styleGroup: string;
 	components: { [s: string]: string };
 }
 

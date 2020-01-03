@@ -61,6 +61,7 @@ function convertStyles(
 				return {
 					name: style.name,
 					label: style.label,
+					styleGroup: reducedName,
 					components,
 				};
 			}

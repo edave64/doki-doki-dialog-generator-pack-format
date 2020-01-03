@@ -83,6 +83,7 @@ type Coordinates = [number, number];
 export interface JSONStyle {
 	name: string;
 	label: string;
+	styleGroup?: string;
 	components: { [s: string]: string };
 }
 
