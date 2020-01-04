@@ -261,7 +261,7 @@ function normalizePoses(
 			style: pose.style,
 			offset: [0, 0],
 			size: [960, 960],
-			renderOrder: 'hlrvs',
+			renderOrder: pose.renderOrder || 'hlrvs',
 			static: pose.static
 				? normalizeCollection(pose.static, poseFolder, paths)
 				: [],

@@ -62,7 +62,7 @@ export interface JSONHeadCollections {
 
 export interface JSONPose {
 	name: string;
-	renderOrder: string;
+	renderOrder?: string;
 	compatibleHeads?: string[];
 	headInForeground?: boolean;
 	folder?: string;
