@@ -5,7 +5,13 @@ import {
 	Font,
 	PoemStyle,
 	Sprite,
+	HeadCollections,
+	HeadCollection,
+	Pose,
+	StyleComponent,
+	StyleClasses,
 } from './model';
+import { O_RDONLY } from 'constants';
 
 const maxReplacementTrips = 10;
 
@@ -83,9 +89,73 @@ function walkCharacter<A, B>(
 		size: character.size,
 		styles: character.styles,
 		chibi: callback(character.chibi, 'image'),
-		heads: null!,
-		poses: null!,
-		styleComponents: null!,
+		heads: walkHeads(character.heads, callback),
+		poses: character.poses.map(pose => walkPose(pose, callback)),
+		styleComponents: character.styleComponents.map(styleComponent =>
+			walkStyleComponents(styleComponent, callback)
+		),
+	};
+}
+
+function walkStyleComponents<A, B>(
+	component: StyleComponent<A>,
+	callback: (old: A, type: 'image') => B
+): StyleComponent<B> {
+	return {
+		...component,
+		variants: walkStyleClasses(component.variants, callback),
+	};
+}
+
+function walkStyleClasses<A, B>(
+	style: StyleClasses<A>,
+	callback: (old: A, type: 'image') => B
+): StyleClasses<B> {
+	const ret: StyleClasses<B> = {};
+	for (const styleKey in style) {
+		if (!style.hasOwnProperty(styleKey)) continue;
+		ret[styleKey] = callback(style[styleKey], 'image');
+	}
+	return ret;
+}
+
+function walkPose<A, B>(
+	pose: Pose<A>,
+	callback: (old: A, type: 'image') => B
+): Pose<B> {
+	return {
+		...pose,
+		static: pose.static.map(x => callback(x, 'image')),
+		variant: pose.variant.map(variant =>
+			variant.map(x => callback(x, 'image'))
+		),
+		left: pose.left.map(variant => variant.map(x => callback(x, 'image'))),
+		right: pose.right.map(variant => variant.map(x => callback(x, 'image'))),
+	};
+}
+
+function walkHeads<A, B>(
+	heads: HeadCollections<A>,
+	callback: (old: A, type: 'image') => B
+): HeadCollections<B> {
+	const newHeads: HeadCollections<B> = {};
+	for (const headKeys in heads) {
+		if (!heads.hasOwnProperty(headKeys)) continue;
+		newHeads[headKeys] = walkHeadCollection(heads[headKeys], callback);
+	}
+	return newHeads;
+}
+
+function walkHeadCollection<A, B>(
+	heads: HeadCollection<A>,
+	callback: (old: A, type: 'image') => B
+): HeadCollection<B> {
+	return {
+		offset: heads.offset,
+		size: heads.size,
+		variants: heads.variants.map(variant =>
+			variant.map(x => callback(x, 'image'))
+		),
 	};
 }
 
