@@ -226,7 +226,7 @@ function normalizeHeads(
 		let newHeadGroup: HeadCollection<string>;
 		if (headGroup instanceof Array) {
 			newHeadGroup = {
-				variants: headGroup,
+				variants: normalizeVariants(headGroup, baseFolder, paths),
 				offset: [290, 70],
 				size: [380, 380],
 			};
