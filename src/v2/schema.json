@@ -37,7 +37,7 @@
 			"pattern": "^(.*)$"
 		},
 		"folder": { "$ref": "#/definitions/folder" },
-		"character": {
+		"characters": {
 			"type": "array",
 			"required": ["id"],
 			"items": {
