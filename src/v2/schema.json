@@ -6,8 +6,31 @@
 			"type": "string",
 			"title": "The folder, in which all other paths in this file will be searched",
 			"default": "/",
-			"examples": ["./"],
-			"pattern": "^(.*)$"
+			"examples": ["./"]
+		},
+		"assetCollection": {
+			"type": "array",
+			"title": "A list of images that make up an asset",
+			"items": {
+				"type": "string",
+				"title": "An image"
+			}
+		},
+		"variantCollection": {
+			"type": "array",
+			"title": "A collection of assets that you can choose between",
+			"items": {
+				"$ref": "#/definitions/assetCollection"
+			}
+		},
+		"coordinates": {
+			"type": "array",
+			"title": "A position or size of an object",
+			"items": {
+				"type": "integer"
+			},
+			"minLength": 2,
+			"maxLength": 2
 		}
 	},
 	"type": "object",
@@ -49,7 +72,7 @@
 						"description": "This id needs to be unique for every character. If the name collides with an existing character, they will be merged",
 						"pattern": "^(.*)$"
 					},
-					"name": {
+					"label": {
 						"type": "string",
 						"title": "The name of the character",
 						"examples": [],
@@ -122,24 +145,23 @@
 								"title": "Headgroup",
 								"oneOf": [
 									{
-										"type": "array",
-										"items": {
-											"type": "string"
-										}
+										"$ref": "#/definitions/variantCollection"
 									},
 									{
 										"type": "object",
-										"additionalProperties": false,
-										"required": ["all"],
+										"required": ["variants"],
 										"properties": {
-											"all": {
-												"type": "array",
-												"items": {
-													"old$ref": "#/definitions/nsfwAbleImg"
-												}
-											},
 											"folder": {
-												"type": "string"
+												"$ref": "#/definitions/folder"
+											},
+											"variants": {
+												"$ref": "#/definitions/variantCollection"
+											},
+											"size": {
+												"$ref": "#/definitions/coordinates"
+											},
+											"offset": {
+												"$ref": "#/definitions/coordinates"
 											}
 										}
 									}
@@ -169,66 +191,35 @@
 									"pattern": "^(.*)$"
 								},
 								"compatibleHeads": {
-									"type": "array",
 									"title": "A list of compatible head groups",
+									"type": "array",
 									"items": {
 										"type": "string",
-										"title": "A head group",
-										"default": "",
-										"pattern": "^(.*)$"
+										"title": "A head group"
 									}
+								},
+								"left": {
+									"$ref": "#/definitions/variantCollection",
+									"title": "The images for the left side of the pose"
+								},
+								"right": {
+									"$ref": "#/definitions/variantCollection",
+									"title": "The images for the right side of the pose"
+								},
+								"variant": {
+									"$ref": "#/definitions/variantCollection",
+									"title": "The images for the pose"
+								},
+								"static": {
+									"$ref": "#/definitions/assetCollection",
+									"title": "The image of the pose"
 								}
 							},
-							"oneOf": [
-								{
-									"required": ["left", "right"],
-									"properties": {
-										"left": {
-											"type": "array",
-											"title": "The images for the left side of the pose",
-											"items": {
-												"old$ref": "#/definitions/nsfwAbleImg",
-												"default": "",
-												"examples": ["1l.png"],
-												"pattern": "^(.*)$"
-											}
-										},
-										"right": {
-											"type": "array",
-											"title": "The images for the right side of the pose",
-											"items": {
-												"old$ref": "#/definitions/nsfwAbleImg",
-												"default": "",
-												"examples": ["1r.png"],
-												"pattern": "^(.*)$"
-											}
-										}
-									}
-								},
-								{
-									"required": ["variant"],
-									"properties": {
-										"variant": {
-											"type": "array",
-											"title": "The images for the pose",
-											"items": {
-												"old$ref": "#/definitions/nsfwAbleImg",
-												"default": "",
-												"examples": ["3.png"],
-												"pattern": "^(.*)$"
-											}
-										}
-									}
-								},
-								{
-									"required": ["static"],
-									"properties": {
-										"static": {
-											"title": "The image of the pose",
-											"type": "string"
-										}
-									}
-								}
+							"anyOf": [
+								{ "required": ["left"] },
+								{ "required": ["right"] },
+								{ "required": ["variant"] },
+								{ "required": ["static"] }
 							]
 						},
 						"additionalProperties": false
