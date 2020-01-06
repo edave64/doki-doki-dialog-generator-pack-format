@@ -29,7 +29,7 @@ export function normalizeCharacter(
 		chibi = joinNormalize(charFolder, character.chibi, paths);
 	}
 	if (chibi === undefined && character.internalId) {
-		chibi = `${paths['/'] || ''}assets/chibis/${character.internalId}`;
+		chibi = `${paths['/'] || ''}chibis/${character.internalId}`;
 	}
 
 	return {
