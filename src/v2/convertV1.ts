@@ -30,7 +30,7 @@ function convertCharacter(
 		heads: convertHeads(characterV1.heads, nsfw),
 		poses: convertPoses(characterV1.poses, nsfw),
 		styles: convertStyles(characterV1.styles, styleComponents, nsfw),
-		label: characterV1.id,
+		label: characterV1.name,
 		size: [960, 960],
 		styleComponents,
 	};
