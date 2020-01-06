@@ -107,7 +107,7 @@ function convertHeads(
 
 	for (const key of Object.keys(headCollectionsV1)) {
 		const headCollectionV1 = headCollectionsV1[key];
-		if (headCollectionV1.nsfw && !nsfw) return;
+		if (headCollectionV1.nsfw && !nsfw) continue;
 		headCollectionsV2[key] = {
 			offset: headCollectionV1.offset,
 			size: headCollectionV1.size,
