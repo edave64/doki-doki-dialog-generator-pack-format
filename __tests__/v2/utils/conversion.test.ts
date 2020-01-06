@@ -75,7 +75,7 @@ describe('V2: V1 Conversion', () => {
 		        },
 		      },
 		      "id": "fisch",
-		      "label": "fisch",
+		      "label": "Fisch",
 		      "poses": Array [
 		        Object {
 		          "compatibleHeads": Array [

@@ -37,7 +37,7 @@ describe('Test converter base functionality', () => {
 				'/': 'cats/',
 			}
 		);
-		expect(character.chibi).toBe('cats/assets/chibis/monika');
+		expect(character.chibi).toBe('cats/chibis/monika');
 	});
 
 	it('Internal id chibi path fallback', () => {
@@ -48,7 +48,7 @@ describe('Test converter base functionality', () => {
 			},
 			{}
 		);
-		expect(character.chibi).toBe('assets/chibis/monika');
+		expect(character.chibi).toBe('chibis/monika');
 	});
 
 	it('Internal id chibi override', () => {
