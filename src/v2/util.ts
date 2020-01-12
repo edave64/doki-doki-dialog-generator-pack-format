@@ -88,7 +88,7 @@ function walkCharacter<A, B>(
 		label: character.label,
 		size: character.size,
 		styles: character.styles,
-		chibi: callback(character.chibi, 'image'),
+		chibi: character.chibi ? callback(character.chibi, 'image') : undefined,
 		heads: walkHeads(character.heads, callback),
 		poses: character.poses.map(pose => walkPose(pose, callback)),
 		styleComponents: character.styleComponents.map(styleComponent =>
