@@ -13,7 +13,7 @@ export interface JSONHeadCollections {
 }
 
 interface JSONPose<H> {
-	compatibleHeads: Array<keyof H>;
+	compatibleHeads?: Array<keyof H>;
 	headInForeground?: boolean;
 	folder?: string;
 	nsfw?: boolean;
