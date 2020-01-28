@@ -245,7 +245,7 @@ function normalizeHeads(
 }
 
 function normalizePoses(
-	poses: JSONPose[],
+	poses: JSONPose[] | undefined,
 	baseFolder: string,
 	paths: Paths
 ): Array<Pose<string>> {
@@ -254,7 +254,7 @@ function normalizePoses(
 	return poses.map(pose => {
 		const poseFolder = joinNormalize(baseFolder, pose.folder, paths);
 		const ret = {
-			compatibleHeads: pose.compatibleHeads,
+			compatibleHeads: pose.compatibleHeads || [],
 			headAnchor: pose.headAnchor || [0, 0],
 			headInForeground: !!pose.headInForeground,
 			name: pose.name,

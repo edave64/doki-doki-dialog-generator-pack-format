@@ -11,7 +11,6 @@ import {
 	StyleComponent,
 	StyleClasses,
 } from './model';
-import { O_RDONLY } from 'constants';
 
 const maxReplacementTrips = 10;
 

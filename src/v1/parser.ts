@@ -98,7 +98,7 @@ function normalizeHeads(
 }
 
 function normalizePoses(
-	poses: Array<JSONPoseMeta<JSONHeadCollections>>,
+	poses: Array<JSONPoseMeta<JSONHeadCollections>> | undefined,
 	baseFolder: string,
 	paths: Paths
 ): Array<PoseMeta<HeadCollections>> {

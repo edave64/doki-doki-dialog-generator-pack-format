@@ -33,9 +33,9 @@ export interface PoemStyle<T> {
 
 export interface Character<T> {
 	id: string;
-	label: string;
+	label?: string;
 	styleComponents: Array<StyleComponent<T>>;
-	chibi: T;
+	chibi?: T;
 	styles: Style[];
 	heads: HeadCollections<T>;
 	poses: Array<Pose<T>>;
