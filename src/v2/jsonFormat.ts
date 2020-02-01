@@ -18,6 +18,7 @@ export interface JSONFont {
 }
 
 export interface JSONBackground {
+	id: string;
 	label?: string;
 	folder?: string;
 	variants: SpriteColllection[];
