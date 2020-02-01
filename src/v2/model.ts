@@ -15,7 +15,8 @@ export interface Font<T> {
 }
 
 export interface Background<T> {
-	label: string;
+	id: string;
+	label?: string;
 	variants: Array<SpriteColllection<T>>;
 }
 

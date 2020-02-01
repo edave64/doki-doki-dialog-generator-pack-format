@@ -126,6 +126,7 @@ export function normalizeBackground(
 ): Background<string> {
 	const backgroundFolder = joinNormalize(baseFolder, background.folder, paths);
 	return {
+		id: background.id,
 		label: background.label ? background.label : background.variants[0][0],
 		variants: background.variants.map(collection =>
 			normalizFileCollection(collection, backgroundFolder, paths)
