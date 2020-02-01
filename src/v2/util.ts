@@ -163,6 +163,7 @@ function walkBackground<A, B>(
 	callback: (old: A, type: 'image') => B
 ): Background<B> {
 	return {
+		id: background.id,
 		label: background.label,
 		variants: background.variants.map(variant =>
 			variant.map(x => callback(x, 'image'))
