@@ -238,7 +238,7 @@
 						"type": "string",
 						"title": "The background id",
 						"default": "",
-						"pattern": "^[_-\\w]+$"
+						"pattern": "^[_-\\w\\.]+$"
 					},
 					"label": {
 						"type": "string",
