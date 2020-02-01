@@ -62,9 +62,9 @@
 		"folder": { "$ref": "#/definitions/folder" },
 		"characters": {
 			"type": "array",
-			"required": ["id"],
 			"items": {
 				"type": "object",
+				"required": ["id"],
 				"properties": {
 					"id": {
 						"type": "string",
@@ -226,6 +226,33 @@
 					}
 				},
 				"additionalProperties": false
+			}
+		},
+		"backgrounds": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["id", "variants"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"title": "The background id",
+						"default": "",
+						"pattern": "^[_-\\w]+$"
+					},
+					"label": {
+						"type": "string",
+						"title": "The label of the background"
+					},
+					"folder": {
+						"type": "string",
+						"title": "The folder of all assets for the background"
+					},
+					"variants": {
+						"$ref": "#/definitions/variantCollection",
+						"title": "All variants of the background"
+					}
+				}
 			}
 		}
 	}
