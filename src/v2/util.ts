@@ -75,6 +75,7 @@ export function assetWalker<A, B>(
 			walkPoemStyle(x, callback)
 		),
 		sprites: standartContentPack.sprites.map(x => walkSprite(x, callback)),
+		colors: standartContentPack.colors,
 	};
 }
 

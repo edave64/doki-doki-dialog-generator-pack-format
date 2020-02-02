@@ -139,6 +139,7 @@ describe('V2: V1 Conversion', () => {
 		      ],
 		    },
 		  ],
+		  "colors": Array [],
 		  "fonts": Array [],
 		  "packCredits": "",
 		  "packId": "test.pack",
