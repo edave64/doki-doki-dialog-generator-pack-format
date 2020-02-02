@@ -6,6 +6,7 @@ export interface ContentPack<T = string> {
 	backgrounds: Array<Background<T>>;
 	sprites: Array<Sprite<T>>;
 	poemStyles: Array<PoemStyle<T>>;
+	colors: Color[];
 }
 
 export interface Font<T> {
@@ -86,4 +87,9 @@ export interface StyleComponent<T> {
 
 export interface StyleClasses<T> {
 	[name: string]: T;
+}
+
+export interface Color {
+	label: string;
+	color: string;
 }

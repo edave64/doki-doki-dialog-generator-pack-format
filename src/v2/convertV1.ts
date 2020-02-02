@@ -15,6 +15,7 @@ export function convert(
 		poemStyles: [],
 		sprites: [],
 		characters: [convertCharacter(characterV1, nsfw)],
+		colors: [],
 	};
 }
 

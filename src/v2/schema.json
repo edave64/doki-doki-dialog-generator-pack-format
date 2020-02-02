@@ -254,6 +254,23 @@
 					}
 				}
 			}
+		},
+		"colors": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["color"],
+				"properties": {
+					"label": {
+						"type": "string",
+						"title": "The label of the color"
+					},
+					"color": {
+						"type": "string",
+						"title": "The hex rgba code of the color"
+					}
+				}
+			}
 		}
 	}
 }

@@ -10,6 +10,7 @@ import {
 	JSONStyleClasses,
 	JSONStyleComponent,
 	JSONStyle,
+	JSONColor,
 } from './jsonFormat';
 import {
 	Background,
@@ -24,6 +25,7 @@ import {
 	StyleClasses,
 	StyleComponent,
 	Style,
+	Color,
 } from './model';
 
 export interface Paths {
@@ -63,6 +65,7 @@ export function normalizeContentPack(
 			packFolder,
 			paths
 		),
+		colors: mapNormalize(normalizeColor, contentPack.colors, packFolder, paths),
 	};
 }
 
@@ -131,6 +134,13 @@ export function normalizeBackground(
 		variants: background.variants.map(collection =>
 			normalizFileCollection(collection, backgroundFolder, paths)
 		),
+	};
+}
+
+export function normalizeColor(color: JSONColor): Color {
+	return {
+		label: color.label || color.color,
+		color: color.color,
 	};
 }
 

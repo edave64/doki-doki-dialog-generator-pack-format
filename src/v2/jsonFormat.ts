@@ -8,6 +8,7 @@ export interface JSONContentPack {
 	backgrounds?: JSONBackground[];
 	sprites?: JSONSprite[];
 	poemStyles?: JSONPoemStyle[];
+	colors?: JSONColor[];
 }
 
 export interface JSONFont {
@@ -96,4 +97,9 @@ export interface JSONStyleComponent {
 
 export interface JSONStyleClasses {
 	[name: string]: string;
+}
+
+export interface JSONColor {
+	label?: string;
+	color: string;
 }
