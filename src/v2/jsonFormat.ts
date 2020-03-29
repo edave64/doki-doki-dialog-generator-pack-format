@@ -1,20 +1,22 @@
 export interface JSONContentPack {
 	version: '2.0';
-	packId?: string;
-	packCredits?: string;
+	packId: string;
+	packCredits?: Array<[string, string] | string>;
+	dependencies?: [];
 	folder?: string;
 	characters?: JSONCharacter[];
 	fonts?: JSONFont[];
 	backgrounds?: JSONBackground[];
 	sprites?: JSONSprite[];
 	poemStyles?: JSONPoemStyle[];
+	poemBackgrounds?: JSONPoemBackground[];
 	colors?: JSONColor[];
 }
 
 export interface JSONFont {
+	id: string;
 	label?: string;
 	folder?: string;
-	id?: string;
 	files: string[];
 }
 
@@ -26,72 +28,105 @@ export interface JSONBackground {
 }
 
 export interface JSONSprite {
+	id: string;
 	label?: string;
 	folder?: string;
 	variants: SpriteColllection[];
 }
 
 export interface JSONPoemStyle {
-	label?: string;
-	folder?: string;
-	size?: Coordinates;
+	label: string;
 	defaultFont?: string;
-	variants: SpriteColllection[];
+	fontSize?: number;
+	lineSpacing?: number;
+	letterSpacing?: number;
+}
+
+export interface JSONPoemBackground {
+	label: string;
+	folder?: string;
+	images: SpriteColllection;
+	fontColor?: string;
 }
 
 export interface JSONCharacter {
 	id: string;
 	label?: string;
 	folder?: string;
-	styleComponents?: JSONStyleComponent[];
 	chibi?: string;
-	styles?: JSONStyle[];
 	heads?: JSONHeadCollections;
-	poses?: JSONPose[];
-	size?: Coordinates;
+	styleGroups?: JSONStyleGroup[];
 }
 
 export interface JSONHeadCollection {
 	folder?: string;
 	variants: SpriteColllection[];
-	size?: Coordinates;
-	offset?: Coordinates;
+	previewSize?: Coordinates;
+	previewOffset?: Coordinates;
 }
 
 export interface JSONHeadCollections {
 	[id: string]: JSONHeadCollection | SpriteColllection[];
 }
 
-export interface JSONPose {
-	name: string;
-	renderOrder?: string;
-	compatibleHeads?: string[];
-	headInForeground?: boolean;
+export interface JSONStyleGroup {
+	id: string;
 	folder?: string;
-	style: string;
-	headAnchor?: Coordinates;
+	styleComponents?: JSONStyleComponent[];
+	styles: JSONStyle[];
+}
+
+export interface JSONStyle {
+	components?: { [s: string]: string };
+	folder?: string;
+	poses: JSONPose[];
+}
+
+export interface JSONPose {
+	id: string;
+	renderCommands?: JSONPoseCommand[];
+	compatibleHeads?: string[];
+	folder?: string;
 	size?: Coordinates;
+	scale?: number;
+	previewSize?: Coordinates;
+	previewOffset?: Coordinates;
+	positions?: {
+		[position: string]: SpriteColllection[];
+	};
+}
+
+export type JSONPoseCommand =
+	| IStaticImageCommand
+	| IPosePartCommand
+	| IHeadCommand;
+
+export interface IPoseCommand {
 	offset?: Coordinates;
-	static?: SpriteColllection;
-	variant?: SpriteColllection[];
-	left?: SpriteColllection[];
-	right?: SpriteColllection[];
+}
+
+export interface IStaticImageCommand extends IPoseCommand {
+	type: 'image';
+	folder?: string;
+	images: SpriteColllection;
+}
+
+export interface IPosePartCommand extends IPoseCommand {
+	type: 'pose-part';
+	part: string;
+}
+
+export interface IHeadCommand extends IPoseCommand {
+	type: 'head';
 }
 
 type SpriteColllection = string[];
 
 type Coordinates = [number, number];
 
-export interface JSONStyle {
-	name: string;
-	label: string;
-	styleGroup?: string;
-	components?: { [s: string]: string };
-}
-
 export interface JSONStyleComponent {
+	id: string;
 	label: string;
-	name: string;
 	variants: JSONStyleClasses;
 }
 

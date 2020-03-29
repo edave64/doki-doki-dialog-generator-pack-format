@@ -35,7 +35,7 @@
 	},
 	"type": "object",
 	"title": "The Root Schema",
-	"required": ["$schema"],
+	"required": ["$schema", "version", "packId"],
 	"additionalProperties": false,
 	"properties": {
 		"version": {
@@ -78,64 +78,11 @@
 						"examples": [],
 						"pattern": "^(.*)$"
 					},
+					"folder": { "$ref": "#/definitions/folder" },
 					"chibi": {
 						"type": "string",
 						"title": "The path to the chibi file",
 						"pattern": "^(.*)$"
-					},
-					"styleComponents": {
-						"type": "array",
-						"items": {
-							"label": { "type": "string" },
-							"name": { "type": "string" },
-							"variants": {
-								"type": "object",
-								"patternProperties": {
-									".*": {
-										"type": "string"
-									}
-								},
-								"additionalProperties": false
-							},
-							"additionalProperties": false
-						}
-					},
-					"styles": {
-						"type": "array",
-						"title": "A list of styles",
-						"items": {
-							"type": "object",
-							"title": "A style",
-							"required": ["name", "label"],
-							"properties": {
-								"name": {
-									"type": "string",
-									"title": "The name of the style. Of an eye type and/or hair type is included, separated by a minus",
-									"default": "",
-									"examples": [],
-									"pattern": "^(.*)$"
-								},
-								"label": {
-									"type": "string",
-									"title": "The display name of the style",
-									"default": "",
-									"examples": [],
-									"pattern": "^(.*)$"
-								},
-								"styleGroup": {
-									"type": "string"
-								},
-								"components": {
-									"type": "object",
-									"patternProperties": {
-										".*": {
-											"type": "string"
-										}
-									},
-									"additionalProperties": false
-								}
-							}
-						}
 					},
 					"heads": {
 						"type": "object",
@@ -157,10 +104,10 @@
 											"variants": {
 												"$ref": "#/definitions/variantCollection"
 											},
-											"size": {
+											"previewSize": {
 												"$ref": "#/definitions/coordinates"
 											},
-											"offset": {
+											"previewOffset": {
 												"$ref": "#/definitions/coordinates"
 											}
 										}
@@ -170,59 +117,115 @@
 						},
 						"additionalProperties": false
 					},
-					"poses": {
+					"styleGroups": {
 						"type": "array",
-						"title": "Poses",
 						"items": {
-							"type": "object",
-							"title": "A pose",
-							"required": ["name", "style", "compatibleHeads"],
+							"required": ["id", "styleComponents"],
 							"properties": {
-								"name": {
-									"type": "string",
-									"title": "The name of a pose. If a content pack includes a pose with the same name as an existing one, the get merged together",
-									"default": "",
-									"pattern": "^(.*)$"
-								},
-								"style": {
-									"type": "string",
-									"title": "The name of a style",
-									"default": "",
-									"pattern": "^(.*)$"
-								},
-								"compatibleHeads": {
-									"title": "A list of compatible head groups",
+								"id": { "type": "string" },
+								"folder": { "$ref": "#/definitions/folder" },
+								"styleComponents": {
 									"type": "array",
 									"items": {
-										"type": "string",
-										"title": "A head group"
+										"type": "object",
+										"required": ["id"],
+										"properties": {
+											"label": { "type": "string" },
+											"id": { "type": "string" },
+											"variants": {
+												"type": "object",
+												"patternProperties": {
+													".*": {
+														"type": "string"
+													}
+												},
+												"additionalProperties": false
+											}
+										},
+										"additionalProperties": false
 									}
 								},
-								"left": {
-									"$ref": "#/definitions/variantCollection",
-									"title": "The images for the left side of the pose"
-								},
-								"right": {
-									"$ref": "#/definitions/variantCollection",
-									"title": "The images for the right side of the pose"
-								},
-								"variant": {
-									"$ref": "#/definitions/variantCollection",
-									"title": "The images for the pose"
-								},
-								"static": {
-									"$ref": "#/definitions/assetCollection",
-									"title": "The image of the pose"
+								"styles": {
+									"type": "array",
+									"title": "A list of styles",
+									"items": {
+										"type": "object",
+										"title": "A style",
+										"required": ["id", "label"],
+										"properties": {
+											"id": {
+												"type": "string",
+												"title": "The name of the style. Of an eye type and/or hair type is included, separated by a minus",
+												"default": "",
+												"examples": [],
+												"pattern": "^(.*)$"
+											},
+											"label": {
+												"type": "string",
+												"title": "The display name of the style",
+												"default": "",
+												"examples": [],
+												"pattern": "^(.*)$"
+											},
+											"components": {
+												"type": "object",
+												"patternProperties": {
+													".*": {
+														"type": "string"
+													}
+												},
+												"additionalProperties": false
+											},
+											"poses": {
+												"type": "array",
+												"title": "Poses",
+												"items": {
+													"type": "object",
+													"title": "A pose",
+													"required": ["id", "compatibleHeads"],
+													"properties": {
+														"id": {
+															"type": "string",
+															"title": "The name of a pose. If a content pack includes a pose with the same name as an existing one, the get merged together",
+															"default": "",
+															"pattern": "^(.*)$"
+														},
+														"compatibleHeads": {
+															"title": "A list of compatible head groups",
+															"type": "array",
+															"items": {
+																"type": "string",
+																"title": "A head group"
+															}
+														},
+														"previewSize": {
+															"$ref": "#/definitions/coordinates"
+														},
+														"previewOffset": {
+															"$ref": "#/definitions/coordinates"
+														},
+														"size": {
+															"$ref": "#/definitions/coordinates"
+														},
+														"positions": {
+															"type": "object",
+															"patternProperties": {
+																".*": {
+																	"$ref": "#/definitions/variantCollection"
+																}
+															}
+														}
+													},
+													"additionalProperties": false
+												}
+											}
+										},
+										"additionalProperties": false
+									}
 								}
 							},
-							"anyOf": [
-								{ "required": ["left"] },
-								{ "required": ["right"] },
-								{ "required": ["variant"] },
-								{ "required": ["static"] }
-							]
-						},
-						"additionalProperties": false
+							"additionalProperties": false
+						}
 					}
 				},
 				"additionalProperties": false
@@ -244,15 +247,92 @@
 						"type": "string",
 						"title": "The label of the background"
 					},
-					"folder": {
-						"type": "string",
-						"title": "The folder of all assets for the background"
-					},
+					"folder": { "$ref": "#/definitions/folder" },
 					"variants": {
 						"$ref": "#/definitions/variantCollection",
 						"title": "All variants of the background"
 					}
-				}
+				},
+				"additionalProperties": false
+			}
+		},
+		"sprite": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["id", "variants"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"title": "The sprite id",
+						"default": "",
+						"pattern": "^[_-\\w\\.]+$"
+					},
+					"label": {
+						"type": "string",
+						"title": "The label of the sprite"
+					},
+					"folder": { "$ref": "#/definitions/folder" },
+					"variants": {
+						"$ref": "#/definitions/variantCollection",
+						"title": "All variants of the sprite"
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"poemStyles": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["label"],
+				"properties": {
+					"label": {
+						"type": "string",
+						"title": "The label of the sprite"
+					},
+					"defaultFont": {
+						"type": "string",
+						"title": "The font",
+						"default": "aller"
+					},
+					"fontSize": {
+						"type": "number",
+						"title": "The font size"
+					},
+					"lineSpacing": {
+						"type": "number",
+						"title": "The spacing between lines (As a multiplier of the font size)"
+					},
+					"letterSpacing": {
+						"type": "number",
+						"title": "The spacing between letters"
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"poemBackgrounds": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["label", "images"],
+				"properties": {
+					"label": {
+						"type": "string",
+						"title": "The label of the sprite"
+					},
+					"folder": { "$ref": "#/definitions/folder" },
+					"images": {
+						"$ref": "#/definitions/assetCollection",
+						"title": "All images of the poem"
+					},
+					"fontColor": {
+						"type": "string",
+						"title": "The font color on this poem background"
+					}
+				},
+				"additionalProperties": false
 			}
 		},
 		"colors": {
@@ -269,7 +349,33 @@
 						"type": "string",
 						"title": "The hex rgba code of the color"
 					}
-				}
+				},
+				"additionalProperties": false
+			}
+		},
+		"fonts": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["id", "variants"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"title": "The font id",
+						"default": "",
+						"pattern": "^[_-\\w\\.]+$"
+					},
+					"label": {
+						"type": "string",
+						"title": "The label of the font"
+					},
+					"folder": { "$ref": "#/definitions/folder" },
+					"files": {
+						"$ref": "#/definitions/assetCollection",
+						"title": "All font files"
+					}
+				},
+				"additionalProperties": false
 			}
 		}
 	}

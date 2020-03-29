@@ -11,6 +11,9 @@ import {
 	JSONStyleComponent,
 	JSONStyle,
 	JSONColor,
+	JSONPoemBackground,
+	JSONStyleGroup,
+	JSONPoseCommand,
 } from './jsonFormat';
 import {
 	Background,
@@ -26,113 +29,144 @@ import {
 	StyleComponent,
 	Style,
 	Color,
+	PoemBackground,
+	StyleGroup,
+	PoseRenderCommand,
 } from './model';
+import { mapObject } from './util';
 
 export interface Paths {
 	[prefix: string]: string;
+}
+
+export interface IContext {
+	paths: Paths;
+	packId: string;
 }
 
 export function normalizeContentPack(
 	contentPack: JSONContentPack,
 	paths: Paths
 ): ContentPack {
-	const packFolder = joinNormalize('', contentPack.folder || '/', paths);
+	const ctx: IContext = {
+		paths,
+		packId: contentPack.packId,
+	};
+	const packFolder = joinNormalize('', contentPack.folder || '/', ctx);
 	return {
 		packId: contentPack.packId,
 		packCredits: contentPack.packCredits,
+		dependencies: contentPack.dependencies || [],
 		characters: mapNormalize(
 			normalizeCharacter,
 			contentPack.characters,
 			packFolder,
-			paths
+			ctx
 		),
 		backgrounds: mapNormalize(
 			normalizeBackground,
 			contentPack.backgrounds,
 			packFolder,
-			paths
+			ctx
 		),
-		fonts: mapNormalize(normalizeFont, contentPack.fonts, packFolder, paths),
+		fonts: mapNormalize(normalizeFont, contentPack.fonts, packFolder, ctx),
 		poemStyles: mapNormalize(
 			normalizePoemStyles,
 			contentPack.poemStyles,
 			packFolder,
-			paths
+			ctx
+		),
+		poemBackgrounds: mapNormalize(
+			normalizePoemBackground,
+			contentPack.poemBackgrounds,
+			packFolder,
+			ctx
 		),
 		sprites: mapNormalize(
 			normalizeSprite,
 			contentPack.sprites,
 			packFolder,
-			paths
+			ctx
 		),
-		colors: mapNormalize(normalizeColor, contentPack.colors, packFolder, paths),
+		colors: mapNormalize(normalizeColor, contentPack.colors, packFolder, ctx),
 	};
 }
 
 function mapNormalize<A, B>(
-	callback: (obj: A, folder: string, paths: Paths) => B,
+	callback: (obj: A, folder: string, ctx: IContext) => B,
 	collection: A[] | undefined,
 	folder: string,
-	paths: Paths
+	ctx: IContext
 ): B[] {
 	if (!collection) return [];
-	return collection.map(element => callback(element, folder, paths));
+	return collection.map(element => callback(element, folder, ctx));
 }
 
 export function normalizeSprite(
 	sprite: JSONSprite,
 	baseFolder: string,
-	paths: Paths
+	ctx: IContext
 ): Sprite<string> {
-	const spriteFolder = joinNormalize(baseFolder, sprite.folder, paths);
+	const spriteFolder = joinNormalize(baseFolder, sprite.folder, ctx);
 	return {
+		id: expandId(ctx.packId, sprite.id),
 		label: sprite.label || sprite.variants[0][0],
 		variants: sprite.variants.map(variant =>
-			normalizFileCollection(variant, spriteFolder, paths)
+			normalizFileCollection(variant, spriteFolder, ctx)
 		),
 	};
 }
 
-export function normalizePoemStyles(
-	poem: JSONPoemStyle,
-	baseFolder: string,
-	paths: Paths
-): PoemStyle<string> {
-	const poemFolder = joinNormalize(baseFolder, poem.folder, paths);
+export function normalizePoemStyles(poem: JSONPoemStyle): PoemStyle {
 	return {
+		label: poem.label,
 		defaultFont: poem.defaultFont || 'Aller',
-		label: poem.label || poem.variants[0][0],
-		size: poem.size || [800, 720],
-		variants: poem.variants.map(variant =>
-			normalizFileCollection(variant, poemFolder, paths)
-		),
+		fontSize: poem.fontSize !== undefined ? poem.fontSize : 30,
+		letterSpacing: poem.letterSpacing !== undefined ? poem.letterSpacing : 1,
+		lineSpacing: poem.lineSpacing !== undefined ? poem.lineSpacing : 1.2,
+	};
+}
+
+export function normalizePoemBackground(
+	poem: JSONPoemBackground,
+	baseFolder: string,
+	ctx: IContext
+): PoemBackground<string> {
+	const fontsFolder = joinNormalize(baseFolder, poem.folder, ctx);
+	return {
+		label: poem.label,
+		images: normalizFileCollection(poem.images, fontsFolder, ctx),
+		fontColor: poem.fontColor || 'black',
 	};
 }
 
 export function normalizeFont(
 	font: JSONFont,
 	baseFolder: string,
-	paths: Paths
+	ctx: IContext
 ): Font<string> {
-	const fontsFolder = joinNormalize(baseFolder, font.folder, paths);
+	const fontsFolder = joinNormalize(baseFolder, font.folder, ctx);
 	return {
-		id: font.id ? font.id : font.label ? font.label : font.files[0],
+		id: expandId(
+			ctx.packId,
+			font.id ? font.id : font.label ? font.label : font.files[0]
+		),
 		label: font.label ? font.label : font.id ? font.id : font.files[0],
-		files: normalizFileCollection(font.files, fontsFolder, paths),
+		files: normalizFileCollection(font.files, fontsFolder, ctx),
 	};
 }
 
 export function normalizeBackground(
 	background: JSONBackground,
 	baseFolder: string,
-	paths: Paths
+	ctx: IContext
 ): Background<string> {
-	const backgroundFolder = joinNormalize(baseFolder, background.folder, paths);
+	const backgroundFolder = joinNormalize(baseFolder, background.folder, ctx);
 	return {
-		id: background.id,
+		id: expandId(ctx.packId, background.id),
 		label: background.label ? background.label : background.variants[0][0],
 		variants: background.variants.map(collection =>
-			normalizFileCollection(collection, backgroundFolder, paths)
+			normalizFileCollection(collection, backgroundFolder, ctx)
 		),
 	};
 }
@@ -147,17 +181,17 @@ export function normalizeColor(color: JSONColor): Color {
 function normalizFileCollection(
 	collection: string[],
 	baseFolder: string,
-	paths: Paths
+	ctx: IContext
 ) {
-	return collection.map(sprite => joinNormalize(baseFolder, sprite, paths));
+	return collection.map(sprite => joinNormalize(baseFolder, sprite, ctx));
 }
 
 function normalizeCharacter(
 	character: JSONCharacter,
 	baseFolder: string,
-	paths: Paths
+	ctx: IContext
 ): Character<string> {
-	const charFolder = joinNormalize(baseFolder, character.folder, paths);
+	const charFolder = joinNormalize(baseFolder, character.folder, ctx);
 	const defaultStyle = {
 		components: {},
 		styleGroup: 'default',
@@ -165,59 +199,73 @@ function normalizeCharacter(
 		name: 'default',
 	};
 	return {
-		id: character.id,
+		id: expandId(ctx.packId, character.id),
 		label: character.label,
 		chibi: character.chibi
-			? joinNormalize(charFolder, character.chibi, paths)
+			? joinNormalize(charFolder, character.chibi, ctx)
 			: undefined,
-		styleComponents: mapNormalize(
-			normalizeStyleComponent,
-			character.styleComponents,
+		heads: normalizeHeads(character.heads, charFolder, ctx),
+		styleGroups: mapNormalize(
+			normalizeStyleGroup,
+			character.styleGroups,
 			charFolder,
-			paths
+			ctx
 		),
-		styles: character.styles
-			? normalizeStyles(character.styles)
-			: [defaultStyle],
-		heads: normalizeHeads(character.heads, charFolder, paths),
-		poses: normalizePoses(character.poses, charFolder, paths),
-		size: character.size || [960, 960],
 	};
 }
 
-function normalizeStyles(json: JSONStyle[]): Style[] {
-	return json.map(
-		(jsonStyle): Style => ({
-			...jsonStyle,
-			components: jsonStyle.components || {},
-			styleGroup: jsonStyle.styleGroup || jsonStyle.name,
-		})
-	);
+function normalizeStyleGroup(
+	json: JSONStyleGroup,
+	baseFolder: string,
+	ctx: IContext
+): StyleGroup<string> {
+	const groupFolder = joinNormalize(baseFolder, json.folder, ctx);
+	return {
+		id: expandId(ctx.packId, json.id),
+		styleComponents: json.styleComponents || [],
+		styles: json.styles.map(x => normalizeStyle(x, groupFolder, ctx)),
+	};
+}
+
+function normalizeStyle(
+	json: JSONStyle,
+	baseFolder: string,
+	ctx: IContext
+): Style<string> {
+	const styleFolder = joinNormalize(baseFolder, json.folder, ctx);
+	return {
+		components: json.components || {},
+		poses: json.poses.map(pose => normalizePose(pose, styleFolder, ctx)),
+	};
 }
 
 function normalizeStyleComponent(
 	styleComponent: JSONStyleComponent,
 	baseFolder: string,
-	paths: Paths
+	ctx: IContext
 ): StyleComponent<string> {
 	return {
-		name: styleComponent.name,
+		id: expandId(ctx.packId, styleComponent.id),
 		label: styleComponent.label,
-		variants: normalizeParts(styleComponent.variants, baseFolder, paths),
+		variants: normalizeParts(styleComponent.variants, baseFolder, ctx),
 	};
 }
 
 function normalizeParts(
 	styleClasses: JSONStyleClasses,
 	baseFolder: string,
-	paths: Paths
+	ctx: IContext
 ): StyleClasses<string> {
 	if (!styleClasses) return {};
 	const ret: StyleClasses<string> = {};
 	for (const styleKey in styleClasses) {
 		/* istanbul ignore next */
 		if (!styleClasses.hasOwnProperty(styleKey)) continue;
-		ret[styleKey] = joinNormalize(baseFolder, styleClasses[styleKey], paths);
+		ret[expandId(ctx.packId, styleKey)] = joinNormalize(
+			baseFolder,
+			styleClasses[styleKey],
+			ctx
+		);
 	}
 	return ret;
 }
@@ -225,7 +273,7 @@ function normalizeParts(
 function normalizeHeads(
 	heads: JSONHeadCollections | undefined,
 	baseFolder: string,
-	paths: Paths
+	ctx: IContext
 ): HeadCollections<string> {
 	const ret: HeadCollections<string> = {};
 	if (!heads) return ret;
@@ -237,72 +285,88 @@ function normalizeHeads(
 		let newHeadGroup: HeadCollection<string>;
 		if (headGroup instanceof Array) {
 			newHeadGroup = {
-				variants: normalizeVariants(headGroup, baseFolder, paths),
-				offset: [290, 70],
-				size: [380, 380],
+				variants: normalizeVariants(headGroup, baseFolder, ctx),
+				previewOffset: [290, 70],
+				previewSize: [380, 380],
 			};
 		} else {
-			const subFolder = joinNormalize(baseFolder, headGroup.folder, paths);
+			const subFolder = joinNormalize(baseFolder, headGroup.folder, ctx);
 			newHeadGroup = {
-				variants: normalizeVariants(headGroup.variants, subFolder, paths),
-				offset: headGroup.offset || [290, 70],
-				size: headGroup.size || [380, 380],
+				variants: normalizeVariants(headGroup.variants, subFolder, ctx),
+				previewOffset: headGroup.previewOffset || [290, 70],
+				previewSize: headGroup.previewSize || [380, 380],
 			};
 		}
-		ret[headGroupKey] = newHeadGroup;
+		ret[expandId(ctx.packId, headGroupKey)] = newHeadGroup;
 	}
 
 	return ret;
 }
 
-function normalizePoses(
-	poses: JSONPose[] | undefined,
+function normalizePose(
+	pose: JSONPose,
 	baseFolder: string,
-	paths: Paths
-): Array<Pose<string>> {
-	if (!poses) return [];
+	ctx: IContext
+): Pose<string> {
+	const poseFolder = joinNormalize(baseFolder, pose.folder, ctx);
+	return {
+		compatibleHeads: pose.compatibleHeads || [],
+		id: expandId(ctx.packId, pose.id),
+		previewOffset: pose.previewOffset || [0, 0],
+		previewSize: pose.previewSize || [960, 960],
+		size: pose.size || [960, 960],
+		scale: pose.scale || 0.8,
+		positions: mapObject(pose.positions || {}, posePart =>
+			normalizeVariants(posePart, poseFolder, ctx)
+		),
+		renderCommands: pose.renderCommands?.map(command =>
+			normalizePoseCommand(command, baseFolder, ctx)
+		) || [
+			{ type: 'head', offset: [0, 0] },
+			{ type: 'pose-part', part: 'Left', offset: [0, 0] },
+			{ type: 'pose-part', part: 'Right', offset: [0, 0] },
+			{ type: 'pose-part', part: 'Variant', offset: [0, 0] },
+			{ type: 'pose-part', part: 'Static', offset: [0, 0] },
+		],
+	};
+}
 
-	return poses.map(pose => {
-		const poseFolder = joinNormalize(baseFolder, pose.folder, paths);
-		const ret = {
-			compatibleHeads: pose.compatibleHeads || [],
-			headAnchor: pose.headAnchor || [0, 0],
-			headInForeground: !!pose.headInForeground,
-			name: pose.name,
-			style: pose.style,
-			offset: [0, 0],
-			size: [960, 960],
-			renderOrder: pose.renderOrder || 'hlrvs',
-			static: pose.static
-				? normalizeCollection(pose.static, poseFolder, paths)
-				: [],
-			left: pose.left ? normalizeVariants(pose.left, poseFolder, paths) : [],
-			right: pose.right ? normalizeVariants(pose.right, poseFolder, paths) : [],
-			variant: pose.variant
-				? normalizeVariants(pose.variant, poseFolder, paths)
-				: [],
-		} as Pose<string>;
-
-		return ret;
-	});
+function normalizePoseCommand(
+	poseCommand: JSONPoseCommand,
+	folder: string,
+	ctx: IContext
+): PoseRenderCommand<string> {
+	if (poseCommand.type === 'image') {
+		const commandFolder = joinNormalize(folder, poseCommand.folder, ctx);
+		return {
+			type: 'image',
+			offset: poseCommand.offset || [0, 0],
+			images: normalizeCollection(poseCommand.images, commandFolder, ctx),
+		};
+	} else {
+		return {
+			...poseCommand,
+			offset: poseCommand.offset || [0, 0],
+		};
+	}
 }
 
 function normalizeVariants(
 	variants: string[][],
 	folder: string,
-	paths: Paths
+	ctx: IContext
 ): string[][] {
 	return variants.map((collection): string[] =>
-		normalizeCollection(collection, folder, paths)
+		normalizeCollection(collection, folder, ctx)
 	);
 }
 
 function normalizeCollection(
 	collection: string[],
 	folder: string,
-	paths: Paths
+	ctx: IContext
 ): string[] {
-	return collection.map((img): string => joinNormalize(folder, img, paths));
+	return collection.map((img): string => joinNormalize(folder, img, ctx));
 }
 
 function isWebUrl(path: string): boolean {
@@ -317,15 +381,20 @@ function isWebUrl(path: string): boolean {
 function joinNormalize(
 	base: string,
 	sub: string | undefined,
-	paths: Paths
+	ctx: IContext
 ): string {
 	if (!sub) return base;
 
-	for (const path in paths) {
+	for (const path in ctx.paths) {
 		if (sub.startsWith(path)) {
-			return paths[path] + sub.slice(path.length);
+			return ctx.paths[path] + sub.slice(path.length);
 		}
 	}
 	if (isWebUrl(sub)) return sub;
 	return base + sub;
+}
+
+export function expandId(packId: string, objectId: string) {
+	if (objectId.indexOf(':') !== -1) return packId;
+	return `${packId}:${objectId}`;
 }

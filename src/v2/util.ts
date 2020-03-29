@@ -10,6 +10,9 @@ import {
 	Pose,
 	StyleComponent,
 	StyleClasses,
+	PoemBackground,
+	StyleGroup,
+	Style,
 } from './model';
 
 const maxReplacementTrips = 10;
@@ -64,6 +67,7 @@ export function assetWalker<A, B>(
 	return {
 		packId: standartContentPack.packId,
 		packCredits: standartContentPack.packCredits,
+		dependencies: standartContentPack.dependencies,
 		characters: standartContentPack.characters.map(x =>
 			walkCharacter(x, callback)
 		),
@@ -71,8 +75,9 @@ export function assetWalker<A, B>(
 			walkBackground(x, callback)
 		),
 		fonts: standartContentPack.fonts.map(x => walkFont(x, callback)),
-		poemStyles: standartContentPack.poemStyles.map(x =>
-			walkPoemStyle(x, callback)
+		poemStyles: { ...standartContentPack.poemStyles },
+		poemBackgrounds: standartContentPack.poemBackgrounds.map(x =>
+			walkPoemBackgrounds(x, callback)
 		),
 		sprites: standartContentPack.sprites.map(x => walkSprite(x, callback)),
 		colors: standartContentPack.colors,
@@ -86,14 +91,32 @@ function walkCharacter<A, B>(
 	return {
 		id: character.id,
 		label: character.label,
-		size: character.size,
-		styles: character.styles,
 		chibi: character.chibi ? callback(character.chibi, 'image') : undefined,
 		heads: walkHeads(character.heads, callback),
-		poses: character.poses.map(pose => walkPose(pose, callback)),
-		styleComponents: character.styleComponents.map(styleComponent =>
-			walkStyleComponents(styleComponent, callback)
+		styleGroups: character.styleGroups.map(x => walkStyleGroup(x, callback)),
+	};
+}
+
+function walkStyleGroup<A, B>(
+	styleGroup: StyleGroup<A>,
+	callback: (old: A, type: 'image') => B
+): StyleGroup<B> {
+	return {
+		id: styleGroup.id,
+		styleComponents: styleGroup.styleComponents.map(x =>
+			walkStyleComponents(x, callback)
 		),
+		styles: styleGroup.styles.map(style => walkStyle(style, callback)),
+	};
+}
+
+function walkStyle<A, B>(
+	style: Style<A>,
+	callback: (old: A, type: 'image') => B
+): Style<B> {
+	return {
+		components: style.components,
+		poses: style.poses.map(pose => walkPose(pose, callback)),
 	};
 }
 
@@ -123,14 +146,34 @@ function walkPose<A, B>(
 	pose: Pose<A>,
 	callback: (old: A, type: 'image') => B
 ): Pose<B> {
+	const newParts: { [name: string]: B[][] } = {};
+
+	for (const partKey of Object.keys(pose.positions)) {
+		const partValue = pose.positions[partKey];
+		newParts[partKey] = partValue.map(partPosition =>
+			partPosition.map(x => callback(x, 'image'))
+		);
+	}
+
 	return {
-		...pose,
-		static: pose.static.map(x => callback(x, 'image')),
-		variant: pose.variant.map(variant =>
-			variant.map(x => callback(x, 'image'))
-		),
-		left: pose.left.map(variant => variant.map(x => callback(x, 'image'))),
-		right: pose.right.map(variant => variant.map(x => callback(x, 'image'))),
+		compatibleHeads: pose.compatibleHeads,
+		id: pose.id,
+		previewOffset: pose.previewOffset,
+		previewSize: pose.previewSize,
+		renderCommands: pose.renderCommands.map(x => {
+			if (x.type === 'image') {
+				return {
+					type: 'image',
+					offset: x.offset,
+					images: x.images.map(y => callback(y, 'image')),
+				};
+			} else {
+				return x;
+			}
+		}),
+		size: pose.size,
+		scale: pose.scale,
+		positions: newParts,
 	};
 }
 
@@ -151,8 +194,8 @@ function walkHeadCollection<A, B>(
 	callback: (old: A, type: 'image') => B
 ): HeadCollection<B> {
 	return {
-		offset: heads.offset,
-		size: heads.size,
+		previewOffset: heads.previewOffset,
+		previewSize: heads.previewSize,
 		variants: heads.variants.map(variant =>
 			variant.map(x => callback(x, 'image'))
 		),
@@ -183,17 +226,14 @@ function walkFont<A, B>(
 	};
 }
 
-function walkPoemStyle<A, B>(
-	poemStyle: PoemStyle<A>,
+function walkPoemBackgrounds<A, B>(
+	poemStyle: PoemBackground<A>,
 	callback: (old: A, type: 'image') => B
-): PoemStyle<B> {
+): PoemBackground<B> {
 	return {
+		fontColor: poemStyle.fontColor,
 		label: poemStyle.label,
-		size: poemStyle.size,
-		defaultFont: poemStyle.defaultFont,
-		variants: poemStyle.variants.map(variant =>
-			variant.map(x => callback(x, 'image'))
-		),
+		images: poemStyle.images.map(x => callback(x, 'image')),
 	};
 }
 
@@ -202,9 +242,22 @@ function walkSprite<A, B>(
 	callback: (old: A, type: 'image') => B
 ): Sprite<B> {
 	return {
+		id: sprite.id,
 		label: sprite.label,
 		variants: sprite.variants.map(variant =>
 			variant.map(x => callback(x, 'image'))
 		),
 	};
+}
+
+export function mapObject<A, B>(
+	obj: { [id: string]: A },
+	callback: (val: A, key: string) => B
+): { [id: string]: B } {
+	const ret = {};
+	for (const key in obj) {
+		if (!obj.hasOwnProperty(key)) continue;
+		ret[key] = callback(obj[key], key);
+	}
+	return ret;
 }

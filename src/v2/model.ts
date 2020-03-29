@@ -1,11 +1,13 @@
 export interface ContentPack<T = string> {
 	packId?: string;
-	packCredits?: string;
+	packCredits?: Array<[string, string] | string>;
+	dependencies: string[];
 	characters: Array<Character<T>>;
 	fonts: Array<Font<T>>;
 	backgrounds: Array<Background<T>>;
 	sprites: Array<Sprite<T>>;
-	poemStyles: Array<PoemStyle<T>>;
+	poemStyles: PoemStyle[];
+	poemBackgrounds: Array<PoemBackground<T>>;
 	colors: Color[];
 }
 
@@ -22,66 +24,97 @@ export interface Background<T> {
 }
 
 export interface Sprite<T> {
+	id: string;
 	label: string;
 	variants: Array<SpriteColllection<T>>;
 }
 
-export interface PoemStyle<T> {
+export interface PoemStyle {
 	label: string;
-	size: Coordinates;
 	defaultFont: string;
-	variants: Array<SpriteColllection<T>>;
+	fontSize: number;
+	lineSpacing: number;
+	letterSpacing: number;
+}
+
+export interface PoemBackground<T> {
+	label: string;
+	images: SpriteColllection<T>;
+	fontColor: string;
 }
 
 export interface Character<T> {
 	id: string;
 	label?: string;
-	styleComponents: Array<StyleComponent<T>>;
 	chibi?: T;
-	styles: Style[];
 	heads: HeadCollections<T>;
-	poses: Array<Pose<T>>;
-	size: Coordinates;
+	styleGroups: Array<StyleGroup<T>>;
 }
 
 export interface HeadCollection<T> {
 	variants: Array<SpriteColllection<T>>;
-	size: Coordinates;
-	offset: Coordinates;
+	previewSize: Coordinates;
+	previewOffset: Coordinates;
 }
 
 export interface HeadCollections<T> {
 	[id: string]: HeadCollection<T>;
 }
 
+export interface StyleGroup<T> {
+	id: string;
+	styleComponents: Array<StyleComponent<T>>;
+	styles: Array<Style<T>>;
+}
+
+export interface Style<T> {
+	components: { [s: string]: string };
+	poses: Array<Pose<T>>;
+}
+
 export interface Pose<T> {
-	name: string;
-	renderOrder: string;
+	id: string;
+	renderCommands: Array<PoseRenderCommand<T>>;
 	compatibleHeads: string[];
-	style: string;
-	headAnchor: Coordinates;
+	previewSize: Coordinates;
+	previewOffset: Coordinates;
 	size: Coordinates;
+	scale: number;
+	positions: {
+		[position: string]: Array<SpriteColllection<T>>;
+	};
+}
+
+export type PoseRenderCommand<T> =
+	| IStaticImageCommand<T>
+	| IPosePartCommand
+	| IHeadCommand;
+
+export interface IPoseCommand {
 	offset: Coordinates;
-	static: SpriteColllection<T>;
-	variant: Array<SpriteColllection<T>>;
-	left: Array<SpriteColllection<T>>;
-	right: Array<SpriteColllection<T>>;
+}
+
+export interface IStaticImageCommand<T> extends IPoseCommand {
+	type: 'image';
+	images: SpriteColllection<T>;
+}
+
+export interface IPosePartCommand extends IPoseCommand {
+	type: 'pose-part';
+	part: string;
+}
+
+export interface IHeadCommand extends IPoseCommand {
+	type: 'head';
 }
 
 type SpriteColllection<T> = T[];
 
 type Coordinates = [number, number];
 
-export interface Style {
-	name: string;
-	label: string;
-	styleGroup: string;
-	components: { [s: string]: string };
-}
-
 export interface StyleComponent<T> {
 	label: string;
-	name: string;
+	id: string;
 	variants: StyleClasses<T>;
 }
 
