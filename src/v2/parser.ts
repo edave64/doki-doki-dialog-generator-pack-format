@@ -395,6 +395,6 @@ function joinNormalize(
 }
 
 export function expandId(packId: string, objectId: string) {
-	if (objectId.indexOf(':') !== -1) return packId;
+	if (objectId.indexOf(':') !== -1) return objectId;
 	return `${packId}:${objectId}`;
 }
