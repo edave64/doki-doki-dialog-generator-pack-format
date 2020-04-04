@@ -62,7 +62,6 @@ function extractStyleGroups(
 			for (const varKey of Object.keys(component.variants)) {
 				const exp = new RegExp('-' + varKey + '\\b');
 				if (reducedName.match(exp)) {
-					console.log('ASD: ' + component.id);
 					components[component.id] = varKey;
 					reducedName = reducedName.replace(exp, '');
 					break;

@@ -31,5 +31,4 @@ function convertJSON() {
 			return `/${old}`;
 		}
 	});
-	console.log(JSON.stringify(extensions, undefined, 2));
 }
