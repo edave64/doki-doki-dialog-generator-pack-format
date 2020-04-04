@@ -75,7 +75,7 @@ export function assetWalker<A, B>(
 			walkBackground(x, callback)
 		),
 		fonts: standartContentPack.fonts.map(x => walkFont(x, callback)),
-		poemStyles: { ...standartContentPack.poemStyles },
+		poemStyles: [...standartContentPack.poemStyles],
 		poemBackgrounds: standartContentPack.poemBackgrounds.map(x =>
 			walkPoemBackgrounds(x, callback)
 		),
