@@ -229,7 +229,25 @@
 																		}
 																	}
 																]
-															}
+															},
+															"default": [
+																{ "type": "head" },
+																{
+																	"type": "pose-part",
+																	"part": "Left"
+																},
+																{
+																	"type": "pose-part",
+																	"part": "Right"
+																},
+																{
+																	"type": "pose-part",
+																	"part": "Variant"
+																}
+															]
+														},
+														"folder": {
+															"$ref": "#/definitions/folder"
 														},
 														"previewSize": {
 															"$ref": "#/definitions/coordinates"
