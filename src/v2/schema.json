@@ -120,7 +120,7 @@
 					"styleGroups": {
 						"type": "array",
 						"items": {
-							"required": ["id", "styleComponents"],
+							"required": ["id", "styles"],
 							"properties": {
 								"id": { "type": "string" },
 								"folder": { "$ref": "#/definitions/folder" },
@@ -151,22 +151,8 @@
 									"items": {
 										"type": "object",
 										"title": "A style",
-										"required": ["id", "label"],
+										"required": [],
 										"properties": {
-											"id": {
-												"type": "string",
-												"title": "The name of the style. Of an eye type and/or hair type is included, separated by a minus",
-												"default": "",
-												"examples": [],
-												"pattern": "^(.*)$"
-											},
-											"label": {
-												"type": "string",
-												"title": "The display name of the style",
-												"default": "",
-												"examples": [],
-												"pattern": "^(.*)$"
-											},
 											"components": {
 												"type": "object",
 												"patternProperties": {
@@ -196,6 +182,53 @@
 															"items": {
 																"type": "string",
 																"title": "A head group"
+															}
+														},
+														"renderCommands": {
+															"title": "Steps to render the pose",
+															"type": "array",
+															"items": {
+																"type": "object",
+																"properties": {
+																	"offset": {
+																		"$ref": "#/definitions/coordinates"
+																	}
+																},
+																"oneOf": [
+																	{
+																		"required": ["type", "images"],
+																		"properties": {
+																			"type": {
+																				"const": "image"
+																			},
+																			"images": {
+																				"$ref": "#/definitions/assetCollection"
+																			},
+																			"folder": {
+																				"$ref": "#/definitions/folder"
+																			}
+																		}
+																	},
+																	{
+																		"required": ["type", "part"],
+																		"properties": {
+																			"type": {
+																				"const": "pose-part"
+																			},
+																			"part": {
+																				"type": "string"
+																			}
+																		}
+																	},
+																	{
+																		"required": ["type"],
+																		"properties": {
+																			"type": {
+																				"const": "head"
+																			}
+																		}
+																	}
+																]
 															}
 														},
 														"previewSize": {
