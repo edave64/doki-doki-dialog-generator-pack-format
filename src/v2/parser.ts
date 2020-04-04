@@ -326,7 +326,6 @@ function normalizePose(
 			{ type: 'pose-part', part: 'Left', offset: [0, 0] },
 			{ type: 'pose-part', part: 'Right', offset: [0, 0] },
 			{ type: 'pose-part', part: 'Variant', offset: [0, 0] },
-			{ type: 'pose-part', part: 'Static', offset: [0, 0] },
 		],
 	};
 }
