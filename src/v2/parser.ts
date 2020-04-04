@@ -310,7 +310,8 @@ function normalizePose(
 ): Pose<string> {
 	const poseFolder = joinNormalize(baseFolder, pose.folder, ctx);
 	return {
-		compatibleHeads: pose.compatibleHeads || [],
+		compatibleHeads:
+			pose.compatibleHeads?.map(head => expandId(ctx.packId, head)) || [],
 		id: expandId(ctx.packId, pose.id),
 		previewOffset: pose.previewOffset || [0, 0],
 		previewSize: pose.previewSize || [960, 960],
