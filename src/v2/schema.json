@@ -23,6 +23,11 @@
 				"$ref": "#/definitions/assetCollection"
 			}
 		},
+		"id": {
+			"type": "string",
+			"pattern": "^[_-\\w\\.]+(:[_-\\w\\.]+)?$",
+			"default": ""
+		},
 		"coordinates": {
 			"type": "array",
 			"title": "A position or size of an object",
@@ -56,8 +61,7 @@
 			"default": "",
 			"examples": [
 				"<a href='https://www.reddit.com/dq74jr' target='_blank' rel='noopener noreferrer'>Created by</a> anita6artania"
-			],
-			"pattern": "^(.*)$"
+			]
 		},
 		"folder": { "$ref": "#/definitions/folder" },
 		"characters": {
@@ -70,7 +74,7 @@
 						"type": "string",
 						"title": "The character id",
 						"description": "This id needs to be unique for every character. If the name collides with an existing character, they will be merged",
-						"pattern": "^(.*)$"
+						"$ref": "#/definitions/id"
 					},
 					"label": {
 						"type": "string",
@@ -122,7 +126,7 @@
 						"items": {
 							"required": ["id", "styles"],
 							"properties": {
-								"id": { "type": "string" },
+								"id": { "type": "string", "$ref": "#/definitions/id" },
 								"folder": { "$ref": "#/definitions/folder" },
 								"styleComponents": {
 									"type": "array",
@@ -131,7 +135,7 @@
 										"required": ["id"],
 										"properties": {
 											"label": { "type": "string" },
-											"id": { "type": "string" },
+											"id": { "type": "string", "$ref": "#/definitions/id" },
 											"variants": {
 												"type": "object",
 												"patternProperties": {
@@ -173,8 +177,7 @@
 														"id": {
 															"type": "string",
 															"title": "The name of a pose. If a content pack includes a pose with the same name as an existing one, the get merged together",
-															"default": "",
-															"pattern": "^(.*)$"
+															"$ref": "#/definitions/id"
 														},
 														"compatibleHeads": {
 															"title": "A list of compatible head groups",
@@ -291,8 +294,7 @@
 					"id": {
 						"type": "string",
 						"title": "The background id",
-						"default": "",
-						"pattern": "^[_-\\w\\.]+$"
+						"$ref": "#/definitions/id"
 					},
 					"label": {
 						"type": "string",
@@ -316,8 +318,7 @@
 					"id": {
 						"type": "string",
 						"title": "The sprite id",
-						"default": "",
-						"pattern": "^[_-\\w\\.]+$"
+						"$ref": "#/definitions/id"
 					},
 					"label": {
 						"type": "string",
@@ -371,7 +372,7 @@
 				"properties": {
 					"label": {
 						"type": "string",
-						"title": "The label of the sprite"
+						"title": "The label of the poem background"
 					},
 					"folder": { "$ref": "#/definitions/folder" },
 					"images": {
@@ -413,8 +414,7 @@
 					"id": {
 						"type": "string",
 						"title": "The font id",
-						"default": "",
-						"pattern": "^[_-\\w\\.]+$"
+						"$ref": "#/definitions/id"
 					},
 					"label": {
 						"type": "string",
