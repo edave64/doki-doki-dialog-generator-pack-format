@@ -238,8 +238,16 @@ function normalizeStyle(
 	ctx: IContext
 ): Style<string> {
 	const styleFolder = joinNormalize(baseFolder, json.folder, ctx);
+	const components: Style<string>['components'] = {};
+	if (json.components) {
+		for (const componentId in json.components) {
+			if (!json.components.hasOwnProperty(componentId)) continue;
+			components[expandId(ctx.packId, componentId)] =
+				json.components[componentId];
+		}
+	}
 	return {
-		components: json.components || {},
+		components,
 		poses: json.poses.map(pose => normalizePose(pose, styleFolder, ctx)),
 	};
 }
