@@ -266,11 +266,7 @@ function normalizeParts(
 	for (const styleKey in styleClasses) {
 		/* istanbul ignore next */
 		if (!styleClasses.hasOwnProperty(styleKey)) continue;
-		ret[expandId(ctx.packId, styleKey)] = joinNormalize(
-			baseFolder,
-			styleClasses[styleKey],
-			ctx
-		);
+		ret[styleKey] = joinNormalize(baseFolder, styleClasses[styleKey], ctx);
 	}
 	return ret;
 }
