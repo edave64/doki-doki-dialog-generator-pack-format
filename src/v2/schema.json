@@ -157,6 +157,7 @@
 										"title": "A style",
 										"required": [],
 										"properties": {
+											"folder": { "$ref": "#/definitions/folder" },
 											"components": {
 												"type": "object",
 												"patternProperties": {
