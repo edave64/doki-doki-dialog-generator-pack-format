@@ -300,6 +300,7 @@ const translationTables: { [charId: string]: ITranslationTable } = {
 		poses: ['normal', 'crossed_arms', 'vomit', 'glitch'],
 		styleGroups: ['uniform', 'casual', 'old'],
 		extraPoseAssoc: [
+			/* That typo was actually made in the definition file */
 			['normal_causal', 'normal'],
 			['crossed_arms_casual', 'crossed_arms'],
 		],
@@ -309,13 +310,14 @@ const translationTables: { [charId: string]: ITranslationTable } = {
 		heads: ['straight', 'sideways'],
 		poses: ['normal', 'sideways', 'old', 'glitch', 'dead'],
 		styleGroups: ['uniform', 'casual', 'old', 'glitch', 'hanging'],
-		extraPoseAssoc: [['normal_causal', 'normal']],
+		extraPoseAssoc: [['normal_casual', 'normal']],
 	}),
 	'ddlc.yuri': assocChar('dddg.buildin.yuri', 'ddlc.yuri', {
 		heads: ['straight', 'sideways'],
 		poses: ['normal', 'sideways', 'stabbing', 'glitching', 'dragon'],
 		styleGroups: ['uniform', 'casual', 'glitch'],
 		extraPoseAssoc: [
+			/* That typo was actually made in the definition file */
 			['normal_causal', 'normal'],
 			['hairplay_casual', 'hairplay'],
 		],
