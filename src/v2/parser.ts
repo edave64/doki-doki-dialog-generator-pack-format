@@ -222,7 +222,12 @@ function normalizeStyleGroup(
 	const groupFolder = joinNormalize(baseFolder, json.folder, ctx);
 	return {
 		id: expandId(ctx.packId, json.id),
-		styleComponents: json.styleComponents || [],
+		styleComponents: mapNormalize(
+			normalizeStyleComponent,
+			json.styleComponents,
+			groupFolder,
+			ctx
+		),
 		styles: json.styles.map(x => normalizeStyle(x, groupFolder, ctx)),
 	};
 }
