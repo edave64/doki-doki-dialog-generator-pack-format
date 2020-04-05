@@ -52,11 +52,20 @@ function extractStyleGroups(
 	const baseStyleIds: string[] = [];
 	const baseStyles = new Map<string, V2.StyleGroup<string>>();
 	const styleComponents = convertStyleComponents(characterV1, ctx);
+	const styleNames = characterV1.poses
+		.map(pose => pose.style)
+		.filter((value, index, ary) => {
+			return ary.indexOf(value) === index;
+		});
+	const styleDefinitions = new Map(
+		characterV1.styles.map(style => [style.name, style])
+	);
 
-	for (const style of characterV1.styles) {
-		if (style.nsfw && !nsfw) continue;
+	for (const styleName of styleNames) {
+		const style = styleDefinitions.get(styleName);
+		if (style && style.nsfw && !nsfw) continue;
 
-		let reducedName = style.name;
+		let reducedName = styleName;
 		const components: V2.Style<string>['components'] = {};
 		for (const component of styleComponents) {
 			for (const varKey of Object.keys(component.variants)) {
@@ -87,7 +96,7 @@ function extractStyleGroups(
 		styleGroup.styles.push({
 			components,
 			poses: convertPoses(
-				characterV1.poses.filter(pose => pose.style === style.name),
+				characterV1.poses.filter(pose => pose.style === styleName),
 				ctx,
 				nsfw
 			),
