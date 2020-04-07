@@ -2,6 +2,11 @@ export interface JSONContentPack {
 	version: '2.0';
 	packId: string;
 	packCredits?: Array<[string, string] | string>;
+	packName?: string;
+	comicClubUrl?: string;
+	disclaimer?: string;
+	authors?: string[];
+	source?: string;
 	dependencies?: [];
 	folder?: string;
 	characters?: JSONCharacter[];

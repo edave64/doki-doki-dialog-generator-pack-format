@@ -55,7 +55,12 @@ export interface JSONStyleClasses {
 export interface JSONCharacter<H extends JSONHeadCollections> {
 	id: string;
 	packId?: string;
+	packName?: string;
+	comicClubUrl?: string;
+	disclaimer?: string;
 	packCredits?: string;
+	authors?: string[];
+	source?: string;
 	internalId?: string;
 	name?: string;
 	folder?: string;
