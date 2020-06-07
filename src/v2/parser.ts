@@ -349,6 +349,7 @@ function normalizePoseCommand(
 		const commandFolder = joinNormalize(folder, poseCommand.folder, ctx);
 		return {
 			type: 'image',
+			composite: poseCommand.composite,
 			offset: poseCommand.offset || [0, 0],
 			images: normalizeCollection(poseCommand.images, commandFolder, ctx),
 		};
