@@ -92,7 +92,7 @@ export function normalizeContentPack(
 	};
 }
 
-function mapNormalize<A, B>(
+export function mapNormalize<A, B>(
 	callback: (obj: A, folder: string, ctx: IContext) => B,
 	collection: A[] | undefined,
 	folder: string,
@@ -252,7 +252,7 @@ function normalizeStyle(
 	};
 }
 
-function normalizeStyleComponent(
+export function normalizeStyleComponent(
 	styleComponent: JSONStyleComponent,
 	baseFolder: string,
 	ctx: IContext

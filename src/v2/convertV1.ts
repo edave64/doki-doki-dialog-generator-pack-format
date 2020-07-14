@@ -1,9 +1,16 @@
 import * as V1 from '../v1/model';
 import * as V2 from './model';
-import { expandId } from './parser';
+import {
+	expandId,
+	Paths,
+	mapNormalize,
+	normalizeStyleComponent,
+} from './parser';
+import { JSONStyleComponent } from './jsonFormat';
 
 export function convert(
 	characterV1: V1.Character<V1.HeadCollections>,
+	paths: Paths,
 	nsfw: boolean
 ): V2.ContentPack {
 	if (!characterV1.packId) throw new Error('');
@@ -17,10 +24,169 @@ export function convert(
 		poemStyles: [],
 		poemBackgrounds: [],
 		sprites: [],
-		characters: [convertCharacter(characterV1, nsfw)],
+		characters: [convertCharacter(characterV1, paths, nsfw)],
 		colors: [],
 	};
 }
+
+const translationTables: { [charId: string]: ITranslationTable } = {
+	'ddlc.monika': assocChar('dddg.buildin.base.monika', 'ddlc.monika', {
+		heads: ['straight', 'sideways'],
+		poses: ['normal', 'leaned', 'old', 'glitch'],
+		styleGroups: ['uniform', 'old', 'glitch'],
+	}),
+	'ddlc.natsuki': assocChar('dddg.buildin.base.natsuki', 'ddlc.natsuki', {
+		heads: ['straight', 'straight_nsfw', 'sideways', 'turnedAway'],
+		poses: ['normal', 'crossed_arms', 'vomit', 'glitch'],
+		styleGroups: ['uniform', 'casual', 'old'],
+		extraPoseAssoc: [
+			/* That typo was actually made in the definition file */
+			['normal_causal', 'normal'],
+			['crossed_arms_casual', 'crossed_arms'],
+		],
+		extraHeadAssoc: [['straight_nsfw', 'straight']],
+	}),
+	'ddlc.sayori': assocChar('dddg.buildin.sayori', 'ddlc.sayori', {
+		heads: ['straight', 'sideways'],
+		poses: ['normal', 'sideways', 'old', 'glitch', 'dead'],
+		styleGroups: ['uniform', 'casual', 'old', 'glitch', 'hanging'],
+		extraPoseAssoc: [['normal_casual', 'normal']],
+	}),
+	'ddlc.yuri': assocChar('dddg.buildin.yuri', 'ddlc.yuri', {
+		heads: ['straight', 'sideways'],
+		poses: ['normal', 'sideways', 'stabbing', 'glitching', 'dragon'],
+		styleGroups: ['uniform', 'casual', 'glitch'],
+		extraPoseAssoc: [
+			/* That typo was actually made in the definition file */
+			['normal_causal', 'normal'],
+			['hairplay_casual', 'hairplay'],
+		],
+	}),
+	'ddlc.fan.mc1': assocChar('dddg.buildin.mc_classic', 'ddlc.fan.mc1', {
+		heads: ['straight'],
+		poses: ['normal'],
+		styleGroups: [],
+		extraStyleGroupAssoc: [['uniform-yellow', 'uniform']],
+	}),
+	'ddlc.fan.mc2': assocChar('dddg.buildin.mc', 'ddlc.fan.mc2', {
+		heads: ['straight', 'straight_red'],
+		poses: ['normal', 'crossed_arms', 'casual', 'glitching', 'dragon'],
+		styleGroups: ['uniform', 'casual'],
+		extraPoseAssoc: [
+			['crossed_arms_casual', 'crossed_arms'],
+			['crossed_arms_red', 'crossed_arms'],
+			['normal_red', 'normal'],
+			['casual_red', 'casual'],
+			['casual_crossed_arms_red', 'crossed_arms'],
+		],
+		defaultStyleComponents: [
+			{
+				id: 'eyes',
+				label: 'Eyes',
+				variants: {
+					yellow: '/parts/mc/yellow-eyes{ext}',
+					red: '/parts/mc/red-eyes{ext}',
+				},
+			},
+		],
+	}),
+	'ddlc.fan.mc_chad': assocChar('dddg.buildin.mc_chad', 'ddlc.fan.mc_chad', {
+		heads: ['straight', 'straight_closed', 'straight_red'],
+		poses: ['normal', 'youknowihadto'],
+		styleGroups: ['uniform', 'casual'],
+		extraPoseAssoc: [
+			['normal_casual', 'normal'],
+			['youknowihadto_casual', 'youknowihadto'],
+			['normal_red', 'normal'],
+			['youknowihadto_red', 'youknowihadto'],
+			['normal_casual_red', 'normal'],
+			['youknowihadto_casual_red', 'youknowihadto'],
+		],
+		defaultStyleComponents: [
+			{
+				label: 'Eyes',
+				id: 'eyes',
+				variants: {
+					yellow: '/parts/chad/yellow-eyes{ext}',
+					red: '/parts/chad/red-eyes{ext}',
+				},
+			},
+		],
+	}),
+	'ddlc.fan.femc': assocChar('dddg.buildin.femc', 'ddlc.fan.femc', {
+		heads: [
+			'straight',
+			'straight_closed',
+			'straight_hetero',
+			'straight_hetero_lh',
+		],
+		poses: ['normal', 'crossed_arms'],
+		styleGroups: ['uniform', 'casual', 'uniform_strict'],
+		extraPoseAssoc: [
+			['casual_normal', 'normal'],
+			['casual_crossed_arms', 'crossed_arms'],
+			['uniform_normal', 'normal'],
+			['uniform_crossed_arms', 'crossed_arms'],
+			['normal_long_hair', 'normal'],
+			['crossed_arms_long_hair', 'crossed_arms'],
+			['casual_normal_long_hair', 'normal'],
+			['casual_crossed_arms_long_hair', 'crossed_arms'],
+			['uniform_normal_long_hair', 'normal'],
+			['uniform_crossed_arms_long_hair', 'crossed_arms'],
+			['normal_hetero', 'normal'],
+			['crossed_arms_hetero', 'crossed_arms'],
+			['casual_normal_hetero', 'normal'],
+			['casual_crossed_arms_hetero', 'crossed_arms'],
+			['uniform_normal_hetero', 'normal'],
+			['uniform_crossed_arms_hetero', 'crossed_arms'],
+			['normal_long_hair_hetero', 'normal'],
+			['crossed_arms_long_hair_hetero', 'crossed_arms'],
+			['casual_normal_long_hair_hetero', 'normal'],
+			['casual_crossed_arms_long_hair_hetero', 'crossed_arms'],
+			['uniform_normal_long_hair_hetero', 'normal'],
+			['uniform_crossed_arms_long_hair_hetero', 'crossed_arms'],
+		],
+		defaultStyleComponents: [
+			{
+				label: 'Eyes',
+				id: 'eyes',
+				variants: {
+					yellow: '/parts/femc/yellow-eyes{ext}',
+					hetero: '/parts/femc/hetero-eyes{ext}',
+				},
+			},
+			{
+				label: 'Hairs',
+				id: 'hairs',
+				variants: {
+					sh: '/parts/femc/short-hair{ext}',
+					lh: '/parts/femc/long-hair{ext}',
+				},
+			},
+		],
+	}),
+	'ddlc.fan.amy1': assocChar('dddg.buildin.amy1', 'ddlc.fan.amy1', {
+		heads: ['straight'],
+		poses: ['normal', 'crossed_arms'],
+		styleGroups: ['uniform'],
+	}),
+	'ddlc.fan.amy2': assocChar('dddg.buildin.amy2', 'ddlc.fan.amy2', {
+		heads: ['straight', 'straight_closed', 'straight_red'],
+		poses: [
+			'normal',
+			'folded_hands_up',
+			'folded_hands_down',
+			'hands_on_glasses',
+		],
+		styleGroups: ['uniform', 'casual'],
+		extraPoseAssoc: [
+			['normal-casual', 'normal'],
+			['folded_hands_up-casual', 'folded_hands_up'],
+			['folded_hands_down-casual', 'folded_hands_down'],
+			['hands_on_glasses-casual', 'hands_on_glasses'],
+		],
+	}),
+};
 
 function autoDependency(v1CharId: string): string[] {
 	return [];
@@ -28,11 +194,13 @@ function autoDependency(v1CharId: string): string[] {
 
 function convertCharacter(
 	characterV1: V1.Character<V1.HeadCollections>,
+	paths: Paths,
 	nsfw: boolean
 ): V2.Character<string> {
 	const ctx: ITranslationContext = {
 		characterId: characterV1.id,
 		packId: characterV1.packId!,
+		paths,
 	};
 
 	return {
@@ -49,9 +217,14 @@ function extractStyleGroups(
 	ctx: ITranslationContext,
 	nsfw: boolean
 ): Array<V2.StyleGroup<string>> {
+	const translation = translationTables[ctx.characterId];
 	const baseStyleIds: string[] = [];
 	const baseStyles = new Map<string, V2.StyleGroup<string>>();
 	const styleComponents = convertStyleComponents(characterV1, ctx);
+	const useComponents =
+		styleComponents.length === 0
+			? normalizeStyleComponets(translation.defaultStyleComponents, ctx)
+			: styleComponents;
 	const styleNames = characterV1.poses
 		.map(pose => pose.style)
 		.filter((value, index, ary) => {
@@ -67,7 +240,7 @@ function extractStyleGroups(
 
 		let reducedName = styleName;
 		const components: V2.Style<string>['components'] = {};
-		for (const component of styleComponents) {
+		for (const component of useComponents) {
 			for (const varKey of Object.keys(component.variants)) {
 				const exp = new RegExp('-' + varKey + '\\b');
 				if (reducedName.match(exp)) {
@@ -86,7 +259,7 @@ function extractStyleGroups(
 		if (!styleGroup) {
 			styleGroup = {
 				id: reducedName,
-				styleComponents: styleComponents,
+				styleComponents: useComponents,
 				styles: [],
 			};
 			baseStyles.set(reducedName, styleGroup);
@@ -103,6 +276,16 @@ function extractStyleGroups(
 		});
 	}
 	return baseStyleIds.map(id => baseStyles.get(id)!);
+}
+
+function normalizeStyleComponets(
+	styleComponents: JSONStyleComponent[],
+	ctx: ITranslationContext
+) {
+	return mapNormalize(normalizeStyleComponent, styleComponents, '', {
+		packId: ctx.packId,
+		paths: ctx.paths,
+	});
 }
 
 function getRenderCommands(
@@ -222,10 +405,12 @@ function convertStyleComponents(
 interface ITranslationContext {
 	characterId: string;
 	packId: string;
+	paths: Paths;
 }
 
 interface ITranslationTable {
 	character: string;
+	defaultStyleComponents: JSONStyleComponent[];
 	heads: Map<string, string>;
 	poses: Map<string, string>;
 	styleGroups: Map<string, string>;
@@ -247,6 +432,7 @@ function assocChar(
 		extraHeadAssoc?: Array<[string, string]>;
 		extraPoseAssoc?: Array<[string, string]>;
 		extraStyleGroupAssoc?: Array<[string, string]>;
+		defaultStyleComponents?: Array<V2.StyleComponent<string>>;
 	}
 ): ITranslationTable {
 	if (!input.extraHeadAssoc) input.extraHeadAssoc = [];
@@ -274,6 +460,7 @@ function assocChar(
 		character: `${targetPack}:${character}`,
 		eyes: `${targetPack}:eyes`,
 		hairs: `${targetPack}:hair`,
+		defaultStyleComponents: input.defaultStyleComponents || [],
 		heads: new Map([
 			...associate(targetPack, input.heads),
 			...input.extraHeadAssoc!,
@@ -288,127 +475,6 @@ function assocChar(
 		]),
 	};
 }
-
-const translationTables: { [charId: string]: ITranslationTable } = {
-	'ddlc.monika': assocChar('dddg.buildin.base.monika', 'ddlc.monika', {
-		heads: ['straight', 'sideways'],
-		poses: ['normal', 'leaned', 'old', 'glitch'],
-		styleGroups: ['uniform', 'old', 'glitch'],
-	}),
-	'ddlc.natsuki': assocChar('dddg.buildin.base.natsuki', 'ddlc.natsuki', {
-		heads: ['straight', 'straight_nsfw', 'sideways', 'turnedAway'],
-		poses: ['normal', 'crossed_arms', 'vomit', 'glitch'],
-		styleGroups: ['uniform', 'casual', 'old'],
-		extraPoseAssoc: [
-			/* That typo was actually made in the definition file */
-			['normal_causal', 'normal'],
-			['crossed_arms_casual', 'crossed_arms'],
-		],
-		extraHeadAssoc: [['straight_nsfw', 'straight']],
-	}),
-	'ddlc.sayori': assocChar('dddg.buildin.sayori', 'ddlc.sayori', {
-		heads: ['straight', 'sideways'],
-		poses: ['normal', 'sideways', 'old', 'glitch', 'dead'],
-		styleGroups: ['uniform', 'casual', 'old', 'glitch', 'hanging'],
-		extraPoseAssoc: [['normal_casual', 'normal']],
-	}),
-	'ddlc.yuri': assocChar('dddg.buildin.yuri', 'ddlc.yuri', {
-		heads: ['straight', 'sideways'],
-		poses: ['normal', 'sideways', 'stabbing', 'glitching', 'dragon'],
-		styleGroups: ['uniform', 'casual', 'glitch'],
-		extraPoseAssoc: [
-			/* That typo was actually made in the definition file */
-			['normal_causal', 'normal'],
-			['hairplay_casual', 'hairplay'],
-		],
-	}),
-	'ddlc.fan.mc1': assocChar('dddg.buildin.mc_classic', 'ddlc.fan.mc1', {
-		heads: ['straight'],
-		poses: ['normal'],
-		styleGroups: [],
-		extraStyleGroupAssoc: [['uniform-yellow', 'uniform']],
-	}),
-	'ddlc.fan.mc2': assocChar('dddg.buildin.mc', 'ddlc.fan.mc2', {
-		heads: ['straight', 'straight_red'],
-		poses: ['normal', 'crossed_arms', 'casual', 'glitching', 'dragon'],
-		styleGroups: ['uniform', 'casual'],
-		extraPoseAssoc: [
-			['crossed_arms_casual', 'crossed_arms'],
-			['crossed_arms_red', 'crossed_arms'],
-			['normal_red', 'normal'],
-			['casual_red', 'casual'],
-			['casual_crossed_arms_red', 'crossed_arms'],
-		],
-	}),
-	'ddlc.fan.mc_chad': assocChar('dddg.buildin.mc_chad', 'ddlc.fan.mc_chad', {
-		heads: ['straight', 'straight_closed', 'straight_red'],
-		poses: ['normal', 'youknowihadto'],
-		styleGroups: ['uniform', 'casual'],
-		extraPoseAssoc: [
-			['normal_casual', 'normal'],
-			['youknowihadto_casual', 'youknowihadto'],
-			['normal_red', 'normal'],
-			['youknowihadto_red', 'youknowihadto'],
-			['normal_casual_red', 'normal'],
-			['youknowihadto_casual_red', 'youknowihadto'],
-		],
-	}),
-	'ddlc.fan.femc': assocChar('dddg.buildin.femc', 'ddlc.fan.femc', {
-		heads: [
-			'straight',
-			'straight_closed',
-			'straight_hetero',
-			'straight_hetero_lh',
-		],
-		poses: ['normal', 'crossed_arms'],
-		styleGroups: ['uniform', 'casual', 'uniform_strict'],
-		extraPoseAssoc: [
-			['casual_normal', 'normal'],
-			['casual_crossed_arms', 'crossed_arms'],
-			['uniform_normal', 'normal'],
-			['uniform_crossed_arms', 'crossed_arms'],
-			['normal_long_hair', 'normal'],
-			['crossed_arms_long_hair', 'crossed_arms'],
-			['casual_normal_long_hair', 'normal'],
-			['casual_crossed_arms_long_hair', 'crossed_arms'],
-			['uniform_normal_long_hair', 'normal'],
-			['uniform_crossed_arms_long_hair', 'crossed_arms'],
-			['normal_hetero', 'normal'],
-			['crossed_arms_hetero', 'crossed_arms'],
-			['casual_normal_hetero', 'normal'],
-			['casual_crossed_arms_hetero', 'crossed_arms'],
-			['uniform_normal_hetero', 'normal'],
-			['uniform_crossed_arms_hetero', 'crossed_arms'],
-			['normal_long_hair_hetero', 'normal'],
-			['crossed_arms_long_hair_hetero', 'crossed_arms'],
-			['casual_normal_long_hair_hetero', 'normal'],
-			['casual_crossed_arms_long_hair_hetero', 'crossed_arms'],
-			['uniform_normal_long_hair_hetero', 'normal'],
-			['uniform_crossed_arms_long_hair_hetero', 'crossed_arms'],
-		],
-	}),
-	'ddlc.fan.amy1': assocChar('dddg.buildin.amy1', 'ddlc.fan.amy1', {
-		heads: ['straight'],
-		poses: ['normal', 'crossed_arms'],
-		styleGroups: ['uniform'],
-	}),
-	'ddlc.fan.amy2': assocChar('dddg.buildin.amy2', 'ddlc.fan.amy2', {
-		heads: ['straight', 'straight_closed', 'straight_red'],
-		poses: [
-			'normal',
-			'folded_hands_up',
-			'folded_hands_down',
-			'hands_on_glasses',
-		],
-		styleGroups: ['uniform', 'casual'],
-		extraPoseAssoc: [
-			['normal-casual', 'normal'],
-			['folded_hands_up-casual', 'folded_hands_up'],
-			['folded_hands_down-casual', 'folded_hands_down'],
-			['hands_on_glasses-casual', 'hands_on_glasses'],
-		],
-	}),
-};
 
 export function expandOrTranslateId(
 	type: 'heads' | 'poses' | 'styleGroups' | 'hairs' | 'eyes' | 'character',
