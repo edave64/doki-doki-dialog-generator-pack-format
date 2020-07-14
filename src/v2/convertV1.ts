@@ -116,6 +116,7 @@ const translationTables: { [charId: string]: ITranslationTable } = {
 	'ddlc.fan.femc': assocChar('dddg.buildin.femc', 'ddlc.fan.femc', {
 		heads: [
 			'straight',
+			'straight_lh',
 			'straight_closed',
 			'straight_hetero',
 			'straight_hetero_lh',
