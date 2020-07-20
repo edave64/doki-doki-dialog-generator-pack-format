@@ -29,7 +29,7 @@ export function convert(
 	};
 }
 
-const translationTables: { [charId: string]: ITranslationTable } = {
+const translationTables: { [charId: string]: ITranslationTable | undefined } = {
 	'ddlc.monika': assocChar('dddg.buildin.base.monika', 'ddlc.monika', {
 		heads: ['straight', 'sideways'],
 		poses: ['normal', 'leaned', 'old', 'glitch'],
@@ -224,7 +224,7 @@ function extractStyleGroups(
 	const styleComponents = convertStyleComponents(characterV1, ctx);
 	const useComponents =
 		styleComponents.length === 0
-			? translation.defaultStyleComponents
+			? translation && translation.defaultStyleComponents
 				? normalizeStyleComponets(translation.defaultStyleComponents, ctx)
 				: []
 			: styleComponents;
