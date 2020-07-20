@@ -224,7 +224,9 @@ function extractStyleGroups(
 	const styleComponents = convertStyleComponents(characterV1, ctx);
 	const useComponents =
 		styleComponents.length === 0
-			? normalizeStyleComponets(translation.defaultStyleComponents, ctx)
+			? translation.defaultStyleComponents
+				? normalizeStyleComponets(translation.defaultStyleComponents, ctx)
+				: []
 			: styleComponents;
 	const styleNames = characterV1.poses
 		.map(pose => pose.style)
