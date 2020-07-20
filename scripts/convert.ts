@@ -18,7 +18,7 @@ process.stdin.on('end', function() {
 function convertJSON() {
 	const v1pack = normalizeCharacter(JSON.parse(input), { '/': '/' });
 	if (!v1pack.packId) v1pack.packId = 'fisch';
-	const v2pack = convert(v1pack, true);
+	const v2pack = convert(v1pack, {}, true);
 	let chibi = true;
 
 	const extensions = assetWalker(v2pack, (old, type) => {

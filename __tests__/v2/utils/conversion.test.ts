@@ -50,7 +50,7 @@ describe('V2: V1 Conversion', () => {
 			packId: 'test.pack',
 			packCredits: '',
 		};
-		const converted = convert(base, false);
+		const converted = convert(base, {}, false);
 		expect(converted).toMatchInlineSnapshot(`
 		Object {
 		  "backgrounds": Array [],
@@ -233,7 +233,7 @@ describe('V2: V1 Conversion', () => {
 				'./': 'testpath/',
 			}
 		);
-		const converted = convert(base, false);
+		const converted = convert(base, {}, false);
 		expect(converted).toMatchInlineSnapshot(`
 		Object {
 		  "backgrounds": Array [],
