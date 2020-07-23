@@ -340,7 +340,7 @@
 				"additionalProperties": false
 			}
 		},
-		"sprite": {
+		"sprites": {
 			"type": "array",
 			"items": {
 				"type": "object",
