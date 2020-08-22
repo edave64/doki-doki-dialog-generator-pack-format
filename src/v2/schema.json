@@ -6,7 +6,9 @@
 			"type": "string",
 			"title": "The folder, in which all other paths in this file will be searched",
 			"default": "/",
-			"examples": ["./"]
+			"examples": [
+				"./"
+			]
 		},
 		"assetCollection": {
 			"type": "array",
@@ -36,12 +38,51 @@
 			},
 			"minLength": 2,
 			"maxLength": 2
+		},
+		"indexingExtension": {
+			"properties": {
+				"packName": {
+					"type": "string",
+					"title": "The name of the content pack in the listing"
+				},
+				"comicClubUrl": {
+					"type": "string",
+					"title": "Where the comic club version of this pack can be found"
+				},
+				"disclaimer": {
+					"type": "string",
+					"title": "Important information that should be known before using this pack"
+				},
+				"authors": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"title": "The people who created the packs sprites"
+				},
+				"source": {
+					"type": "string",
+					"title": "Where the assets were originally posted"
+				},
+				"dependencies": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"title": "The list of dependenies"
+				}
+			}
 		}
 	},
 	"type": "object",
 	"title": "The Root Schema",
-	"required": ["$schema", "version", "packId"],
+	"required": [
+		"$schema",
+		"version",
+		"packId"
+	],
 	"additionalProperties": false,
+	"$ref": "#/definitions/indexingExtension",
 	"properties": {
 		"version": {
 			"type": "string",
@@ -63,12 +104,16 @@
 				"<a href='https://www.reddit.com/dq74jr' target='_blank' rel='noopener noreferrer'>Created by</a> anita6artania"
 			]
 		},
-		"folder": { "$ref": "#/definitions/folder" },
+		"folder": {
+			"$ref": "#/definitions/folder"
+		},
 		"characters": {
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": ["id"],
+				"required": [
+					"id"
+				],
 				"properties": {
 					"id": {
 						"type": "string",
@@ -82,7 +127,9 @@
 						"examples": [],
 						"pattern": "^(.*)$"
 					},
-					"folder": { "$ref": "#/definitions/folder" },
+					"folder": {
+						"$ref": "#/definitions/folder"
+					},
 					"chibi": {
 						"type": "string",
 						"title": "The path to the chibi file",
@@ -100,7 +147,9 @@
 									},
 									{
 										"type": "object",
-										"required": ["variants"],
+										"required": [
+											"variants"
+										],
 										"properties": {
 											"folder": {
 												"$ref": "#/definitions/folder"
@@ -124,18 +173,33 @@
 					"styleGroups": {
 						"type": "array",
 						"items": {
-							"required": ["id", "styles"],
+							"required": [
+								"id",
+								"styles"
+							],
 							"properties": {
-								"id": { "type": "string", "$ref": "#/definitions/id" },
-								"folder": { "$ref": "#/definitions/folder" },
+								"id": {
+									"type": "string",
+									"$ref": "#/definitions/id"
+								},
+								"folder": {
+									"$ref": "#/definitions/folder"
+								},
 								"styleComponents": {
 									"type": "array",
 									"items": {
 										"type": "object",
-										"required": ["id"],
+										"required": [
+											"id"
+										],
 										"properties": {
-											"label": { "type": "string" },
-											"id": { "type": "string", "$ref": "#/definitions/id" },
+											"label": {
+												"type": "string"
+											},
+											"id": {
+												"type": "string",
+												"$ref": "#/definitions/id"
+											},
 											"variants": {
 												"type": "object",
 												"patternProperties": {
@@ -157,7 +221,9 @@
 										"title": "A style",
 										"required": [],
 										"properties": {
-											"folder": { "$ref": "#/definitions/folder" },
+											"folder": {
+												"$ref": "#/definitions/folder"
+											},
 											"components": {
 												"type": "object",
 												"patternProperties": {
@@ -173,7 +239,10 @@
 												"items": {
 													"type": "object",
 													"title": "A pose",
-													"required": ["id", "compatibleHeads"],
+													"required": [
+														"id",
+														"compatibleHeads"
+													],
 													"properties": {
 														"id": {
 															"type": "string",
@@ -230,7 +299,10 @@
 																},
 																"oneOf": [
 																	{
-																		"required": ["type", "images"],
+																		"required": [
+																			"type",
+																			"images"
+																		],
 																		"properties": {
 																			"type": {
 																				"const": "image"
@@ -244,7 +316,10 @@
 																		}
 																	},
 																	{
-																		"required": ["type", "part"],
+																		"required": [
+																			"type",
+																			"part"
+																		],
 																		"properties": {
 																			"type": {
 																				"const": "pose-part"
@@ -255,7 +330,9 @@
 																		}
 																	},
 																	{
-																		"required": ["type"],
+																		"required": [
+																			"type"
+																		],
 																		"properties": {
 																			"type": {
 																				"const": "head"
@@ -265,7 +342,9 @@
 																]
 															},
 															"default": [
-																{ "type": "head" },
+																{
+																	"type": "head"
+																},
 																{
 																	"type": "pose-part",
 																	"part": "Left"
@@ -320,7 +399,10 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": ["id", "variants"],
+				"required": [
+					"id",
+					"variants"
+				],
 				"properties": {
 					"id": {
 						"type": "string",
@@ -331,7 +413,9 @@
 						"type": "string",
 						"title": "The label of the background"
 					},
-					"folder": { "$ref": "#/definitions/folder" },
+					"folder": {
+						"$ref": "#/definitions/folder"
+					},
 					"variants": {
 						"$ref": "#/definitions/variantCollection",
 						"title": "All variants of the background"
@@ -344,7 +428,10 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": ["id", "variants"],
+				"required": [
+					"id",
+					"variants"
+				],
 				"properties": {
 					"id": {
 						"type": "string",
@@ -355,7 +442,9 @@
 						"type": "string",
 						"title": "The label of the sprite"
 					},
-					"folder": { "$ref": "#/definitions/folder" },
+					"folder": {
+						"$ref": "#/definitions/folder"
+					},
 					"variants": {
 						"$ref": "#/definitions/variantCollection",
 						"title": "All variants of the sprite"
@@ -368,7 +457,9 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": ["label"],
+				"required": [
+					"label"
+				],
 				"properties": {
 					"label": {
 						"type": "string",
@@ -399,13 +490,18 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": ["label", "images"],
+				"required": [
+					"label",
+					"images"
+				],
 				"properties": {
 					"label": {
 						"type": "string",
 						"title": "The label of the poem background"
 					},
-					"folder": { "$ref": "#/definitions/folder" },
+					"folder": {
+						"$ref": "#/definitions/folder"
+					},
 					"images": {
 						"$ref": "#/definitions/assetCollection",
 						"title": "All images of the poem"
@@ -422,7 +518,9 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": ["color"],
+				"required": [
+					"color"
+				],
 				"properties": {
 					"label": {
 						"type": "string",
@@ -440,7 +538,10 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": ["id", "variants"],
+				"required": [
+					"id",
+					"variants"
+				],
 				"properties": {
 					"id": {
 						"type": "string",
@@ -451,7 +552,9 @@
 						"type": "string",
 						"title": "The label of the font"
 					},
-					"folder": { "$ref": "#/definitions/folder" },
+					"folder": {
+						"$ref": "#/definitions/folder"
+					},
 					"files": {
 						"$ref": "#/definitions/assetCollection",
 						"title": "All font files"
