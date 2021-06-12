@@ -94,6 +94,10 @@ function walkCharacter<A, B>(
 		chibi: character.chibi ? callback(character.chibi, 'image') : undefined,
 		heads: walkHeads(character.heads, callback),
 		styleGroups: character.styleGroups.map(x => walkStyleGroup(x, callback)),
+		defaultScale: character.defaultScale,
+		hd: character.hd,
+		size: character.size,
+		sdVersion: character.sdVersion,
 	};
 }
 
@@ -212,6 +216,8 @@ function walkBackground<A, B>(
 		variants: background.variants.map(variant =>
 			variant.map(x => callback(x, 'image'))
 		),
+		scaling: background.scaling,
+		sdVersion: background.sdVersion,
 	};
 }
 
@@ -231,9 +237,11 @@ function walkPoemBackgrounds<A, B>(
 	callback: (old: A, type: 'image') => B
 ): PoemBackground<B> {
 	return {
+		id: poemStyle.id,
 		fontColor: poemStyle.fontColor,
 		label: poemStyle.label,
 		images: poemStyle.images.map(x => callback(x, 'image')),
+		sdVersion: poemStyle.sdVersion,
 	};
 }
 
@@ -247,6 +255,9 @@ function walkSprite<A, B>(
 		variants: sprite.variants.map(variant =>
 			variant.map(x => callback(x, 'image'))
 		),
+		defaultScale: sprite.defaultScale,
+		hd: sprite.hd,
+		sdVersion: sprite.sdVersion,
 	};
 }
 
