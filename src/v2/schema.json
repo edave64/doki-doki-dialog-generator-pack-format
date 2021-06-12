@@ -6,9 +6,7 @@
 			"type": "string",
 			"title": "The folder, in which all other paths in this file will be searched",
 			"default": "/",
-			"examples": [
-				"./"
-			]
+			"examples": ["./"]
 		},
 		"assetCollection": {
 			"type": "array",
@@ -76,11 +74,7 @@
 	},
 	"type": "object",
 	"title": "The Root Schema",
-	"required": [
-		"$schema",
-		"version",
-		"packId"
-	],
+	"required": ["$schema", "version", "packId"],
 	"additionalProperties": false,
 	"$ref": "#/definitions/indexingExtension",
 	"properties": {
@@ -111,9 +105,7 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": [
-					"id"
-				],
+				"required": ["id"],
 				"properties": {
 					"id": {
 						"type": "string",
@@ -147,9 +139,7 @@
 									},
 									{
 										"type": "object",
-										"required": [
-											"variants"
-										],
+										"required": ["variants"],
 										"properties": {
 											"folder": {
 												"$ref": "#/definitions/folder"
@@ -173,10 +163,7 @@
 					"styleGroups": {
 						"type": "array",
 						"items": {
-							"required": [
-								"id",
-								"styles"
-							],
+							"required": ["id", "styles"],
 							"properties": {
 								"id": {
 									"type": "string",
@@ -189,9 +176,7 @@
 									"type": "array",
 									"items": {
 										"type": "object",
-										"required": [
-											"id"
-										],
+										"required": ["id"],
 										"properties": {
 											"label": {
 												"type": "string"
@@ -239,10 +224,7 @@
 												"items": {
 													"type": "object",
 													"title": "A pose",
-													"required": [
-														"id",
-														"compatibleHeads"
-													],
+													"required": ["id", "compatibleHeads"],
 													"properties": {
 														"id": {
 															"type": "string",
@@ -299,10 +281,7 @@
 																},
 																"oneOf": [
 																	{
-																		"required": [
-																			"type",
-																			"images"
-																		],
+																		"required": ["type", "images"],
 																		"properties": {
 																			"type": {
 																				"const": "image"
@@ -316,10 +295,7 @@
 																		}
 																	},
 																	{
-																		"required": [
-																			"type",
-																			"part"
-																		],
+																		"required": ["type", "part"],
 																		"properties": {
 																			"type": {
 																				"const": "pose-part"
@@ -330,9 +306,7 @@
 																		}
 																	},
 																	{
-																		"required": [
-																			"type"
-																		],
+																		"required": ["type"],
 																		"properties": {
 																			"type": {
 																				"const": "head"
@@ -390,6 +364,30 @@
 							},
 							"additionalProperties": false
 						}
+					},
+					"defaultScale": {
+						"$ref": "#/definitions/coordinates",
+						"description": "A new object of this type is scaled by this amount by default.",
+						"default": [0.8, 0.8],
+						"items": {
+							"type": "number",
+							"minimum": 0,
+							"maximum": 1
+						}
+					},
+					"size": {
+						"$ref": "#/definitions/coordinates",
+						"description": "The size of this object. This should equal the size of the largest image used plus it's offset",
+						"default": [960, 960]
+					},
+					"hd": {
+						"type": "boolean",
+						"description": "Indicates if the object was build for HD mode. (1080p instead of 720p) This information will be used to scale the object apropriatly in the other resolution",
+						"default": false
+					},
+					"sdVersion": {
+						"type": "string",
+						"description": "The name of the sd version of this character, used to bundle the two together"
 					}
 				},
 				"additionalProperties": false
@@ -399,10 +397,7 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": [
-					"id",
-					"variants"
-				],
+				"required": ["id", "variants"],
 				"properties": {
 					"id": {
 						"type": "string",
@@ -419,6 +414,14 @@
 					"variants": {
 						"$ref": "#/definitions/variantCollection",
 						"title": "All variants of the background"
+					},
+					"scaling": {
+						"type": "string",
+						"enum": ["none", "strech", "cover"]
+					},
+					"sdVersion": {
+						"type": "string",
+						"description": "The name of the sd version of this character, used to bundle the two together"
 					}
 				},
 				"additionalProperties": false
@@ -428,10 +431,7 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": [
-					"id",
-					"variants"
-				],
+				"required": ["id", "variants"],
 				"properties": {
 					"id": {
 						"type": "string",
@@ -448,6 +448,26 @@
 					"variants": {
 						"$ref": "#/definitions/variantCollection",
 						"title": "All variants of the sprite"
+					},
+					"defaultScale": {
+						"$ref": "#/definitions/coordinates",
+						"description": "A new object of this type is scaled by this amount by default.",
+						"default": [1.0, 1.0],
+						"items": {
+							"type": "number",
+							"minimum": 0,
+							"maximum": 1
+						}
+					},
+					"hd": {
+						"type": "boolean",
+						"oneOf": [{ "type": "boolean" }, { "type": "null" }],
+						"description": "Indicates if the object was build for HD mode. (1080p instead of 720p) This information will be used to scale the object apropriatly in the other resolution",
+						"default": false
+					},
+					"sdVersion": {
+						"type": "string",
+						"description": "The name of the sd version of this character, used to bundle the two together"
 					}
 				},
 				"additionalProperties": false
@@ -457,9 +477,7 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": [
-					"label"
-				],
+				"required": ["label"],
 				"properties": {
 					"label": {
 						"type": "string",
@@ -490,11 +508,13 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": [
-					"label",
-					"images"
-				],
+				"required": ["label", "images"],
 				"properties": {
+					"id": {
+						"type": "string",
+						"title": "The poem background id",
+						"$ref": "#/definitions/id"
+					},
 					"label": {
 						"type": "string",
 						"title": "The label of the poem background"
@@ -509,6 +529,10 @@
 					"fontColor": {
 						"type": "string",
 						"title": "The font color on this poem background"
+					},
+					"sdVersion": {
+						"type": "string",
+						"description": "The name of the sd version of this character, used to bundle the two together"
 					}
 				},
 				"additionalProperties": false
@@ -518,9 +542,7 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": [
-					"color"
-				],
+				"required": ["color"],
 				"properties": {
 					"label": {
 						"type": "string",
@@ -538,10 +560,7 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": [
-					"id",
-					"variants"
-				],
+				"required": ["id", "variants"],
 				"properties": {
 					"id": {
 						"type": "string",

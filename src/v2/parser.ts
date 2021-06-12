@@ -114,6 +114,9 @@ export function normalizeSprite(
 		variants: sprite.variants.map(variant =>
 			normalizFileCollection(variant, spriteFolder, ctx)
 		),
+		defaultScale: sprite.defaultScale || [1.0, 1.0],
+		sdVersion: sprite.sdVersion,
+		hd: sprite.hd ?? null,
 	};
 }
 
@@ -134,9 +137,11 @@ export function normalizePoemBackground(
 ): PoemBackground<string> {
 	const fontsFolder = joinNormalize(baseFolder, poem.folder, ctx);
 	return {
+		id: poem.id,
 		label: poem.label,
 		images: normalizFileCollection(poem.images, fontsFolder, ctx),
 		fontColor: poem.fontColor || 'black',
+		sdVersion: poem.sdVersion,
 	};
 }
 
@@ -168,6 +173,12 @@ export function normalizeBackground(
 		variants: background.variants.map(collection =>
 			normalizFileCollection(collection, backgroundFolder, ctx)
 		),
+		scaling: ['none', 'strech', 'cover'].includes(
+			background.scaling?.toLowerCase()!
+		)
+			? (background.scaling!.toLowerCase() as 'none' | 'strech' | 'cover')
+			: 'cover',
+		sdVersion: background.sdVersion,
 	};
 }
 
@@ -205,6 +216,10 @@ function normalizeCharacter(
 			? joinNormalize(charFolder, character.chibi, ctx)
 			: undefined,
 		heads: normalizeHeads(character.heads, charFolder, ctx),
+		defaultScale: character.defaultScale ?? [0.8, 0.8],
+		size: character.size ?? [960, 960],
+		hd: character.hd ?? false,
+		sdVersion: character.sdVersion,
 		styleGroups: mapNormalize(
 			normalizeStyleGroup,
 			character.styleGroups,

@@ -30,6 +30,8 @@ export interface JSONBackground {
 	label?: string;
 	folder?: string;
 	variants: SpriteColllection[];
+	scaling?: string;
+	sdVersion?: string;
 }
 
 export interface JSONSprite {
@@ -37,6 +39,9 @@ export interface JSONSprite {
 	label?: string;
 	folder?: string;
 	variants: SpriteColllection[];
+	defaultScale?: Coordinates;
+	sdVersion?: string;
+	hd?: boolean;
 }
 
 export interface JSONPoemStyle {
@@ -48,10 +53,12 @@ export interface JSONPoemStyle {
 }
 
 export interface JSONPoemBackground {
+	id: string;
 	label: string;
 	folder?: string;
 	images: SpriteColllection;
 	fontColor?: string;
+	sdVersion?: string;
 }
 
 export interface JSONCharacter {
@@ -61,6 +68,10 @@ export interface JSONCharacter {
 	chibi?: string;
 	heads?: JSONHeadCollections;
 	styleGroups?: JSONStyleGroup[];
+	size?: Coordinates;
+	defaultScale?: Coordinates;
+	hd?: boolean;
+	sdVersion?: string;
 }
 
 export interface JSONHeadCollection {
