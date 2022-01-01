@@ -247,11 +247,11 @@
 						"required": ["variant"],
 						"properties": {
 							"variant": {
-								"$id": "#/properties/poses/items/properties/left",
+								"$id": "#/properties/poses/items/properties/variant",
 								"type": "array",
 								"title": "The images for the pose",
 								"items": {
-									"$id": "#/properties/poses/items/properties/left/items",
+									"$id": "#/properties/poses/items/properties/variant/items",
 									"$ref": "#/definitions/nsfwAbleImg",
 									"default": "",
 									"examples": ["3.png"],
