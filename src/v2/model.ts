@@ -21,12 +21,17 @@ export interface Background<T> {
 	id: string;
 	label?: string;
 	variants: Array<SpriteColllection<T>>;
+	scaling: 'none' | 'strech' | 'cover';
+	sdVersion?: string;
 }
 
 export interface Sprite<T> {
 	id: string;
 	label: string;
 	variants: Array<SpriteColllection<T>>;
+	defaultScale: Coordinates;
+	sdVersion?: string;
+	hd: boolean | null;
 }
 
 export interface PoemStyle {
@@ -38,9 +43,11 @@ export interface PoemStyle {
 }
 
 export interface PoemBackground<T> {
+	id: string;
 	label: string;
 	images: SpriteColllection<T>;
 	fontColor: string;
+	sdVersion?: string;
 }
 
 export interface Character<T> {
@@ -48,7 +55,11 @@ export interface Character<T> {
 	label?: string;
 	chibi?: T;
 	heads: HeadCollections<T>;
+	size: Coordinates;
+	defaultScale: Coordinates;
 	styleGroups: Array<StyleGroup<T>>;
+	hd: boolean;
+	sdVersion?: string;
 }
 
 export interface HeadCollection<T> {

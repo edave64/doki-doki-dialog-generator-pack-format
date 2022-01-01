@@ -210,6 +210,9 @@ function convertCharacter(
 		label: characterV1.name,
 		heads: convertHeads(characterV1.heads, ctx, nsfw),
 		styleGroups: extractStyleGroups(characterV1, ctx, nsfw),
+		defaultScale: [0.8, 0.8],
+		size: [960, 960],
+		hd: false,
 	};
 }
 
