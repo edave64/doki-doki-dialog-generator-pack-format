@@ -130,7 +130,8 @@
 						"type": "boolean",
 						"default": false
 					}
-				}
+				},
+				"additionalProperties": false
 			}
 		},
 		"heads": {
@@ -241,7 +242,8 @@
 									"pattern": "^(.*)$"
 								}
 							}
-						}
+						},
+						"additionalProperties": false
 					},
 					{
 						"required": ["variant"],
@@ -258,7 +260,8 @@
 									"pattern": "^(.*)$"
 								}
 							}
-						}
+						},
+						"additionalProperties": false
 					},
 					{
 						"required": ["static"],
@@ -267,11 +270,13 @@
 								"title": "The image of the pose",
 								"type": "string"
 							}
-						}
+						},
+						"additionalProperties": false
 					}
 				]
 			},
 			"additionalProperties": false
 		}
-	}
+	},
+	"additionalProperties": false
 }
