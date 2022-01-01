@@ -104,10 +104,7 @@
 		"packCredits": {
 			"type": "string",
 			"title": "The credits of the content pack",
-			"default": "",
-			"examples": [
-				"<a href='https://www.reddit.com/dq74jr' target='_blank' rel='noopener noreferrer'>Created by</a> anita6artania"
-			]
+			"default": ""
 		},
 		"source": {
 			"type": "string",
