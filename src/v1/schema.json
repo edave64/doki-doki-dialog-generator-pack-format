@@ -35,6 +35,39 @@
 		}
 	],
 	"properties": {
+		"$schema": {
+			"type": "string"
+		},
+		"packName": {
+			"type": "string",
+			"title": "The name of the content pack (optional)"
+		},
+		"authors": {
+			"type": "array",
+			"title": "The creators of the images of the packs (optional)",
+			"items": {
+				"type": "string"
+			}
+		},
+		"packCredits": {
+			"$id": "#/properties/packCredits",
+			"type": "string",
+			"title": "The credits of the content pack",
+			"default": "",
+			"pattern": "^(.*)$"
+		},
+		"source": {
+			"type": "string",
+			"title": "URL of the original release of the images"
+		},
+		"comicClubUrl": {
+			"type": "string",
+			"title": "The URL of a version of the pack for Comic Club. (Optional)"
+		},
+		"cc2credits": {
+			"type":"object",
+			"title": "The credits of a version of the pack for Comic Club. (Optional)"
+		},
 		"id": {
 			"$id": "#/properties/id",
 			"type": "string",
@@ -45,16 +78,6 @@
 			"$id": "#/properties/packId",
 			"type": "string",
 			"title": "The content pack id",
-			"pattern": "^(.*)$"
-		},
-		"packCredits": {
-			"$id": "#/properties/packCredits",
-			"type": "string",
-			"title": "The credits of the content pack",
-			"default": "",
-			"examples": [
-				"<a href='https://www.reddit.com/dq74jr' target='_blank' rel='noopener noreferrer'>Created by</a> anita6artania"
-			],
 			"pattern": "^(.*)$"
 		},
 		"name": {
@@ -80,7 +103,7 @@
 			"$id": "#/properties/folder",
 			"type": "string",
 			"title": "The folder, in which all other paths in this file will be searched",
-			"default": "/",
+			"default": "./",
 			"examples": ["./"],
 			"pattern": "^(.*)$"
 		},
@@ -242,8 +265,7 @@
 									"pattern": "^(.*)$"
 								}
 							}
-						},
-						"additionalProperties": false
+						}
 					},
 					{
 						"required": ["variant"],
@@ -260,8 +282,7 @@
 									"pattern": "^(.*)$"
 								}
 							}
-						},
-						"additionalProperties": false
+						}
 					},
 					{
 						"required": ["static"],
@@ -270,8 +291,7 @@
 								"title": "The image of the pose",
 								"type": "string"
 							}
-						},
-						"additionalProperties": false
+						}
 					}
 				]
 			},

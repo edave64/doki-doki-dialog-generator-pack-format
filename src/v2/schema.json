@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://raw.githubusercontent.com/edave64/doki-doki-dialog-generator-pack-format/master/src/v1/schema.json",
+	"$id": "https://raw.githubusercontent.com/edave64/doki-doki-dialog-generator-pack-format/master/src/v2/schema.json",
 	"definitions": {
 		"folder": {
 			"type": "string",
@@ -78,17 +78,28 @@
 	"additionalProperties": false,
 	"$ref": "#/definitions/indexingExtension",
 	"properties": {
+		"$schema": {
+			"type": "string"
+		},
 		"version": {
 			"type": "string",
 			"const": "2.0"
-		},
-		"$schema": {
-			"type": "string"
 		},
 		"packId": {
 			"type": "string",
 			"title": "The content pack id",
 			"pattern": "^(.*)$"
+		},
+		"packName": {
+			"type": "string",
+			"title": "The name of the content pack (optional)"
+		},
+		"authors": {
+			"type": "array",
+			"title": "The creators of the images of the packs (optional)",
+			"items": {
+				"type": "string"
+			}
 		},
 		"packCredits": {
 			"type": "string",
@@ -97,6 +108,18 @@
 			"examples": [
 				"<a href='https://www.reddit.com/dq74jr' target='_blank' rel='noopener noreferrer'>Created by</a> anita6artania"
 			]
+		},
+		"source": {
+			"type": "string",
+			"title": "URL of the original release of the images. (Optional)"
+		},
+		"comicClubUrl": {
+			"type": "string",
+			"title": "The URL of a version of the pack for Comic Club. (Optional)"
+		},
+		"cc2credits": {
+			"type":"object",
+			"title": "The credits of a version of the pack for Comic Club. (Optional)"
 		},
 		"folder": {
 			"$ref": "#/definitions/folder"
