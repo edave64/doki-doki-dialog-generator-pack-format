@@ -1,0 +1,20 @@
+{
+	"$schema": "../src/v2/schema.json",
+	"version": "2.0",
+	"packId": "dddg.v2.test",
+	"packCredits": "",
+	"backgrounds": [
+		{
+			"id": "ddlc.clubroom",
+			"label": "Clubroom",
+			"folder": "/backgrounds/",
+			"variants": [["club{ext}"], ["club-sm-intro{ext}"], ["club_morning{ext}"]]
+		}
+	],
+	"colors": [
+		{
+			"label": "White",
+			"color": "#FFFFFF"
+		}
+	]
+}

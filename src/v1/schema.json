@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "https://raw.githubusercontent.com/edave64/doki-doki-dialog-generator-pack-format/master/src/v1/schema.json",
-	"definitions": {
+	"$defs": {
 		"nsfwAbleImg": {
 			"oneOf": [
 				{
@@ -65,7 +65,7 @@
 			"title": "The URL of a version of the pack for Comic Club. (Optional)"
 		},
 		"cc2credits": {
-			"type":"object",
+			"type": "object",
 			"title": "The credits of a version of the pack for Comic Club. (Optional)"
 		},
 		"id": {
@@ -179,7 +179,7 @@
 								"all": {
 									"type": "array",
 									"items": {
-										"$ref": "#/definitions/nsfwAbleImg"
+										"$ref": "#/$defs/nsfwAbleImg"
 									}
 								},
 								"folder": {
@@ -247,7 +247,7 @@
 								"title": "The images for the left side of the pose",
 								"items": {
 									"$id": "#/properties/poses/items/properties/left/items",
-									"$ref": "#/definitions/nsfwAbleImg",
+									"$ref": "#/$defs/nsfwAbleImg",
 									"default": "",
 									"examples": ["1l.png"],
 									"pattern": "^(.*)$"
@@ -259,7 +259,7 @@
 								"title": "The images for the right side of the pose",
 								"items": {
 									"$id": "#/properties/poses/items/properties/right/items",
-									"$ref": "#/definitions/nsfwAbleImg",
+									"$ref": "#/$defs/nsfwAbleImg",
 									"default": "",
 									"examples": ["1r.png"],
 									"pattern": "^(.*)$"
@@ -276,7 +276,7 @@
 								"title": "The images for the pose",
 								"items": {
 									"$id": "#/properties/poses/items/properties/variant/items",
-									"$ref": "#/definitions/nsfwAbleImg",
+									"$ref": "#/$defs/nsfwAbleImg",
 									"default": "",
 									"examples": ["3.png"],
 									"pattern": "^(.*)$"

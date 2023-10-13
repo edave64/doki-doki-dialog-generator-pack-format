@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "https://raw.githubusercontent.com/edave64/doki-doki-dialog-generator-pack-format/master/src/v2/schema.json",
-	"definitions": {
+	"$defs": {
 		"folder": {
 			"type": "string",
 			"title": "The folder, in which all other paths in this file will be searched",
@@ -20,7 +20,7 @@
 			"type": "array",
 			"title": "A collection of assets that you can choose between",
 			"items": {
-				"$ref": "#/definitions/assetCollection"
+				"$ref": "#/$defs/assetCollection"
 			}
 		},
 		"id": {
@@ -36,47 +36,12 @@
 			},
 			"minLength": 2,
 			"maxLength": 2
-		},
-		"indexingExtension": {
-			"properties": {
-				"packName": {
-					"type": "string",
-					"title": "The name of the content pack in the listing"
-				},
-				"comicClubUrl": {
-					"type": "string",
-					"title": "Where the comic club version of this pack can be found"
-				},
-				"disclaimer": {
-					"type": "string",
-					"title": "Important information that should be known before using this pack"
-				},
-				"authors": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"title": "The people who created the packs sprites"
-				},
-				"source": {
-					"type": "string",
-					"title": "Where the assets were originally posted"
-				},
-				"dependencies": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"title": "The list of dependenies"
-				}
-			}
 		}
 	},
 	"type": "object",
 	"title": "The Root Schema",
 	"required": ["$schema", "version", "packId"],
 	"additionalProperties": false,
-	"$ref": "#/definitions/indexingExtension",
 	"properties": {
 		"$schema": {
 			"type": "string"
@@ -115,11 +80,11 @@
 			"title": "The URL of a version of the pack for Comic Club. (Optional)"
 		},
 		"cc2credits": {
-			"type":"object",
+			"type": "object",
 			"title": "The credits of a version of the pack for Comic Club. (Optional)"
 		},
 		"folder": {
-			"$ref": "#/definitions/folder"
+			"$ref": "#/$defs/folder"
 		},
 		"characters": {
 			"type": "array",
@@ -131,7 +96,7 @@
 						"type": "string",
 						"title": "The character id",
 						"description": "This id needs to be unique for every character. If the name collides with an existing character, they will be merged",
-						"$ref": "#/definitions/id"
+						"$ref": "#/$defs/id"
 					},
 					"label": {
 						"type": "string",
@@ -140,7 +105,7 @@
 						"pattern": "^(.*)$"
 					},
 					"folder": {
-						"$ref": "#/definitions/folder"
+						"$ref": "#/$defs/folder"
 					},
 					"chibi": {
 						"type": "string",
@@ -155,23 +120,23 @@
 								"title": "Headgroup",
 								"oneOf": [
 									{
-										"$ref": "#/definitions/variantCollection"
+										"$ref": "#/$defs/variantCollection"
 									},
 									{
 										"type": "object",
 										"required": ["variants"],
 										"properties": {
 											"folder": {
-												"$ref": "#/definitions/folder"
+												"$ref": "#/$defs/folder"
 											},
 											"variants": {
-												"$ref": "#/definitions/variantCollection"
+												"$ref": "#/$defs/variantCollection"
 											},
 											"previewSize": {
-												"$ref": "#/definitions/coordinates"
+												"$ref": "#/$defs/coordinates"
 											},
 											"previewOffset": {
-												"$ref": "#/definitions/coordinates"
+												"$ref": "#/$defs/coordinates"
 											}
 										}
 									}
@@ -187,10 +152,10 @@
 							"properties": {
 								"id": {
 									"type": "string",
-									"$ref": "#/definitions/id"
+									"$ref": "#/$defs/id"
 								},
 								"folder": {
-									"$ref": "#/definitions/folder"
+									"$ref": "#/$defs/folder"
 								},
 								"styleComponents": {
 									"type": "array",
@@ -203,7 +168,7 @@
 											},
 											"id": {
 												"type": "string",
-												"$ref": "#/definitions/id"
+												"$ref": "#/$defs/id"
 											},
 											"variants": {
 												"type": "object",
@@ -227,7 +192,7 @@
 										"required": [],
 										"properties": {
 											"folder": {
-												"$ref": "#/definitions/folder"
+												"$ref": "#/$defs/folder"
 											},
 											"components": {
 												"type": "object",
@@ -249,7 +214,7 @@
 														"id": {
 															"type": "string",
 															"title": "The name of a pose. If a content pack includes a pose with the same name as an existing one, the get merged together",
-															"$ref": "#/definitions/id"
+															"$ref": "#/$defs/id"
 														},
 														"compatibleHeads": {
 															"title": "A list of compatible head groups",
@@ -266,7 +231,7 @@
 																"type": "object",
 																"properties": {
 																	"offset": {
-																		"$ref": "#/definitions/coordinates"
+																		"$ref": "#/$defs/coordinates"
 																	},
 																	"composite": {
 																		"type": "string",
@@ -307,10 +272,10 @@
 																				"const": "image"
 																			},
 																			"images": {
-																				"$ref": "#/definitions/assetCollection"
+																				"$ref": "#/$defs/assetCollection"
 																			},
 																			"folder": {
-																				"$ref": "#/definitions/folder"
+																				"$ref": "#/$defs/folder"
 																			}
 																		}
 																	},
@@ -354,22 +319,22 @@
 															]
 														},
 														"folder": {
-															"$ref": "#/definitions/folder"
+															"$ref": "#/$defs/folder"
 														},
 														"previewSize": {
-															"$ref": "#/definitions/coordinates"
+															"$ref": "#/$defs/coordinates"
 														},
 														"previewOffset": {
-															"$ref": "#/definitions/coordinates"
+															"$ref": "#/$defs/coordinates"
 														},
 														"size": {
-															"$ref": "#/definitions/coordinates"
+															"$ref": "#/$defs/coordinates"
 														},
 														"positions": {
 															"type": "object",
 															"patternProperties": {
 																".*": {
-																	"$ref": "#/definitions/variantCollection"
+																	"$ref": "#/$defs/variantCollection"
 																}
 															}
 														}
@@ -386,7 +351,7 @@
 						}
 					},
 					"defaultScale": {
-						"$ref": "#/definitions/coordinates",
+						"$ref": "#/$defs/coordinates",
 						"description": "A new object of this type is scaled by this amount by default.",
 						"default": [0.8, 0.8],
 						"items": {
@@ -396,7 +361,7 @@
 						}
 					},
 					"size": {
-						"$ref": "#/definitions/coordinates",
+						"$ref": "#/$defs/coordinates",
 						"description": "The size of this object. This should equal the size of the largest image used plus it's offset",
 						"default": [960, 960]
 					},
@@ -422,17 +387,17 @@
 					"id": {
 						"type": "string",
 						"title": "The background id",
-						"$ref": "#/definitions/id"
+						"$ref": "#/$defs/id"
 					},
 					"label": {
 						"type": "string",
 						"title": "The label of the background"
 					},
 					"folder": {
-						"$ref": "#/definitions/folder"
+						"$ref": "#/$defs/folder"
 					},
 					"variants": {
-						"$ref": "#/definitions/variantCollection",
+						"$ref": "#/$defs/variantCollection",
 						"title": "All variants of the background"
 					},
 					"scaling": {
@@ -456,21 +421,21 @@
 					"id": {
 						"type": "string",
 						"title": "The sprite id",
-						"$ref": "#/definitions/id"
+						"$ref": "#/$defs/id"
 					},
 					"label": {
 						"type": "string",
 						"title": "The label of the sprite"
 					},
 					"folder": {
-						"$ref": "#/definitions/folder"
+						"$ref": "#/$defs/folder"
 					},
 					"variants": {
-						"$ref": "#/definitions/variantCollection",
+						"$ref": "#/$defs/variantCollection",
 						"title": "All variants of the sprite"
 					},
 					"defaultScale": {
-						"$ref": "#/definitions/coordinates",
+						"$ref": "#/$defs/coordinates",
 						"description": "A new object of this type is scaled by this amount by default.",
 						"default": [1.0, 1.0],
 						"items": {
@@ -533,17 +498,17 @@
 					"id": {
 						"type": "string",
 						"title": "The poem background id",
-						"$ref": "#/definitions/id"
+						"$ref": "#/$defs/id"
 					},
 					"label": {
 						"type": "string",
 						"title": "The label of the poem background"
 					},
 					"folder": {
-						"$ref": "#/definitions/folder"
+						"$ref": "#/$defs/folder"
 					},
 					"images": {
-						"$ref": "#/definitions/assetCollection",
+						"$ref": "#/$defs/assetCollection",
 						"title": "All images of the poem"
 					},
 					"fontColor": {
@@ -585,22 +550,33 @@
 					"id": {
 						"type": "string",
 						"title": "The font id",
-						"$ref": "#/definitions/id"
+						"$ref": "#/$defs/id"
 					},
 					"label": {
 						"type": "string",
 						"title": "The label of the font"
 					},
 					"folder": {
-						"$ref": "#/definitions/folder"
+						"$ref": "#/$defs/folder"
 					},
 					"files": {
-						"$ref": "#/definitions/assetCollection",
+						"$ref": "#/$defs/assetCollection",
 						"title": "All font files"
 					}
 				},
 				"additionalProperties": false
 			}
+		},
+		"disclaimer": {
+			"type": "string",
+			"title": "Important information that should be known before using this pack"
+		},
+		"dependencies": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"title": "The list of dependenies"
 		}
 	}
 }
