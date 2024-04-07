@@ -145,8 +145,7 @@
 					}
 				}
 			},
-			"additionalItems": true
+			"additionalProperties": true
 		}
-	},
-	"additionalProperties": false
+	}
 }
