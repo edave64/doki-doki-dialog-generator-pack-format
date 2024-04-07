@@ -3,7 +3,6 @@
 	"$id": "https://raw.githubusercontent.com/edave64/doki-doki-dialog-generator-pack-format/master/src/repo_schema.json",
 	"type": "object",
 	"title": "A repo description file",
-	"required": ["id"],
 	"anyOf": [
 		{
 			"properties": {
