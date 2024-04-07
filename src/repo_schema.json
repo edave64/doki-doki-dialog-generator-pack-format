@@ -108,44 +108,47 @@
 			"type": "string"
 		},
 		"authors": {
-			"type": "array",
-			"title": "The creators of the images of the packs, and where you can contact them or find more of their work.",
-			"items": {
-				"type": "object",
-				"properties": {
-					"reddit": {
-						"type": "string",
-						"title": "The reddit username"
+			"type": "object",
+			"title": "The creators of the images of the packs, and where you can contact them or find more of their work. The key here is the id with which the packs will refer to them.",
+			"patternProperties": {
+				"^[\\w\\d.-]+$": {
+					"type": "object",
+					"properties": {
+						"reddit": {
+							"type": "string",
+							"title": "The reddit username"
+						},
+						"discord": {
+							"type": "string",
+							"title": "The discord id"
+						},
+						"github": {
+							"type": "string",
+							"title": "The github username"
+						},
+						"twitter": {
+							"type": "string",
+							"title": "The twitter handle"
+						},
+						"website": {
+							"type": "string",
+							"title": "A website of this person",
+							"format": "uri"
+						},
+						"deviantart": {
+							"type": "string",
+							"title": "The deviantart username"
+						},
+						"pixiv": {
+							"type": "string",
+							"title": "The pixiv id",
+							"pattern": "^\\d+$"
+						}
 					},
-					"discord": {
-						"type": "string",
-						"title": "The discord id"
-					},
-					"github": {
-						"type": "string",
-						"title": "The github username"
-					},
-					"twitter": {
-						"type": "string",
-						"title": "The twitter handle"
-					},
-					"website": {
-						"type": "string",
-						"title": "A website of this person",
-						"format": "uri"
-					},
-					"deviantart": {
-						"type": "string",
-						"title": "The deviantart username"
-					},
-					"pixiv": {
-						"type": "string",
-						"title": "The pixiv id",
-						"pattern": "^\\d+$"
-					}
+					"additionalProperties": true
 				}
 			},
-			"additionalProperties": true
+			"additionalProperties": false
 		}
 	}
 }
