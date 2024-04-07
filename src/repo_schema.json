@@ -1,0 +1,152 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://raw.githubusercontent.com/edave64/doki-doki-dialog-generator-pack-format/master/src/repo_schema.json",
+	"type": "object",
+	"title": "A repo description file",
+	"required": ["id"],
+	"anyOf": [
+		{
+			"properties": {
+				"pack": {
+					"type": "object",
+					"title": "The description of a content pack",
+					"properties": {
+						"id": {
+							"type": "string",
+							"pattern": "^[\\w\\d.-]+$",
+							"title": "The pack id. Must match the 'packId' in the corresponding index.json"
+						},
+						"name": {
+							"type": "string",
+							"title": "The title of the content pack. This is the name that will be shown to the user."
+						},
+						"characters": {
+							"type": "array",
+							"title": "The characters that this content pack involves. This uses the actual names of the characters, not their ids. Used primarily for filtering.",
+							"items": {
+								"type": "string",
+								"title": "The name of a character",
+								"examples": ["Monika", "Sayori", "Natsuki", "Yuri"]
+							}
+						},
+						"authors": {
+							"type": "array",
+							"title": "A list of people involved with making this pack. Should be ordered by the size of the contribution. Can also include commissioners.",
+							"items": {
+								"type": "string",
+								"title": "A author id. The full data of the author should be in the `authors` section of the repo.json",
+								"pattern": "^[\\w\\d.-]+$"
+							}
+						},
+						"kind": {
+							"type": "array",
+							"title": "The types of content inside this content pack.",
+							"items": {
+								"type": "string",
+								"enum": [
+									"Characters",
+									"Backgrounds",
+									"Styles",
+									"Sprites",
+									"Expressions",
+									"Poses"
+								]
+							}
+						},
+						"dddg1Path": {
+							"type": "string",
+							"title": "The location of the DDDG 1.5 compatible version of this pack relative to the `repo.json`."
+						},
+						"dddg2Path": {
+							"type": "string",
+							"title": "The location of the DDDG 2 compatible version of this pack relative to the `repo.json`. If this is not set, DDDG 2 can also load the file in `dddg1Path` through backwards compatibility."
+						},
+						"ddcc2Path": {
+							"type": "string",
+							"title": "The location of a zip file relative to the `repo.json` containing a version of this pack compatible with Doki Doki Comic Club."
+						},
+						"description": {
+							"type": "string",
+							"title": "A text description of the content pack. Can contain whatever you want to tell a user about this pack. Often used for more detailed credits."
+						},
+						"preview": {
+							"type": "array",
+							"title": "A list of images that will be layed on top of each other as a preview of this packs contents. The paths are all relative to the `repo.json`. Should be something that's representative of the packs contents.",
+							"items": {
+								"type": "string"
+							}
+						},
+						"searchWords": {
+							"type": "array",
+							"title": "A list of phrases that are not visible to the user but will be used as part of searches. This should contain synonyms of the words in you pack name or things that stand out about it and that users are likely to search for.",
+							"items": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			},
+			"required": ["pack"]
+		},
+		{
+			"properties": {
+				"packs": {
+					"type": "array",
+					"title": "A list of content pack descriptions",
+					"items": {
+						"$comment": "Same as the `pack` object above this. Just more of them",
+						"$ref": "#/anyOf/0/properties/pack"
+					},
+					"minItems": 1
+				}
+			},
+			"required": ["packs"]
+		}
+	],
+	"properties": {
+		"$schema": {
+			"type": "string"
+		},
+		"authors": {
+			"type": "array",
+			"title": "The creators of the images of the packs, and where you can contact them or find more of their work.",
+			"items": {
+				"type": "object",
+				"properties": {
+					"reddit": {
+						"type": "string",
+						"title": "The reddit username"
+					},
+					"discord": {
+						"type": "string",
+						"title": "The discord id"
+					},
+					"github": {
+						"type": "string",
+						"title": "The github username"
+					},
+					"twitter": {
+						"type": "string",
+						"title": "The twitter handle"
+					},
+					"website": {
+						"type": "string",
+						"title": "A website of this person",
+						"format": "uri"
+					},
+					"deviantart": {
+						"type": "string",
+						"title": "The deviantart username"
+					},
+					"pixiv": {
+						"type": "string",
+						"title": "The pixiv id",
+						"pattern": "^\\d+$"
+					}
+				}
+			},
+			"additionalItems": true
+		}
+	},
+	"additionalProperties": false
+}

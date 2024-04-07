@@ -9,5 +9,6 @@
     "cSpell.words": [
         "chibi",
         "promisify"
-    ]
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
