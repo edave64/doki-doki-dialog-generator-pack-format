@@ -34,7 +34,7 @@
 							"items": {
 								"type": "string",
 								"title": "A author id. The full data of the author should be in the `authors` section of the repo.json",
-								"pattern": "^[\\w\\d.-]+$"
+								"pattern": "^[\\w\\d.- ]+$"
 							}
 						},
 						"kind": {
@@ -110,7 +110,7 @@
 			"type": "object",
 			"title": "The creators of the images of the packs, and where you can contact them or find more of their work. The key here is the id with which the packs will refer to them.",
 			"patternProperties": {
-				"^[\\w\\d.-]+$": {
+				"^[\\w\\d.- ]+$": {
 					"type": "object",
 					"properties": {
 						"reddit": {
