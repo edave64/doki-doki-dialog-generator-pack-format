@@ -54,15 +54,18 @@
 						},
 						"dddg1Path": {
 							"type": "string",
-							"title": "The location of the DDDG 1.5 compatible version of this pack relative to the `repo.json`."
+							"title": "The location of the DDDG 1.5 compatible version of this pack relative to the `repo.json`.",
+							"format": "uri-reference"
 						},
 						"dddg2Path": {
 							"type": "string",
-							"title": "The location of the DDDG 2 compatible version of this pack relative to the `repo.json`. If this is not set, DDDG 2 can also load the file in `dddg1Path` through backwards compatibility."
+							"title": "The location of the DDDG 2 compatible version of this pack relative to the `repo.json`. If this is not set, DDDG 2 can also load the file in `dddg1Path` through backwards compatibility.",
+							"format": "uri-reference"
 						},
 						"ddcc2Path": {
 							"type": "string",
-							"title": "The location of a zip file relative to the `repo.json` containing a version of this pack compatible with Doki Doki Comic Club."
+							"title": "The location of a zip file relative to the `repo.json` containing a version of this pack compatible with Doki Doki Comic Club.",
+							"format": "uri-reference"
 						},
 						"description": {
 							"type": "string",
@@ -72,7 +75,8 @@
 							"type": "array",
 							"title": "A list of images that will be layed on top of each other as a preview of this packs contents. The paths are all relative to the `repo.json`. Should be something that's representative of the packs contents.",
 							"items": {
-								"type": "string"
+								"type": "string",
+								"format": "uri-reference"
 							}
 						},
 						"searchWords": {
