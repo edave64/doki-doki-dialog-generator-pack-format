@@ -145,17 +145,6 @@
 						},
 						"additionalProperties": false
 					},
-					"customHeads": {
-						"type": "object",
-						"title": "Custom expression definitions for head groups",
-						"patternProperties": {
-							".*": {
-								"type": "object",
-								"title": "Headgroup",
-							}
-						},
-						"additionalProperties": false
-					},
 					"styleGroups": {
 						"type": "array",
 						"items": {
