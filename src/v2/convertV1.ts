@@ -325,8 +325,10 @@ function convertPoses(
 	return posesV1.map(
 		(poseV1): V2.Pose<string> => {
 			return {
-				compatibleHeads: poseV1.compatibleHeads.map(x =>
+				compatibleHeads: makeUnique(
+					poseV1.compatibleHeads.map(x =>
 					expandOrTranslateId('heads', x.toString(), ctx)
+					)
 				),
 				id: expandOrTranslateId('poses', poseV1.name, ctx),
 				renderCommands: getRenderCommands(
@@ -347,6 +349,10 @@ function convertPoses(
 			};
 		}
 	);
+}
+
+function makeUnique<T>(arr: T[]): T[] {
+	return [...new Set(arr)];
 }
 
 function convertNsfwAbles(
