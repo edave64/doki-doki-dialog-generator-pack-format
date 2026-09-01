@@ -79,6 +79,11 @@
 								"format": "uri-reference"
 							}
 						},
+						"source": {
+							"type": "string",
+							"title": "A permalink to the original publication of the images.",
+							"format": "uri-reference"
+						},
 						"searchWords": {
 							"type": "array",
 							"title": "A list of phrases that are not visible to the user but will be used as part of searches. This should contain synonyms of the words in you pack name or things that stand out about it and that users are likely to search for.",
