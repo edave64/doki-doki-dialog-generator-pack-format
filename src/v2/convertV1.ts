@@ -327,7 +327,7 @@ function convertPoses(
 			return {
 				compatibleHeads: makeUnique(
 					poseV1.compatibleHeads.map(x =>
-					expandOrTranslateId('heads', x.toString(), ctx)
+						expandOrTranslateId('heads', x.toString(), ctx)
 					)
 				),
 				id: expandOrTranslateId('poses', poseV1.name, ctx),
@@ -339,13 +339,17 @@ function convertPoses(
 				previewSize: poseV1.size,
 				size: [960, 960],
 				scale: 0.8,
-				positions: {
-					Static: 'static' in poseV1 ? [[poseV1.static]] : [],
-					Left: 'left' in poseV1 ? convertNsfwAbles(poseV1.left, nsfw) : [],
-					Right: 'right' in poseV1 ? convertNsfwAbles(poseV1.right, nsfw) : [],
-					Variant:
-						'variant' in poseV1 ? convertNsfwAbles(poseV1.variant, nsfw) : [],
-				},
+				positions: (() => {
+					const positions: V2.Pose<string>['positions'] = {};
+					if ('static' in poseV1) positions.Static = [[poseV1.static]];
+					if ('left' in poseV1)
+						positions.Left = convertNsfwAbles(poseV1.left, nsfw);
+					if ('right' in poseV1)
+						positions.Right = convertNsfwAbles(poseV1.right, nsfw);
+					if ('variant' in poseV1)
+						positions.Variant = convertNsfwAbles(poseV1.variant, nsfw);
+					return positions;
+				})(),
 			};
 		}
 	);
