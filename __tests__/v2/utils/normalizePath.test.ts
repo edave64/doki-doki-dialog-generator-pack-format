@@ -129,6 +129,6 @@ describe('V2: Path normalization', () => {
 	it('format stacking limit', () => {
 		expect(() =>
 			normalizePath('/{ext}', new Map([['ext', '{ext}{ext}']]), new Set(), true)
-		).toThrowError();
+		).toThrow();
 	});
 });

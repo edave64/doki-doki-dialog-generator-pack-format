@@ -38,9 +38,7 @@ interface JSONTwoSidedPose<H> extends JSONPose<H> {
 }
 
 export type JSONPoseMeta<H extends JSONHeadCollections> =
-	| JSONStaticPose<H>
-	| JSONVariantPose<H>
-	| JSONTwoSidedPose<H>;
+	JSONStaticPose<H> | JSONVariantPose<H> | JSONTwoSidedPose<H>;
 
 export interface JSONStyle {
 	name: string;

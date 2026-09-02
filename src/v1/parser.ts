@@ -104,7 +104,7 @@ function normalizePoses(
 ): Array<PoseMeta<HeadCollections>> {
 	if (!poses) return [];
 
-	return poses.map(pose => {
+	return poses.map((pose) => {
 		const poseFolder = joinNormalize(baseFolder, pose.folder, paths);
 		const ret = {
 			compatibleHeads: pose.compatibleHeads || [],
@@ -149,26 +149,24 @@ function normalizeNsfwAbleCollection(
 	poseFolder: string,
 	paths: Paths
 ): NsfwAbleImg[] {
-	return collection.map(
-		(variant): NsfwAbleImg => {
-			if (typeof variant === 'string') {
-				return {
-					img: joinNormalize(poseFolder, variant, paths),
-					nsfw: false,
-				};
-			} else {
-				return {
-					img: joinNormalize(poseFolder, variant.img, paths),
-					nsfw: variant.nsfw || false,
-				};
-			}
+	return collection.map((variant): NsfwAbleImg => {
+		if (typeof variant === 'string') {
+			return {
+				img: joinNormalize(poseFolder, variant, paths),
+				nsfw: false,
+			};
+		} else {
+			return {
+				img: joinNormalize(poseFolder, variant.img, paths),
+				nsfw: variant.nsfw || false,
+			};
 		}
-	);
+	});
 }
 
 function normalizeStyles(styles?: JSONStyle[]): Style[] {
 	if (!styles) return [];
-	return styles.map(style => ({
+	return styles.map((style) => ({
 		name: style.name,
 		label: style.label,
 		nsfw: style.nsfw || false,

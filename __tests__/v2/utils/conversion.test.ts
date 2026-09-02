@@ -52,23 +52,28 @@ describe('V2: V1 Conversion', () => {
 		};
 		const converted = convert(base, {}, false);
 		expect(converted).toMatchInlineSnapshot(`
-		Object {
-		  "backgrounds": Array [],
-		  "characters": Array [
-		    Object {
+		{
+		  "backgrounds": [],
+		  "characters": [
+		    {
 		      "chibi": "fisch",
-		      "heads": Object {
-		        "test.pack:sideways": Object {
-		          "previewOffset": Array [
+		      "defaultScale": [
+		        0.8,
+		        0.8,
+		      ],
+		      "hd": false,
+		      "heads": {
+		        "test.pack:sideways": {
+		          "previewOffset": [
 		            20,
 		            20,
 		          ],
-		          "previewSize": Array [
+		          "previewSize": [
 		            20,
 		            20,
 		          ],
-		          "variants": Array [
-		            Array [
+		          "variants": [
+		            [
 		              "head1",
 		            ],
 		          ],
@@ -76,91 +81,95 @@ describe('V2: V1 Conversion', () => {
 		      },
 		      "id": "test.pack:fisch",
 		      "label": "Fisch",
-		      "styleGroups": Array [
-		        Object {
+		      "size": [
+		        960,
+		        960,
+		      ],
+		      "styleGroups": [
+		        {
 		          "id": "test.pack:uniform",
-		          "styleComponents": Array [
-		            Object {
+		          "styleComponents": [
+		            {
 		              "id": "test.pack:eyes",
 		              "label": "Eyes",
-		              "variants": Object {
+		              "variants": {
 		                "green": "lh",
 		                "violet": "sh",
 		              },
 		            },
-		            Object {
+		            {
 		              "id": "test.pack:hairs",
 		              "label": "Hairs",
-		              "variants": Object {
+		              "variants": {
 		                "long": "lh",
 		                "short": "sh",
 		              },
 		            },
 		          ],
-		          "styles": Array [
-		            Object {
-		              "components": Object {
+		          "styles": [
+		            {
+		              "components": {
 		                "test.pack:eyes": "green",
 		                "test.pack:hairs": "long",
 		              },
-		              "poses": Array [
-		                Object {
-		                  "compatibleHeads": Array [
+		              "poses": [
+		                {
+		                  "compatibleHeads": [
 		                    "test.pack:sideways",
 		                  ],
 		                  "id": "test.pack:straight-uniform-long-green",
-		                  "positions": Object {
-		                    "Left": Array [],
-		                    "Right": Array [],
-		                    "Static": Array [
-		                      Array [
+		                  "positions": {
+		                    "Left": [],
+		                    "Right": [],
+		                    "Static": [
+		                      [
 		                        "asd",
 		                      ],
 		                    ],
-		                    "Variant": Array [],
+		                    "Variant": [],
 		                  },
-		                  "previewOffset": Array [
+		                  "previewOffset": [
 		                    0,
 		                    0,
 		                  ],
-		                  "previewSize": Array [
+		                  "previewSize": [
 		                    0,
 		                    0,
 		                  ],
-		                  "renderCommands": Array [
-		                    Object {
-		                      "offset": Array [
+		                  "renderCommands": [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "type": "head",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "part": "Static",
 		                      "type": "pose-part",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "part": "Variant",
 		                      "type": "pose-part",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "part": "Left",
 		                      "type": "pose-part",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
@@ -169,7 +178,7 @@ describe('V2: V1 Conversion', () => {
 		                    },
 		                  ],
 		                  "scale": 0.8,
-		                  "size": Array [
+		                  "size": [
 		                    960,
 		                    960,
 		                  ],
@@ -181,14 +190,14 @@ describe('V2: V1 Conversion', () => {
 		      ],
 		    },
 		  ],
-		  "colors": Array [],
-		  "dependencies": Array [],
-		  "fonts": Array [],
-		  "packCredits": Array [],
+		  "colors": [],
+		  "dependencies": [],
+		  "fonts": [],
+		  "packCredits": [],
 		  "packId": "test.pack",
-		  "poemBackgrounds": Array [],
-		  "poemStyles": Array [],
-		  "sprites": Array [],
+		  "poemBackgrounds": [],
+		  "poemStyles": [],
+		  "sprites": [],
 		}
 	`);
 	});
@@ -235,89 +244,96 @@ describe('V2: V1 Conversion', () => {
 		);
 		const converted = convert(base, {}, false);
 		expect(converted).toMatchInlineSnapshot(`
-		Object {
-		  "backgrounds": Array [],
-		  "characters": Array [
-		    Object {
+		{
+		  "backgrounds": [],
+		  "characters": [
+		    {
 		      "chibi": undefined,
-		      "heads": Object {},
+		      "defaultScale": [
+		        0.8,
+		        0.8,
+		      ],
+		      "hd": false,
+		      "heads": {},
 		      "id": "dddg.buildin.base.monika:ddlc.monika",
 		      "label": undefined,
-		      "styleGroups": Array [
-		        Object {
+		      "size": [
+		        960,
+		        960,
+		      ],
+		      "styleGroups": [
+		        {
 		          "id": "monika.outfit.casual.destinypvegal.edave64:casual_destinypvegal",
-		          "styleComponents": Array [],
-		          "styles": Array [
-		            Object {
-		              "components": Object {},
-		              "poses": Array [
-		                Object {
-		                  "compatibleHeads": Array [
+		          "styleComponents": [],
+		          "styles": [
+		            {
+		              "components": {},
+		              "poses": [
+		                {
+		                  "compatibleHeads": [
 		                    "dddg.buildin.base.monika:straight",
 		                  ],
 		                  "id": "monika.outfit.casual.destinypvegal.edave64:normal-casual_destinypvegal",
-		                  "positions": Object {
-		                    "Left": Array [
-		                      Array [
+		                  "positions": {
+		                    "Left": [
+		                      [
 		                        "testpath/1l.png",
 		                      ],
-		                      Array [
+		                      [
 		                        "testpath/2l.png",
 		                      ],
 		                    ],
-		                    "Right": Array [
-		                      Array [
+		                    "Right": [
+		                      [
 		                        "testpath/1r.png",
 		                      ],
-		                      Array [
+		                      [
 		                        "testpath/2r.png",
 		                      ],
 		                    ],
-		                    "Static": Array [],
-		                    "Variant": Array [],
 		                  },
-		                  "previewOffset": Array [
+		                  "previewOffset": [
 		                    0,
 		                    0,
 		                  ],
-		                  "previewSize": Array [
+		                  "previewSize": [
 		                    960,
 		                    960,
 		                  ],
-		                  "renderCommands": Array [
-		                    Object {
-		                      "offset": Array [
+		                  "renderCommands": [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "type": "head",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "part": "Static",
 		                      "type": "pose-part",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "part": "Variant",
 		                      "type": "pose-part",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "part": "Left",
 		                      "type": "pose-part",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
@@ -326,68 +342,65 @@ describe('V2: V1 Conversion', () => {
 		                    },
 		                  ],
 		                  "scale": 0.8,
-		                  "size": Array [
+		                  "size": [
 		                    960,
 		                    960,
 		                  ],
 		                },
-		                Object {
-		                  "compatibleHeads": Array [
+		                {
+		                  "compatibleHeads": [
 		                    "dddg.buildin.base.monika:sideways",
 		                  ],
 		                  "id": "monika.outfit.casual.destinypvegal.edave64:leaned-casual_destinypvegal",
-		                  "positions": Object {
-		                    "Left": Array [],
-		                    "Right": Array [],
-		                    "Static": Array [
-		                      Array [
+		                  "positions": {
+		                    "Static": [
+		                      [
 		                        "testpath/3.png",
 		                      ],
 		                    ],
-		                    "Variant": Array [],
 		                  },
-		                  "previewOffset": Array [
+		                  "previewOffset": [
 		                    0,
 		                    0,
 		                  ],
-		                  "previewSize": Array [
+		                  "previewSize": [
 		                    960,
 		                    960,
 		                  ],
-		                  "renderCommands": Array [
-		                    Object {
-		                      "offset": Array [
+		                  "renderCommands": [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "type": "head",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "part": "Static",
 		                      "type": "pose-part",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "part": "Variant",
 		                      "type": "pose-part",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
 		                      "part": "Left",
 		                      "type": "pose-part",
 		                    },
-		                    Object {
-		                      "offset": Array [
+		                    {
+		                      "offset": [
 		                        0,
 		                        0,
 		                      ],
@@ -396,7 +409,7 @@ describe('V2: V1 Conversion', () => {
 		                    },
 		                  ],
 		                  "scale": 0.8,
-		                  "size": Array [
+		                  "size": [
 		                    960,
 		                    960,
 		                  ],
@@ -408,16 +421,16 @@ describe('V2: V1 Conversion', () => {
 		      ],
 		    },
 		  ],
-		  "colors": Array [],
-		  "dependencies": Array [],
-		  "fonts": Array [],
-		  "packCredits": Array [
+		  "colors": [],
+		  "dependencies": [],
+		  "fonts": [],
+		  "packCredits": [
 		    "<a href='https://www.reddit.com/comments/8t62u7' target='_blank' rel='noopener noreferrer'>Created by</a> DestinyPvEGal",
 		  ],
 		  "packId": "monika.outfit.casual.destinypvegal.edave64",
-		  "poemBackgrounds": Array [],
-		  "poemStyles": Array [],
-		  "sprites": Array [],
+		  "poemBackgrounds": [],
+		  "poemStyles": [],
+		  "sprites": [],
 		}
 	`);
 	});

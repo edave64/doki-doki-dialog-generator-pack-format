@@ -39,9 +39,7 @@ interface TwoSidedPose<H> extends Pose<H> {
 }
 
 export type PoseMeta<H extends HeadCollections> =
-	| StaticPose<H>
-	| VariantPose<H>
-	| TwoSidedPose<H>;
+	StaticPose<H> | VariantPose<H> | TwoSidedPose<H>;
 
 export interface Style {
 	name: string;

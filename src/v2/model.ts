@@ -97,9 +97,7 @@ export interface Pose<T> {
 }
 
 export type PoseRenderCommand<T> =
-	| IStaticImageCommand<T>
-	| IPosePartCommand
-	| IHeadCommand;
+	IStaticImageCommand<T> | IPosePartCommand | IHeadCommand;
 
 export interface IPoseCommand {
 	offset: Coordinates;

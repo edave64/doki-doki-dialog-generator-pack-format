@@ -189,7 +189,7 @@ const translationTables: { [charId: string]: ITranslationTable | undefined } = {
 	}),
 };
 
-function autoDependency(v1CharId: string): string[] {
+function autoDependency(_v1CharId: string): string[] {
 	return [];
 }
 
@@ -232,12 +232,12 @@ function extractStyleGroups(
 				: []
 			: styleComponents;
 	const styleNames = characterV1.poses
-		.map(pose => pose.style)
+		.map((pose) => pose.style)
 		.filter((value, index, ary) => {
 			return ary.indexOf(value) === index;
 		});
 	const styleDefinitions = new Map(
-		characterV1.styles.map(style => [style.name, style])
+		characterV1.styles.map((style) => [style.name, style])
 	);
 
 	for (const styleName of styleNames) {
@@ -259,9 +259,8 @@ function extractStyleGroups(
 
 		reducedName = expandOrTranslateId('styleGroups', reducedName, ctx);
 
-		let styleGroup: V2.StyleGroup<string> | undefined = baseStyles.get(
-			reducedName
-		);
+		let styleGroup: V2.StyleGroup<string> | undefined =
+			baseStyles.get(reducedName);
 		if (!styleGroup) {
 			styleGroup = {
 				id: reducedName,
@@ -275,13 +274,13 @@ function extractStyleGroups(
 		styleGroup.styles.push({
 			components,
 			poses: convertPoses(
-				characterV1.poses.filter(pose => pose.style === styleName),
+				characterV1.poses.filter((pose) => pose.style === styleName),
 				ctx,
 				nsfw
 			),
 		});
 	}
-	return baseStyleIds.map(id => baseStyles.get(id)!);
+	return baseStyleIds.map((id) => baseStyles.get(id)!);
 }
 
 function normalizeStyleComponets(
@@ -322,37 +321,35 @@ function convertPoses(
 	ctx: ITranslationContext,
 	nsfw: boolean
 ): Array<V2.Pose<string>> {
-	return posesV1.map(
-		(poseV1): V2.Pose<string> => {
-			return {
-				compatibleHeads: makeUnique(
-					poseV1.compatibleHeads.map(x =>
-						expandOrTranslateId('heads', x.toString(), ctx)
-					)
-				),
-				id: expandOrTranslateId('poses', poseV1.name, ctx),
-				renderCommands: getRenderCommands(
-					poseV1.headInForeground,
-					poseV1.headAnchor
-				),
-				previewOffset: poseV1.offset,
-				previewSize: poseV1.size,
-				size: [960, 960],
-				scale: 0.8,
-				positions: (() => {
-					const positions: V2.Pose<string>['positions'] = {};
-					if ('static' in poseV1) positions.Static = [[poseV1.static]];
-					if ('left' in poseV1)
-						positions.Left = convertNsfwAbles(poseV1.left, nsfw);
-					if ('right' in poseV1)
-						positions.Right = convertNsfwAbles(poseV1.right, nsfw);
-					if ('variant' in poseV1)
-						positions.Variant = convertNsfwAbles(poseV1.variant, nsfw);
-					return positions;
-				})(),
-			};
-		}
-	);
+	return posesV1.map((poseV1): V2.Pose<string> => {
+		return {
+			compatibleHeads: makeUnique(
+				poseV1.compatibleHeads.map((x) =>
+					expandOrTranslateId('heads', x.toString(), ctx)
+				)
+			),
+			id: expandOrTranslateId('poses', poseV1.name, ctx),
+			renderCommands: getRenderCommands(
+				poseV1.headInForeground,
+				poseV1.headAnchor
+			),
+			previewOffset: poseV1.offset,
+			previewSize: poseV1.size,
+			size: [960, 960],
+			scale: 0.8,
+			positions: (() => {
+				const positions: V2.Pose<string>['positions'] = {};
+				if ('static' in poseV1) positions.Static = [[poseV1.static]];
+				if ('left' in poseV1)
+					positions.Left = convertNsfwAbles(poseV1.left, nsfw);
+				if ('right' in poseV1)
+					positions.Right = convertNsfwAbles(poseV1.right, nsfw);
+				if ('variant' in poseV1)
+					positions.Variant = convertNsfwAbles(poseV1.variant, nsfw);
+				return positions;
+			})(),
+		};
+	});
 }
 
 function makeUnique<T>(arr: T[]): T[] {
@@ -363,7 +360,7 @@ function convertNsfwAbles(
 	nsfwAbles: V1.NsfwAbleImg[],
 	nsfw: boolean
 ): string[][] {
-	return nsfwAbles.filter(img => !img.nsfw || nsfw).map(img => [img.img]);
+	return nsfwAbles.filter((img) => !img.nsfw || nsfw).map((img) => [img.img]);
 }
 
 function convertHeads(
@@ -380,8 +377,8 @@ function convertHeads(
 			previewOffset: headCollectionV1.offset,
 			previewSize: headCollectionV1.size,
 			variants: headCollectionV1.all
-				.filter(image => !image.nsfw || nsfw)
-				.map(img => [img.img]),
+				.filter((image) => !image.nsfw || nsfw)
+				.map((img) => [img.img]),
 		};
 	}
 
@@ -396,7 +393,7 @@ function convertStyleComponents(
 	const retVariants: string[] = [];
 
 	if (Object.keys(characterV1.eyes).length > 0) {
-		Object.keys(characterV1.eyes).forEach(eyeKey => retVariants.push(eyeKey));
+		Object.keys(characterV1.eyes).forEach((eyeKey) => retVariants.push(eyeKey));
 		ret.push({
 			label: 'Eyes',
 			id: expandOrTranslateId('eyes', 'eyes', ctx),
@@ -405,7 +402,7 @@ function convertStyleComponents(
 	}
 
 	if (Object.keys(characterV1.hairs).length > 0) {
-		Object.keys(characterV1.hairs).forEach(hairKey =>
+		Object.keys(characterV1.hairs).forEach((hairKey) =>
 			retVariants.push(hairKey)
 		);
 		ret.push({
@@ -435,7 +432,7 @@ interface ITranslationTable {
 }
 
 function associate(targetPack: string, ids: string[]): Map<string, string> {
-	return new Map(ids.map(id => [id, `${targetPack}:${id}`]));
+	return new Map(ids.map((id) => [id, `${targetPack}:${id}`]));
 }
 
 function assocChar(
@@ -453,21 +450,21 @@ function assocChar(
 ): ITranslationTable {
 	if (!input.extraHeadAssoc) input.extraHeadAssoc = [];
 	else {
-		input.extraHeadAssoc = input.extraHeadAssoc.map(extra => [
+		input.extraHeadAssoc = input.extraHeadAssoc.map((extra) => [
 			extra[0],
 			`${targetPack}:${extra[1]}`,
 		]);
 	}
 	if (!input.extraPoseAssoc) input.extraPoseAssoc = [];
 	else {
-		input.extraPoseAssoc = input.extraPoseAssoc.map(extra => [
+		input.extraPoseAssoc = input.extraPoseAssoc.map((extra) => [
 			extra[0],
 			`${targetPack}:${extra[1]}`,
 		]);
 	}
 	if (!input.extraStyleGroupAssoc) input.extraStyleGroupAssoc = [];
 	else {
-		input.extraStyleGroupAssoc = input.extraStyleGroupAssoc.map(extra => [
+		input.extraStyleGroupAssoc = input.extraStyleGroupAssoc.map((extra) => [
 			extra[0],
 			`${targetPack}:${extra[1]}`,
 		]);

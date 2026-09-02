@@ -99,7 +99,7 @@ export function mapNormalize<A, B>(
 	ctx: IContext
 ): B[] {
 	if (!collection) return [];
-	return collection.map(element => callback(element, folder, ctx));
+	return collection.map((element) => callback(element, folder, ctx));
 }
 
 export function normalizeSprite(
@@ -111,7 +111,7 @@ export function normalizeSprite(
 	return {
 		id: expandId(ctx.packId, sprite.id),
 		label: sprite.label || sprite.variants[0][0],
-		variants: sprite.variants.map(variant =>
+		variants: sprite.variants.map((variant) =>
 			normalizFileCollection(variant, spriteFolder, ctx)
 		),
 		defaultScale: sprite.defaultScale || [1.0, 1.0],
@@ -170,16 +170,26 @@ export function normalizeBackground(
 	return {
 		id: expandId(ctx.packId, background.id),
 		label: background.label ? background.label : background.variants[0][0],
-		variants: background.variants.map(collection =>
+		variants: background.variants.map((collection) =>
 			normalizFileCollection(collection, backgroundFolder, ctx)
 		),
-		scaling: ['none', 'strech', 'cover'].includes(
-			background.scaling?.toLowerCase()!
-		)
-			? (background.scaling!.toLowerCase() as 'none' | 'strech' | 'cover')
-			: 'cover',
+		scaling: normalizeBackgroundScaling(background.scaling),
 		sdVersion: background.sdVersion,
 	};
+}
+
+function normalizeBackgroundScaling(
+	backgroundScaling: string | undefined
+): 'none' | 'strech' | 'cover' {
+	backgroundScaling = backgroundScaling?.toLowerCase();
+	if (
+		backgroundScaling === 'none' ||
+		backgroundScaling === 'strech' ||
+		backgroundScaling === 'cover'
+	) {
+		return backgroundScaling;
+	}
+	return 'cover';
 }
 
 export function normalizeColor(color: JSONColor): Color {
@@ -194,7 +204,7 @@ function normalizFileCollection(
 	baseFolder: string,
 	ctx: IContext
 ) {
-	return collection.map(sprite => joinNormalize(baseFolder, sprite, ctx));
+	return collection.map((sprite) => joinNormalize(baseFolder, sprite, ctx));
 }
 
 function normalizeCharacter(
@@ -203,12 +213,6 @@ function normalizeCharacter(
 	ctx: IContext
 ): Character<string> {
 	const charFolder = joinNormalize(baseFolder, character.folder, ctx);
-	const defaultStyle = {
-		components: {},
-		styleGroup: 'default',
-		label: 'Default',
-		name: 'default',
-	};
 	return {
 		id: expandId(ctx.packId, character.id),
 		label: character.label,
@@ -243,7 +247,7 @@ function normalizeStyleGroup(
 			groupFolder,
 			ctx
 		),
-		styles: json.styles.map(x => normalizeStyle(x, groupFolder, ctx)),
+		styles: json.styles.map((x) => normalizeStyle(x, groupFolder, ctx)),
 	};
 }
 
@@ -263,7 +267,7 @@ function normalizeStyle(
 	}
 	return {
 		components,
-		poses: json.poses.map(pose => normalizePose(pose, styleFolder, ctx)),
+		poses: json.poses.map((pose) => normalizePose(pose, styleFolder, ctx)),
 	};
 }
 
@@ -335,16 +339,16 @@ function normalizePose(
 	const poseFolder = joinNormalize(baseFolder, pose.folder, ctx);
 	return {
 		compatibleHeads:
-			pose.compatibleHeads?.map(head => expandId(ctx.packId, head)) || [],
+			pose.compatibleHeads?.map((head) => expandId(ctx.packId, head)) || [],
 		id: expandId(ctx.packId, pose.id),
 		previewOffset: pose.previewOffset || [0, 0],
 		previewSize: pose.previewSize || [960, 960],
 		size: pose.size || [960, 960],
 		scale: pose.scale || 0.8,
-		positions: mapObject(pose.positions || {}, posePart =>
+		positions: mapObject(pose.positions || {}, (posePart) =>
 			normalizeVariants(posePart, poseFolder, ctx)
 		),
-		renderCommands: pose.renderCommands?.map(command =>
+		renderCommands: pose.renderCommands?.map((command) =>
 			normalizePoseCommand(command, baseFolder, ctx)
 		) || [
 			{ type: 'head', offset: [0, 0] },

@@ -113,9 +113,7 @@ export interface JSONPose {
 }
 
 export type JSONPoseCommand =
-	| IStaticImageCommand
-	| IPosePartCommand
-	| IHeadCommand;
+	IStaticImageCommand | IPosePartCommand | IHeadCommand;
 
 export interface IPoseCommand {
 	offset?: Coordinates;

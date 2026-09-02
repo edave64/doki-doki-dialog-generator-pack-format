@@ -1,20 +1,16 @@
 {
 	"compilerOptions": {
-		"target": "es5",
+		"target": "es6",
 		"module": "commonjs",
+		"rootDir": ".",
 		"outDir": "dist",
 		"sourceMap": false,
 		"declaration": true,
 		"allowSyntheticDefaultImports": true,
-		"downlevelIteration": true,
 		"strictNullChecks": true,
-		"baseUrl": ".",
 		"lib": ["ES2015"],
-		"paths": {
-			"*": ["node_modules/"],
-			"typings/*": ["src/typings/*"]
-		}
+		"types": ["node", "jest"]
 	},
-	"include": ["src/**/*.ts"],
-	"exclude": ["src/test/**/*.spec.ts"]
+	"include": ["src/**/*.ts", "__tests__/**/*.ts"],
+	"exclude": ["src/test/**/*.spec.ts", "**/*.d.ts"]
 }

@@ -3,7 +3,6 @@ import {
 	Character,
 	ContentPack,
 	Font,
-	PoemStyle,
 	Sprite,
 	HeadCollections,
 	HeadCollection,
@@ -27,7 +26,7 @@ export function normalizePath(
 	let i = 0;
 
 	const replacementMap: ReadonlyMap<RegExp, string> = new Map(
-		Array.from(replacements.entries()).map(r => {
+		Array.from(replacements.entries()).map((r) => {
 			return [new RegExp(`{${r[0]}}`, 'g'), r[1]];
 		})
 	);
@@ -68,18 +67,18 @@ export function assetWalker<A, B>(
 		packId: standartContentPack.packId,
 		packCredits: standartContentPack.packCredits,
 		dependencies: standartContentPack.dependencies,
-		characters: standartContentPack.characters.map(x =>
+		characters: standartContentPack.characters.map((x) =>
 			walkCharacter(x, callback)
 		),
-		backgrounds: standartContentPack.backgrounds.map(x =>
+		backgrounds: standartContentPack.backgrounds.map((x) =>
 			walkBackground(x, callback)
 		),
-		fonts: standartContentPack.fonts.map(x => walkFont(x, callback)),
+		fonts: standartContentPack.fonts.map((x) => walkFont(x, callback)),
 		poemStyles: [...standartContentPack.poemStyles],
-		poemBackgrounds: standartContentPack.poemBackgrounds.map(x =>
+		poemBackgrounds: standartContentPack.poemBackgrounds.map((x) =>
 			walkPoemBackgrounds(x, callback)
 		),
-		sprites: standartContentPack.sprites.map(x => walkSprite(x, callback)),
+		sprites: standartContentPack.sprites.map((x) => walkSprite(x, callback)),
 		colors: standartContentPack.colors,
 	};
 }
@@ -93,7 +92,7 @@ function walkCharacter<A, B>(
 		label: character.label,
 		chibi: character.chibi ? callback(character.chibi, 'image') : undefined,
 		heads: walkHeads(character.heads, callback),
-		styleGroups: character.styleGroups.map(x => walkStyleGroup(x, callback)),
+		styleGroups: character.styleGroups.map((x) => walkStyleGroup(x, callback)),
 		defaultScale: character.defaultScale,
 		hd: character.hd,
 		size: character.size,
@@ -107,10 +106,10 @@ function walkStyleGroup<A, B>(
 ): StyleGroup<B> {
 	return {
 		id: styleGroup.id,
-		styleComponents: styleGroup.styleComponents.map(x =>
+		styleComponents: styleGroup.styleComponents.map((x) =>
 			walkStyleComponents(x, callback)
 		),
-		styles: styleGroup.styles.map(style => walkStyle(style, callback)),
+		styles: styleGroup.styles.map((style) => walkStyle(style, callback)),
 	};
 }
 
@@ -120,7 +119,7 @@ function walkStyle<A, B>(
 ): Style<B> {
 	return {
 		components: style.components,
-		poses: style.poses.map(pose => walkPose(pose, callback)),
+		poses: style.poses.map((pose) => walkPose(pose, callback)),
 	};
 }
 
@@ -154,8 +153,8 @@ function walkPose<A, B>(
 
 	for (const partKey of Object.keys(pose.positions)) {
 		const partValue = pose.positions[partKey];
-		newParts[partKey] = partValue.map(partPosition =>
-			partPosition.map(x => callback(x, 'image'))
+		newParts[partKey] = partValue.map((partPosition) =>
+			partPosition.map((x) => callback(x, 'image'))
 		);
 	}
 
@@ -164,12 +163,12 @@ function walkPose<A, B>(
 		id: pose.id,
 		previewOffset: pose.previewOffset,
 		previewSize: pose.previewSize,
-		renderCommands: pose.renderCommands.map(x => {
+		renderCommands: pose.renderCommands.map((x) => {
 			if (x.type === 'image') {
 				return {
 					type: 'image',
 					offset: x.offset,
-					images: x.images.map(y => callback(y, 'image')),
+					images: x.images.map((y) => callback(y, 'image')),
 				};
 			} else {
 				return x;
@@ -200,8 +199,8 @@ function walkHeadCollection<A, B>(
 	return {
 		previewOffset: heads.previewOffset,
 		previewSize: heads.previewSize,
-		variants: heads.variants.map(variant =>
-			variant.map(x => callback(x, 'image'))
+		variants: heads.variants.map((variant) =>
+			variant.map((x) => callback(x, 'image'))
 		),
 	};
 }
@@ -213,8 +212,8 @@ function walkBackground<A, B>(
 	return {
 		id: background.id,
 		label: background.label,
-		variants: background.variants.map(variant =>
-			variant.map(x => callback(x, 'image'))
+		variants: background.variants.map((variant) =>
+			variant.map((x) => callback(x, 'image'))
 		),
 		scaling: background.scaling,
 		sdVersion: background.sdVersion,
@@ -228,7 +227,7 @@ function walkFont<A, B>(
 	return {
 		id: font.id,
 		label: font.label,
-		files: font.files.map(x => callback(x, 'font')),
+		files: font.files.map((x) => callback(x, 'font')),
 	};
 }
 
@@ -240,7 +239,7 @@ function walkPoemBackgrounds<A, B>(
 		id: poemStyle.id,
 		fontColor: poemStyle.fontColor,
 		label: poemStyle.label,
-		images: poemStyle.images.map(x => callback(x, 'image')),
+		images: poemStyle.images.map((x) => callback(x, 'image')),
 		sdVersion: poemStyle.sdVersion,
 	};
 }
@@ -252,8 +251,8 @@ function walkSprite<A, B>(
 	return {
 		id: sprite.id,
 		label: sprite.label,
-		variants: sprite.variants.map(variant =>
-			variant.map(x => callback(x, 'image'))
+		variants: sprite.variants.map((variant) =>
+			variant.map((x) => callback(x, 'image'))
 		),
 		defaultScale: sprite.defaultScale,
 		hd: sprite.hd,
@@ -265,7 +264,7 @@ export function mapObject<A, B>(
 	obj: { [id: string]: A },
 	callback: (val: A, key: string) => B
 ): { [id: string]: B } {
-	const ret = {};
+	const ret: { [id: string]: B } = {};
 	for (const key in obj) {
 		if (!obj.hasOwnProperty(key)) continue;
 		ret[key] = callback(obj[key], key);

@@ -11,18 +11,18 @@ describe('Test converter base functionality', () => {
 			}
 		);
 		expect(character).toMatchInlineSnapshot(`
-		Object {
+		{
 		  "chibi": undefined,
-		  "eyes": Object {},
-		  "hairs": Object {},
-		  "heads": Object {},
+		  "eyes": {},
+		  "hairs": {},
+		  "heads": {},
 		  "id": "toast",
 		  "name": undefined,
 		  "nsfw": false,
 		  "packCredits": undefined,
 		  "packId": undefined,
-		  "poses": Array [],
-		  "styles": Array [],
+		  "poses": [],
+		  "styles": [],
 		}
 	`);
 	});
@@ -418,7 +418,7 @@ describe('Test converter base functionality', () => {
 					'/': 'cats',
 				}
 			);
-		}).toThrowError();
+		}).toThrow();
 	});
 
 	it('Pose normalization', () => {

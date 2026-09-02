@@ -21,7 +21,7 @@ function convertJSON() {
 	const v2pack = convert(v1pack, {}, true);
 	let chibi = true;
 
-	const extensions = assetWalker(v2pack, (old, type) => {
+	assetWalker(v2pack, (old, type) => {
 		if (type === 'font') throw new Error(`Fonts weren't supported in V1. WTH?`);
 		old = old + '{ext}';
 		if (chibi) {
