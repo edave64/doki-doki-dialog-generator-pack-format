@@ -1,11 +1,11 @@
-import {
+import type {
 	JSONCharacter,
 	JSONHeadCollections,
 	JSONPoseMeta,
 	JSONStyle,
 	JSONStyleClasses,
 } from './jsonFormat';
-import {
+import type {
 	Character,
 	HeadCollections,
 	Heads,
@@ -57,7 +57,11 @@ function normalizeParts(
 	for (const styleKey in styleClasses) {
 		/* istanbul ignore next */
 		if (!styleClasses.hasOwnProperty(styleKey)) continue;
-		ret[styleKey] = joinNormalize(baseFolder, styleClasses[styleKey], paths);
+		ret[styleKey] = joinNormalize(
+			baseFolder,
+			styleClasses[styleKey],
+			paths
+		);
 	}
 	return ret;
 }
@@ -83,9 +87,17 @@ function normalizeHeads(
 				size: [380, 380],
 			};
 		} else {
-			const subFolder = joinNormalize(baseFolder, headGroup.folder, paths);
+			const subFolder = joinNormalize(
+				baseFolder,
+				headGroup.folder,
+				paths
+			);
 			newHeadGroup = {
-				all: normalizeNsfwAbleCollection(headGroup.all, subFolder, paths),
+				all: normalizeNsfwAbleCollection(
+					headGroup.all,
+					subFolder,
+					paths
+				),
 				nsfw: !!headGroup.nsfw,
 				offset: headGroup.offset || [290, 70],
 				size: headGroup.size || [380, 380],

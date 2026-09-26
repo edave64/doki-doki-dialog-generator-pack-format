@@ -1,4 +1,4 @@
-import {
+import type {
 	JSONBackground,
 	JSONCharacter,
 	JSONContentPack,
@@ -15,7 +15,7 @@ import {
 	JSONStyleGroup,
 	JSONPoseCommand,
 } from './jsonFormat';
-import {
+import type {
 	Background,
 	Character,
 	ContentPack,
@@ -88,7 +88,12 @@ export function normalizeContentPack(
 			packFolder,
 			ctx
 		),
-		colors: mapNormalize(normalizeColor, contentPack.colors, packFolder, ctx),
+		colors: mapNormalize(
+			normalizeColor,
+			contentPack.colors,
+			packFolder,
+			ctx
+		),
 	};
 }
 
@@ -125,7 +130,8 @@ export function normalizePoemStyles(poem: JSONPoemStyle): PoemStyle {
 		label: poem.label,
 		defaultFont: poem.defaultFont || 'Aller',
 		fontSize: poem.fontSize !== undefined ? poem.fontSize : 30,
-		letterSpacing: poem.letterSpacing !== undefined ? poem.letterSpacing : 1,
+		letterSpacing:
+			poem.letterSpacing !== undefined ? poem.letterSpacing : 1,
 		lineSpacing: poem.lineSpacing !== undefined ? poem.lineSpacing : 1.2,
 	};
 }
@@ -339,7 +345,8 @@ function normalizePose(
 	const poseFolder = joinNormalize(baseFolder, pose.folder, ctx);
 	return {
 		compatibleHeads:
-			pose.compatibleHeads?.map((head) => expandId(ctx.packId, head)) || [],
+			pose.compatibleHeads?.map((head) => expandId(ctx.packId, head)) ||
+			[],
 		id: expandId(ctx.packId, pose.id),
 		previewOffset: pose.previewOffset || [0, 0],
 		previewSize: pose.previewSize || [960, 960],

@@ -1,4 +1,4 @@
-import {
+import type {
 	Background,
 	Character,
 	ContentPack,
@@ -78,7 +78,9 @@ export function assetWalker<A, B>(
 		poemBackgrounds: standartContentPack.poemBackgrounds.map((x) =>
 			walkPoemBackgrounds(x, callback)
 		),
-		sprites: standartContentPack.sprites.map((x) => walkSprite(x, callback)),
+		sprites: standartContentPack.sprites.map((x) =>
+			walkSprite(x, callback)
+		),
 		colors: standartContentPack.colors,
 	};
 }
@@ -92,7 +94,9 @@ function walkCharacter<A, B>(
 		label: character.label,
 		chibi: character.chibi ? callback(character.chibi, 'image') : undefined,
 		heads: walkHeads(character.heads, callback),
-		styleGroups: character.styleGroups.map((x) => walkStyleGroup(x, callback)),
+		styleGroups: character.styleGroups.map((x) =>
+			walkStyleGroup(x, callback)
+		),
 		defaultScale: character.defaultScale,
 		hd: character.hd,
 		size: character.size,

@@ -1,12 +1,8 @@
-import * as V1 from '../v1/model';
-import * as V2 from './model';
-import {
-	expandId,
-	Paths,
-	mapNormalize,
-	normalizeStyleComponent,
-} from './parser';
-import { JSONStyleComponent } from './jsonFormat';
+import type * as V1 from '../v1/model';
+import type * as V2 from './model';
+import { expandId, mapNormalize, normalizeStyleComponent } from './parser';
+import type { Paths } from './parser';
+import type { JSONStyleComponent } from './jsonFormat';
 
 export function convert(
 	characterV1: V1.Character<V1.HeadCollections>,
@@ -228,7 +224,10 @@ function extractStyleGroups(
 	const useComponents =
 		styleComponents.length === 0
 			? translation && translation.defaultStyleComponents
-				? normalizeStyleComponets(translation.defaultStyleComponents, ctx)
+				? normalizeStyleComponets(
+						translation.defaultStyleComponents,
+						ctx
+					)
 				: []
 			: styleComponents;
 	const styleNames = characterV1.poses
@@ -393,7 +392,9 @@ function convertStyleComponents(
 	const retVariants: string[] = [];
 
 	if (Object.keys(characterV1.eyes).length > 0) {
-		Object.keys(characterV1.eyes).forEach((eyeKey) => retVariants.push(eyeKey));
+		Object.keys(characterV1.eyes).forEach((eyeKey) =>
+			retVariants.push(eyeKey)
+		);
 		ret.push({
 			label: 'Eyes',
 			id: expandOrTranslateId('eyes', 'eyes', ctx),
@@ -476,15 +477,15 @@ function assocChar(
 		defaultStyleComponents: input.defaultStyleComponents || [],
 		heads: new Map([
 			...associate(targetPack, input.heads),
-			...input.extraHeadAssoc!,
+			...input.extraHeadAssoc,
 		]),
 		poses: new Map([
 			...associate(targetPack, input.poses),
-			...input.extraPoseAssoc!,
+			...input.extraPoseAssoc,
 		]),
 		styleGroups: new Map([
 			...associate(targetPack, input.styleGroups),
-			...input.extraStyleGroupAssoc!,
+			...input.extraStyleGroupAssoc,
 		]),
 	};
 }
