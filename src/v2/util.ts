@@ -168,6 +168,7 @@ function walkPose<A, B>(
 				return {
 					type: 'image',
 					offset: x.offset,
+					composite: x.composite,
 					images: x.images.map((y) => callback(y, 'image')),
 				};
 			} else {
