@@ -1,0 +1,626 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://raw.githubusercontent.com/edave64/doki-doki-dialog-generator-pack-format/master/src/v2/schema.json",
+	"$defs": {
+		"folder": {
+			"type": "string",
+			"title": "The folder, in which all other paths in this file will be searched",
+			"default": "/",
+			"examples": ["./"]
+		},
+		"assetCollection": {
+			"type": "array",
+			"title": "A list of images that make up an asset",
+			"items": {
+				"type": "string",
+				"title": "An image"
+			}
+		},
+		"variantCollection": {
+			"type": "array",
+			"title": "A collection of assets that you can choose between",
+			"items": {
+				"$ref": "#/$defs/assetCollection"
+			}
+		},
+		"id": {
+			"type": "string",
+			"pattern": "^[_-\\w\\.]+(:[_-\\w\\.]+)?$",
+			"default": ""
+		},
+		"coordinates": {
+			"type": "array",
+			"title": "A position or size of an object",
+			"items": {
+				"type": "integer"
+			},
+			"minLength": 2,
+			"maxLength": 2
+		},
+		"composite": {
+			"type": "string",
+			"enum": [
+				"source-in",
+				"source-out",
+				"source-atop",
+				"destination-over",
+				"destination-in",
+				"destination-out",
+				"destination-atop",
+				"lighter",
+				"copy",
+				"xor",
+				"multiply",
+				"screen",
+				"overlay",
+				"darken",
+				"lighten",
+				"color-dodge",
+				"color-burn",
+				"hard-light",
+				"soft-light",
+				"difference",
+				"exclusion",
+				"hue",
+				"saturation",
+				"color",
+				"luminosity"
+			]
+		},
+		"options": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["id"],
+				"properties": {
+					"label": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string",
+						"$ref": "#/$defs/id"
+					},
+					"variants": {
+						"type": "object",
+						"patternProperties": {
+							".*": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": false
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"condition": {
+			"type": "object",
+			"anyOf": [
+				{
+					"properties": {
+						"type": {
+							"type": "string",
+							"enum": ["or", "and", "xor"]
+						},
+						"arguments": {
+							"type": "array",
+							"items": {
+								"$ref": "#/$defs/condition"
+							}
+						}
+					}
+				},
+				{
+					"properties": {
+						"type": {
+							"type": "string",
+							"const": "not"
+						},
+						"argument": {
+							"$ref": "#/$defs/condition"
+						}
+					}
+				},
+				{
+					"properties": {
+						"type": {
+							"type": "string",
+							"enum": ["eq", "neq"]
+						},
+						"option": {
+							"type": "string"
+						},
+						"value": {
+							"type": "string"
+						}
+					}
+				}
+			]
+		}
+	},
+	"type": "object",
+	"title": "The Root Schema",
+	"required": ["$schema", "version", "packId"],
+	"additionalProperties": false,
+	"properties": {
+		"$schema": {
+			"type": "string"
+		},
+		"version": {
+			"type": "string",
+			"const": "3.0"
+		},
+		"packId": {
+			"type": "string",
+			"title": "The content pack id",
+			"pattern": "^(.*)$"
+		},
+		"packName": {
+			"type": "string",
+			"title": "The name of the content pack (optional)"
+		},
+		"folder": {
+			"$ref": "#/$defs/folder"
+		},
+		"characters": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["id"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"title": "The character id",
+						"description": "This id needs to be unique for every character. If the name collides with an existing character, they will be merged",
+						"$ref": "#/$defs/id"
+					},
+					"label": {
+						"type": "string",
+						"title": "The name of the character",
+						"examples": [],
+						"pattern": "^(.*)$"
+					},
+					"folder": {
+						"$ref": "#/$defs/folder"
+					},
+					"chibi": {
+						"type": "string",
+						"title": "The path to the chibi file",
+						"pattern": "^(.*)$"
+					},
+					"heads": {
+						"type": "object",
+						"title": "The head groups",
+						"patternProperties": {
+							".*": {
+								"title": "Headgroup",
+								"type": "object",
+								"required": ["variants"],
+								"properties": {
+									"folder": {
+										"$ref": "#/$defs/folder"
+									},
+									"variants": {
+										"$ref": "#/$defs/variantCollection"
+									},
+									"previewSize": {
+										"$ref": "#/$defs/coordinates"
+									},
+									"previewOffset": {
+										"$ref": "#/$defs/coordinates"
+									},
+									"options": {
+										"$ref": "#/$defs/options"
+									},
+									"optionalVariants": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"required": ["condition"],
+											"properties": {
+												"condition": {
+													"$ref": "#/$defs/condition"
+												}
+											}
+										}
+									},
+									"renderCommands": {
+										"title": "Steps to render the head",
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"offset": {
+													"$ref": "#/$defs/coordinates"
+												},
+												"composite": {
+													"$ref": "#/$defs/composite"
+												},
+												"condition": {
+													"$ref": "#/$defs/condition"
+												}
+											},
+											"oneOf": [
+												{
+													"required": [
+														"type",
+														"images"
+													],
+													"properties": {
+														"type": {
+															"const": "image"
+														},
+														"images": {
+															"$ref": "#/$defs/assetCollection"
+														},
+														"folder": {
+															"$ref": "#/$defs/folder"
+														}
+													}
+												},
+												{
+													"required": ["type"],
+													"properties": {
+														"type": {
+															"const": "variant"
+														}
+													}
+												}
+											]
+										},
+										"default": [
+											{
+												"type": "variant"
+											}
+										]
+									}
+								}
+							}
+						},
+						"additionalProperties": false
+					},
+					"styles": {
+						"type": "object",
+						"title": "A list of styles",
+						"items": {
+							"type": "object",
+							"title": "A style",
+							"required": [],
+							"properties": {
+								"folder": {
+									"$ref": "#/$defs/folder"
+								},
+								"poses": {
+									"type": "array",
+									"title": "Poses",
+									"items": {
+										"type": "object",
+										"title": "A pose",
+										"required": ["id", "compatibleHeads"],
+										"properties": {
+											"id": {
+												"type": "string",
+												"title": "The name of a pose. If a content pack includes a pose with the same name as an existing one, the get merged together",
+												"$ref": "#/$defs/id"
+											},
+											"compatibleHeads": {
+												"title": "A list of compatible head groups",
+												"type": "array",
+												"items": {
+													"type": "string",
+													"title": "A head group"
+												}
+											},
+											"renderCommands": {
+												"title": "Steps to render the pose",
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"offset": {
+															"$ref": "#/$defs/coordinates"
+														},
+														"composite": {
+															"$ref": "#/$defs/composite"
+														}
+													},
+													"oneOf": [
+														{
+															"required": [
+																"type",
+																"images"
+															],
+															"properties": {
+																"type": {
+																	"const": "image"
+																},
+																"images": {
+																	"$ref": "#/$defs/assetCollection"
+																},
+																"folder": {
+																	"$ref": "#/$defs/folder"
+																}
+															}
+														},
+														{
+															"required": [
+																"type",
+																"part"
+															],
+															"properties": {
+																"type": {
+																	"const": "pose-part"
+																},
+																"part": {
+																	"type": "string"
+																}
+															}
+														},
+														{
+															"required": [
+																"type"
+															],
+															"properties": {
+																"type": {
+																	"const": "head"
+																}
+															}
+														}
+													]
+												},
+												"default": [
+													{
+														"type": "head"
+													},
+													{
+														"type": "pose-part",
+														"part": "Left"
+													},
+													{
+														"type": "pose-part",
+														"part": "Right"
+													},
+													{
+														"type": "pose-part",
+														"part": "Variant"
+													}
+												]
+											},
+											"folder": {
+												"$ref": "#/$defs/folder"
+											},
+											"previewSize": {
+												"$ref": "#/$defs/coordinates"
+											},
+											"previewOffset": {
+												"$ref": "#/$defs/coordinates"
+											},
+											"size": {
+												"$ref": "#/$defs/coordinates"
+											},
+											"positions": {
+												"type": "object",
+												"patternProperties": {
+													".*": {
+														"$ref": "#/$defs/variantCollection"
+													}
+												}
+											}
+										},
+										"additionalProperties": false
+									}
+								},
+								"options": {
+									"$ref": "#/$defs/options"
+								}
+							},
+							"additionalProperties": false
+						}
+					},
+					"defaultScale": {
+						"$ref": "#/$defs/coordinates",
+						"description": "A new object of this type is scaled by this amount by default.",
+						"default": [0.8, 0.8],
+						"items": {
+							"type": "number",
+							"minimum": 0,
+							"maximum": 1
+						}
+					},
+					"size": {
+						"$ref": "#/$defs/coordinates",
+						"description": "The size of this object. This should equal the size of the largest image used plus it's offset",
+						"default": [960, 960]
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"backgrounds": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["id", "variants"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"title": "The background id",
+						"$ref": "#/$defs/id"
+					},
+					"label": {
+						"type": "string",
+						"title": "The label of the background"
+					},
+					"folder": {
+						"$ref": "#/$defs/folder"
+					},
+					"variants": {
+						"$ref": "#/$defs/variantCollection",
+						"title": "All variants of the background"
+					},
+					"scaling": {
+						"type": "string",
+						"enum": ["none", "strech", "cover"]
+					},
+					"sdVersion": {
+						"type": "string",
+						"description": "The name of the sd version of this character, used to bundle the two together"
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"sprites": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["id", "variants"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"title": "The sprite id",
+						"$ref": "#/$defs/id"
+					},
+					"label": {
+						"type": "string",
+						"title": "The label of the sprite"
+					},
+					"folder": {
+						"$ref": "#/$defs/folder"
+					},
+					"variants": {
+						"$ref": "#/$defs/variantCollection",
+						"title": "All variants of the sprite"
+					},
+					"defaultScale": {
+						"$ref": "#/$defs/coordinates",
+						"description": "A new object of this type is scaled by this amount by default.",
+						"default": [1.0, 1.0],
+						"items": {
+							"type": "number",
+							"minimum": 0,
+							"maximum": 1
+						}
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"poemStyles": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["label"],
+				"properties": {
+					"label": {
+						"type": "string",
+						"title": "The label of the sprite"
+					},
+					"defaultFont": {
+						"type": "string",
+						"title": "The font",
+						"default": "aller"
+					},
+					"fontSize": {
+						"type": "number",
+						"title": "The font size"
+					},
+					"lineSpacing": {
+						"type": "number",
+						"title": "The spacing between lines (As a multiplier of the font size)"
+					},
+					"letterSpacing": {
+						"type": "number",
+						"title": "The spacing between letters"
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"poemBackgrounds": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["label", "images"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"title": "The poem background id",
+						"$ref": "#/$defs/id"
+					},
+					"label": {
+						"type": "string",
+						"title": "The label of the poem background"
+					},
+					"folder": {
+						"$ref": "#/$defs/folder"
+					},
+					"images": {
+						"$ref": "#/$defs/assetCollection",
+						"title": "All images of the poem"
+					},
+					"fontColor": {
+						"type": "string",
+						"title": "The font color on this poem background"
+					},
+					"sdVersion": {
+						"type": "string",
+						"description": "The name of the sd version of this character, used to bundle the two together"
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"colors": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["color"],
+				"properties": {
+					"label": {
+						"type": "string",
+						"title": "The label of the color"
+					},
+					"color": {
+						"type": "string",
+						"title": "The hex rgba code of the color"
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"fonts": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["id", "variants"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"title": "The font id",
+						"$ref": "#/$defs/id"
+					},
+					"label": {
+						"type": "string",
+						"title": "The label of the font"
+					},
+					"folder": {
+						"$ref": "#/$defs/folder"
+					},
+					"files": {
+						"$ref": "#/$defs/assetCollection",
+						"title": "All font files"
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"dependencies": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"title": "The list of dependenies"
+		}
+	}
+}
