@@ -25,7 +25,26 @@
 							"items": {
 								"type": "string",
 								"title": "The name of a character",
-								"examples": ["Monika", "Sayori", "Natsuki", "Yuri"]
+								"examples": [
+									"Monika",
+									"Sayori",
+									"Natsuki",
+									"Yuri"
+								]
+							}
+						},
+						"characterIds": {
+							"type": "array",
+							"title": "The characters that this content pack involves. This uses the character id. Used primarily for filtering and prevents collisions for characters that have the same name (Like MC and FeMC).",
+							"items": {
+								"type": "string",
+								"title": "The name of a character",
+								"examples": [
+									"dddg.buildin.base.monika:ddlc.monika",
+									"dddg.buildin.sayori:ddlc.sayori",
+									"dddg.buildin.base.natsuki:ddlc.natsuki",
+									"dddg.buildin.yuri:ddlc.yuri"
+								]
 							}
 						},
 						"authors": {
